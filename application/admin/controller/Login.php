@@ -12,8 +12,7 @@ class Login extends Controller
     public function login()
     {
        // $view = new View();
-//        $captcha = new Captcha();
-//        print_r($captcha);die;
+
         $this->assign('domain',$this->request->url(true));
         return $this->fetch('Login');
 //        $view = new View();
