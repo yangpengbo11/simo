@@ -30,9 +30,9 @@ class Login extends Controller
         //print_r(session('users'));die;
         if($as){
             session('users',$as);
-            return $this->fetch('Index/index');
+            $this->success('登陆成功', 'Index/index');
         }else{
-            return $this->fetch('login');
+            $this->error('登陆失败！');
         }
     }
 
