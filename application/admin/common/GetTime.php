@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\index\common;
+namespace app\admin\common;
 
 
 class GetTime
