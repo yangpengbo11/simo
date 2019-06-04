@@ -39,7 +39,7 @@ class Index extends Controller
 
     }
 
-    public function qrcode(){
+    /*public function qrcode(){
 
         $erwei=new Erweima();
         $lists=array(
@@ -50,6 +50,6 @@ class Index extends Controller
 
         $erwei->qrcode($lists,10,2);
 
-    }
+    }*/
 
 }
