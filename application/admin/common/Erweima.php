@@ -34,12 +34,12 @@ class Erweima
         ob_end_clean();//关键
         //$code = urlencode($data);
         //创建文件夹
-        $dir = "images/".$type."/".date("Ym");
+        $dir = "images/".$type."/".date("Ymd");
         if (!file_exists($dir)){
             mkdir ($dir,0777,true);
         }
         //文件路径
-        $filename="images/".$type."/".date("Ym")."/".time().".png";
+        $filename="images/".$type."/".date("Ymd")."/".time().".png";
 
         //把二维码信息保存到数据库
         $lists['roam']=$time;
