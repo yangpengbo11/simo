@@ -38,12 +38,15 @@
 <div class="page-container">
 	<form action="/admin/Menu/menu_post" method="post" class="form form-horizontal" id="form-article-add">
 		<div class="row cl">
+			{if condition="$menu!=''"}
+				<input type="hidden" name="id" value="{$menu['id']}">
+			{/if}
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>上级菜单分类名称：</label>
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
 				<select name="pid" class="select">
 					<option value="0">顶级菜单</option>
 					{foreach name="data" item="vo"}
-						<option value='{$vo.id}'>{$vo['menu_name']}</option>
+						<option value='{$vo.id}' {if condition="$menu['pid']==$vo.id"} selected="selected"{/if}>{$vo['menu_name']}</option>
 					{/foreach}
 				</select>
 				</span>
@@ -52,23 +55,23 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>菜单名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="menu_name" name="menu_name">
+				<input type="text" class="input-text" value="{$menu['menu_name']}" placeholder="" id="menu_name" name="menu_name">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>菜单类别：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<select name="types" class="select">
-					<option value="1">显示菜单</option>
-					<option value="2">隐藏菜单</option>
-					<option value="3">工序</option>
+					<option value="1" {if condition="$menu['types']==1"} selected="selected"{/if}>显示菜单</option>
+					<option value="2" {if condition="$menu['types']==2"} selected="selected"{/if}>隐藏菜单</option>
+					<option value="3" {if condition="$menu['types']==3"} selected="selected"{/if}>工序</option>
 				</select>
 			</div>
 		</div>
 		<div class="row cl" id="is_links">
 			<label class="form-label col-xs-4 col-sm-2">菜单链接：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="links" name="links">
+				<input type="text" class="input-text" value="{$menu['links']}" placeholder="" id="links" name="links">
 				<span>顶级菜单没有链接，工序没有链接</span>
 			</div>
 

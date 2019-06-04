@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 
 use think\Controller;
+use think\Db;
 
 class Menu extends Controller
 {
@@ -53,7 +54,19 @@ class Menu extends Controller
      */
     public function menu_post(){
         if(!empty($_POST['id'])){
-
+            $arr = [
+                'pid'=>$_POST['pid'],
+                'menu_name'=>$_POST['menu_name'],
+                'types'=>$_POST['types'],
+                'links'=>$_POST['links']
+            ];
+            $res = db('menus')->where('id',$_POST['id'])->update($arr);
+            //print_r(db('menus')->getLastSql());die;
+            if($res){
+                $this->success('编辑成功.', 'Menu/menu_list');
+            }else{
+                $this->error('编辑失败！');
+            }
         }else{
             $arr = array(
                 'pid'=>$_POST['pid'],
@@ -75,7 +88,14 @@ class Menu extends Controller
      * @return mixed
      */
     public function edit_menu(){
-        return $this->fetch('edit_menu');
+        $id = input('id');
+        $data = db('menus')->order('id','asc')->select();
+        $data = $this->getTree($data);
+        $menu = db('menus')->where(['id'=>$id])->find();
+        $this->assign('data',$data);
+        $this->assign('menu',$menu);
+        return $this->fetch('add_menu');
     }
+
 
 }
