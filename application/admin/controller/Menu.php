@@ -30,6 +30,7 @@ class Menu extends Controller
         $data = db('menus')->order('id','asc')->select();
         $data = $this->getTree($data);
         //print_r($data);die;
+        $this->assign('menu','');
         $this->assign('data',$data);
         return $this->fetch('add_menu');
     }

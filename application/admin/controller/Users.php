@@ -59,6 +59,9 @@ class Users extends Controller
                 $this->error('添加失败！');
             }
         }
+    }
+
+    public function accountNumber_list(){
 
     }
 }
