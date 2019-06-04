@@ -47,8 +47,6 @@ class Index extends Controller
             'specification_type'=>"14558788",
             'figure_number'=>"12554",
         );
-
-
         $erwei->qrcode($lists,10,2);
 
     }*/
