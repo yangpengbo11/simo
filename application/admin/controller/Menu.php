@@ -87,6 +87,7 @@ class Menu extends Controller
     /**
      * 修改菜单
      * @return mixed
+     *
      */
     public function edit_menu(){
         $id = input('id');

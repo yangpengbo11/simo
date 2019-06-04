@@ -3,7 +3,7 @@ namespace app\admin\controller;
 
 use think\Controller;
 use think\Request;
-
+use app\admin\common\Erweima;
 class Index extends Controller
 {
     /**
@@ -38,5 +38,17 @@ class Index extends Controller
         return $arr;
 
     }
+
+    /*public function qrcode(){
+
+        $erwei=new Erweima();
+        $lists=array(
+            'base_code'=>"simo",
+            'specification_type'=>"14558788",
+            'figure_number'=>"12554",
+        );
+        $erwei->qrcode($lists,10,2);
+
+    }*/
 
 }

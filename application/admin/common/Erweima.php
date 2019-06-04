@@ -1,34 +1,54 @@
 <?php
 
 
-namespace app\index\common;
-use app\index\common\GetTime;
+namespace app\admin\common;
+
 
 class Erweima
 {
-    public function index(Array $lists){
+    public function qrcode(Array $lists,$size,$type){
+        //$type  二维码类型  1:流转码  2:半成品码（合成码） 3:成品码
         header('Content-Type: image/png');
         $date=new GetTime();
         $time=$date->ts_time();
         vendor('phpqrcode.phpqrcode');
-        //生成二维码图片
+        //拼接二维码内容
         $data="";
+       /* if($type==1){
+            $data=$data.$lists['base_code']."&".$time;
+        }else if($type==1){
+            $data=$data.$lists['base_code']."&".$lists['base_code'];
+        }*/
+
         foreach ($lists as $list){
-            $data=$data.$list;
+            $data=$data.$list."*";
         }
         $data=$data.$time;
 
-        
+
         $level=3;
-        $size=4;
         Vendor('phpqrcode.phpqrcode');
         $errorCorrectionLevel =intval($level) ;//容错级别
         $matrixPointSize = intval($size);//生成图片大小
         $object = new \QRcode();
         ob_end_clean();//关键
-        $code = urlencode($data);
+        //$code = urlencode($data);
+        //创建文件夹
+        $dir = "images/".$type."/".date("Ymd");
+        if (!file_exists($dir)){
+            mkdir ($dir,0777,true);
+        }
+        //文件路径
+        $filename="images/".$type."/".date("Ymd")."/".time().".png";
+
+        //把二维码信息保存到数据库
+        $lists['roam']=$time;
+        $lists['qrcode_content']=$data;
+        $lists['types']=$type;
+        $lists['links']=$filename;
+        $res = db('qrcode_record')->insert($lists);
         //生成二维码图片
-        return $object->png($code, false, $errorCorrectionLevel, $matrixPointSize, 2);
+         $object->png($data, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
 
 
 
