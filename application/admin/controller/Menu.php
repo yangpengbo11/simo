@@ -4,7 +4,7 @@ namespace app\admin\controller;
 use think\Controller;
 use think\db;
 
-class Menu extends Controller
+class Menu extends Base
 {
     /**
      * 菜单列表

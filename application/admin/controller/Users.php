@@ -3,7 +3,7 @@ namespace app\admin\controller;
 
 use think\Controller;
 
-class Users extends Controller
+class Users extends Base
 {
     /**
      * 人员档案列表
