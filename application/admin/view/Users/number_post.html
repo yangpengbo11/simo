@@ -31,25 +31,29 @@
 <body>
 <nav class="breadcrumb">
 	<i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>
-	<span class="c-gray en">&gt;</span>
-	用户管理
-	<span class="c-gray en">&gt;</span>
-	人员管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+	用户管理 <span class="c-gray en">&gt;</span>
+	账号管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
 	<i class="Hui-iconfont">&#xe68f;</i></a>
 </nav>
 <div class="page-container">
-	<form action="/admin/Users/account_post" method="post" class="form form-horizontal" id="form-article-add">
+	<form action="/admin/Users/number_post" method="post" class="form form-horizontal" id="form-article-add">
 		<div class="row cl">
 			<input type="hidden" name="id" {if condition="$data!=''"} value="{$data['id']}" {/if}>
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>人员工号：</label>
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>员工工号：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" {if condition="$data!=''"} value="{$data['Job_number']}" {/if} placeholder="" id="Job_number" name="Job_number">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>人员姓名：</label>
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>账号名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" {if condition="$data!=''"} value="{$data['job_name']}" {/if} placeholder="" id="job_name" name="job_name">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>账号密码：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="password" class="input-text" {if condition="$data!=''"} value="{$data['job_name']}" {/if} placeholder="" id="job_name" name="job_name">
 			</div>
 		</div>
 		<div class="row cl">
