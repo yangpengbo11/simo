@@ -128,4 +128,88 @@ class Users extends Base
             }
         }
     }
+
+    /**
+     * 角色列表
+     */
+    public function role_list(){
+        $list = db('roles')->select();
+        $this->assign('list',$list);
+        return $this->fetch('role_list');
+    }
+
+    /**
+     * 角色增加页面
+     * @return mixed
+     */
+    public function role_add(){
+
+        $data = db('menus')->order('id','asc')->select();
+        $data = $this->getTree($data);
+        $this->assign('data','');
+        $this->assign('datas',$data);
+        return $this->fetch('role_post');
+    }
+
+
+    /**
+     * 角色修改页面
+     * @return mixed
+     */
+    public function role_edit(){
+        $id = input('id');
+        $role = db('roles')->where('id',$id)->find();
+        $data = db('menus')->order('id','asc')->select();
+        $data = $this->getTree($data);
+        $this->assign('datas',$data);
+        $this->assign('data',$role);
+        return $this->fetch('role_post');
+    }
+
+    /**
+     * 增加/修改角色post提交
+     */
+    public function role_post(){
+        //$_POST
+        if(empty($_POST['id'])) {
+            $data = array(
+                'role_name' => $_POST['role_name'],
+                'create_time' => date('Y-d-m H:i:s', time())
+            );
+            $role = db('roles')->insertGetId($data);
+            if ($role) {
+                foreach ($_POST['roles'] as $vo) {
+                    $data1 = array(
+                        'role_id' => $role,
+                        'menus_id' => $vo,
+                        'create_time' => date('Y-d-m H:i:s', time())
+                    );
+                    db('roles_authority')->insert($data1);
+                }
+                $this->success('添加成功！', 'Users/role_list');
+            } else {
+                $this->error('添加失败！');
+            }
+        }else{
+            $data = array(
+                'role_name' => $_POST['role_name'],
+                'create_time' => date('Y-d-m H:i:s', time())
+            );
+            $role = db('roles')->where('id',$_POST['id'])->update($data);
+            if ($role) {
+                db('roles_authority')->where('role_id',$_POST['id'])->delete();
+                foreach ($_POST['roles'] as $vo) {
+                    $data1 = array(
+                        'role_id' => $role,
+                        'menus_id' => $vo,
+                        'create_time' => date('Y-d-m H:i:s', time())
+                    );
+                    db('roles_authority')->insert($data1);
+                }
+                $this->success('编辑成功！', 'Users/role_list');
+            }else{
+                $this->error('编辑失败！');
+            }
+        }
+    }
 }
