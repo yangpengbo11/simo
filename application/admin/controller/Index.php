@@ -14,8 +14,11 @@ class Index extends Base
         $data = session('users');
         //查找用户角色
         $role = db('user_roles')->field('role_id')->where('login_id',$data['login_id'])->select();
+        //print_r($role);die;
+
         //print_r($role[0]['role_id']);die;
         $menus = db('roles_authority')->field('menus_id')->where('role_id',$role[0]['role_id'])->order('id','asc')->select();
+
         $menu = array();
         foreach ($menus as $v){
             $menu[].=$v['menus_id'];

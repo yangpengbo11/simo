@@ -110,6 +110,7 @@ class Users extends Base
      */
     public function number_post(){
         if(!empty($_POST['id'])){//修改
+            //print_r($_POST);die;
             $job_number = $_POST['Job_number'];
             $res = db('account')->where('Job_number',$job_number)->find();
             $arr = array(
@@ -234,7 +235,7 @@ class Users extends Base
                 db('roles_authority')->where('role_id',$_POST['id'])->delete();
                 foreach ($_POST['roles'] as $vo) {
                     $data1 = array(
-                        'role_id' => $role,
+                        'role_id' => $_POST['id'],
                         'menus_id' => $vo,
                         'create_time' => date('Y-d-m H:i:s', time())
                     );
@@ -242,7 +243,18 @@ class Users extends Base
                 }
                 $this->success('编辑成功！', 'Users/role_list');
             }else{
-                $this->error('编辑失败！');
+                $sel = db('roles_authority')->where('role_id',$_POST['id'])->select();
+                if(empty($sel)){
+                    foreach ($_POST['roles'] as $vo) {
+                        $data1 = array(
+                            'role_id' => $_POST['id'],
+                            'menus_id' => $vo,
+                            'create_time' => date('Y-d-m H:i:s', time())
+                        );
+                        db('roles_authority')->insert($data1);
+                    }
+                    $this->success('编辑成功！', 'Users/role_list');
+                }
             }
         }
     }
