@@ -79,7 +79,9 @@ class Users extends Base
      * 增加人员信息
      */
     public function number_add(){
+        $res = db('roles')->select();
         $this->assign('data','');
+        $this->assign('roles',$res);
         return $this->fetch('number_post');
     }
 
@@ -88,14 +90,19 @@ class Users extends Base
      */
     public function number_edit(){
         $id = input('id');
-        $data = db('user_login')
+        $data = $list = db('user_login')
             ->alias('a')
             ->join('tf_account b','b.id = a.personnel_id')
-            ->field('b.*,a.login_id,a.account_name')
-            ->where(['a.id'=>$id])
-            ->select();
+            ->field('b.*,a.*')
+            ->where(['login_id'=>$id])
+            ->find();
+        $u_r = db('user_roles')->where('login_id', $id)->find();
+        $res = db('roles')->select();
+        //print_r($u_r);die;
         $this->assign('data',$data);
-        return $this->fetch('account_post');
+        $this->assign('role_id',$u_r['role_id']);
+        $this->assign('roles',$res);
+        return $this->fetch('number_post');
     }
 
     /**
@@ -103,29 +110,56 @@ class Users extends Base
      */
     public function number_post(){
         if(!empty($_POST['id'])){//修改
+            $job_number = $_POST['Job_number'];
+            $res = db('account')->where('Job_number',$job_number)->find();
             $arr = array(
-                'Job_number'=>$_POST['Job_number'],
-                'job_name'=>$_POST['job_name']
+                'account_name'=>$_POST['account_name'],
+                'password'=>md5($_POST['password']),
+                'personnel_id'=>$res['id'],
+                'create_time'=>date('Y-d-m H:i:s',time())
             );
-            $res = db('account')->where('id',$_POST['id'])->update($arr);
-            //print_r(db('account')->getLastSql());die;
-            if($res){
-                $this->success('编辑成功.', 'Users/account_list');
+            $login_id = db('user_login')->where('login_id',$_POST['id'])->update($arr);
+            if($login_id) {
+                $user = array(
+                    'role_id' => $_POST['role_id'],
+                    'create_time' => date('Y-d-m H:i:s', time())
+                );
+                $u_r = db('user_roles')->where('login_id', $_POST['id'])->update($user);
+
+                //print_r(db('account')->getLastSql());die;
+                if ($u_r) {
+                    $this->success('编辑成功.', 'Users/accountNumber_list');
+                } else {
+                    $this->error('编辑失败！');
+                }
             }else{
                 $this->error('编辑失败！');
             }
         }else{//增加
-            $arr = array(
-                'Job_number'=>$_POST['Job_number'],
-                'job_name'=>$_POST['job_name'],
-                'create_time'=>date('Y-d-m H:i:s',time())
-            );
-            $res = db('account')->insert($arr);
-            if($res){
-                $this->success('添加成功.', 'Users/account_list');
-            }else{
-                $this->error('添加失败！');
-            }
+                $job_number = $_POST['Job_number'];
+                $res = db('account')->where('Job_number',$job_number)->find();
+                $arr = array(
+                    'account_name'=>$_POST['account_name'],
+                    'password'=>md5($_POST['password']),
+                    'personnel_id'=>$res['id'],
+                    'create_time'=>date('Y-d-m H:i:s',time())
+                );
+                $login_id = db('user_login')->insertGetId($arr);
+                if($login_id){
+                    $user = array(
+                        'role_id'=>$_POST['role_id'],
+                        'login_id'=>$login_id,
+                        'create_time'=>date('Y-d-m H:i:s',time())
+                    );
+                    $u_r = db('user_roles')->insert($user);
+                    if($u_r){
+                        $this->success('添加成功.', 'Users/accountNumber_list');
+                    }else{
+                        $this->error('添加失败！');
+                    }
+                }else{
+                    $this->error('添加失败！');
+                }
         }
     }
 
