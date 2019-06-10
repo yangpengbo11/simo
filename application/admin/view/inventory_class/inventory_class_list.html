@@ -19,14 +19,15 @@
     <script type="text/javascript" src="__LIB__/DD_belatedPNG_0.0.8a-min.js" ></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
-    <title>存货档案管理</title>
+    <title>存货分类管理</title>
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页
     <span class="c-gray en">&gt;</span>
     仓库管理
+
     <span class="c-gray en">&gt;</span>
-    存货档案管理
+    存货分类管理
     <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
 </nav>
 <div class="page-container">
@@ -36,7 +37,7 @@
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
-		<a class="btn btn-primary radius" href="/admin/inventory/inventory_add" ><i class="Hui-iconfont">&#xe600;</i> 添加库存档案</a>
+		<a class="btn btn-primary radius" href="/admin/inventory_class/inventory_calss_add" ><i class="Hui-iconfont">&#xe600;</i> 添加存货分类</a>
 		</span>
     </div>
     <div class="mt-20">
@@ -44,36 +45,27 @@
             <thead>
             <tr class="text-c">
                 <th width="25"><input type="checkbox" name="id"></th>
-                <th>存货编号</th>
-                <th>存货代码(图纸号)</th>
-                <th>存货名称</th>
-                <th>规格型号</th>
-               <th>计量单位</th>
-                <th>货位</th>
-                <th>创建人</th>
+                <th>存货分类编号</th>
+                <th>存货分类名称</th>
+                <th>父分类标识</th>
+                <th>生码规则</th>
                 <th>创建时间</th>
-                <th>变更人</th>
-                <th>变更时间</th>
+                <th>更新时间</th>
                 <th width="100">操作</th>
             </tr>
             </thead>
             <tbody>
             {foreach $data as $v}
             <tr class="text-c">
-                <td><input type="checkbox" name="id" value="{$v['inventory_id']}"></td>
-                <td>{$v['inventory_code']}</td>
-                <td>{$v['dwg_code']}</td>
-                <td>{$v['inventory_name']}</td>
-                <td>{$v['specification_type']}</td>
-                <td>{$v['unit_code']}</td>
-                <td>{$v['define6']}</td>
-                <td>{$v['create_person']}</td>
+                <td><input type="checkbox" name="id" value="{$v['inventory_class_id']}"></td>
+                <td>{$v['inventory_class_code']}</td>
+                <td>{$v['inventory_class_name']}</td>
+                <td>{$v['parent_class_id']}</td>
+                <td>{$v['rule']}</td>
                 <td>{$v['sts_date']}</td>
-                <td>{$v['modify_person']}</td>
-                <td>{$v['modify_date']}</td>
+                <td>{$v['update_Date']}</td>
                 <td class="f-14">
-                    <a title="详情" href="{:url('admin/inventory/inventory_detail',['id'=>$v['inventory_id']])}" style="text-decoration:none"> <i class="Hui-iconfont">&#xe725;</i></a>
-                    <a title="编辑" href="{:url('admin/inventory/inventory_edit',['id'=>$v['inventory_id']])}" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+                    <a title="编辑" href="{:url('admin/inventory_class/inventory_class_edit',['id'=>$v['inventory_class_id']])}" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
                     <a title="删除" href="javascript:;"  class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
                 </td>
             </tr>

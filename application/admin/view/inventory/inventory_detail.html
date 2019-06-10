@@ -37,46 +37,41 @@
 <div class="page-container">
     <form class="form form-horizontal" id="form-article-add" action="/admin/inventory/inventory_post" method="post">
         <div class="row cl">
-            <input type="hidden" name="inventory_id" value="{$data==''?'':$data['inventory_id']}">
+            <input type="hidden" name="inventory_id" value="{$data['inventory_id']}">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>存货编号：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$data==''?'':$data['inventory_code']}" placeholder="" id="inventory_code" name="inventory_code">
+                <input type="text" class="input-text" value="{$data['inventory_code']}" placeholder="" id="inventory_code" name="inventory_code">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">图号：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$data==''?'':$data['dwg_code']}" placeholder="" id="dwg_code" name="dwg_code">
+                <input type="text" class="input-text" value="{$data['dwg_code']}" placeholder="" id="dwg_code" name="dwg_code">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">存货名称：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$data==''?'':$data['inventory_name']}" placeholder="" id="inventory_name" name="inventory_name">
+                <input type="text" class="input-text" value="{$data['inventory_name']}" placeholder="" id="inventory_name" name="inventory_name">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">规格型号：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$data==''?'':$data['specification_type']}" placeholder="" id="specification_type" name="specification_type">
+                <input type="text" class="input-text" value="{$data['specification_type']}" placeholder="" id="specification_type" name="specification_type">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>计量单位：</label>
-            <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select name="unit_code" class="select">
-                    {foreach $unit as $u}
-                       <option value="{$u['unit_code']}">{$u['unit_name']}</option>
-                    {/foreach}
-
-				</select>
-				</span>
+            <label class="form-label col-xs-4 col-sm-2">计量单位：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="{$data['unit_code']}" placeholder="" id="unit_code" name="unit_code">
             </div>
         </div>
+
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">货位：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$data==''?'':$data['define6']}" placeholder="" id="define6" name="define6">
+                <input type="text" class="input-text" value="{$data['define6']}" placeholder="" id="define6" name="define6">
             </div>
         </div>
         <div class="row cl">
@@ -93,13 +88,37 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">存货描述：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$data==''?'':$data['inventory_desc']}" placeholder="" id="inventory_desc" name="inventory_desc">
+                <input type="text" class="input-text" value="{$data['inventory_desc']}" placeholder="" id="inventory_desc" name="inventory_desc">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">备注：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$data==''?'':$data['remarks']}" placeholder="" id="remarks" name="remarks">
+                <input type="text" class="input-text" value="{$data['remarks']}" placeholder="" id="remarks" name="remarks">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">创建人：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="{$data['create_person']}" placeholder="" id="create_person" name="create_person">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">创建时间：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="{$data['sts_date']}" placeholder="" id="sts_date" name="sts_date">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">变更人：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="{$data['modify_person']}" placeholder="" id="modify_person" name="modify_person">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">变更时间：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="{$data['modify_date']}" placeholder="" id="modify_date" name="modify_date">
             </div>
         </div>
 
