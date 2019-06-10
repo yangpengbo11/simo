@@ -36,6 +36,11 @@ class Login extends Controller
         }
     }
 
+    public function login_out(){
+        session('users','');
+        $this->success('','Login/login');
+    }
+
 //    public function newCode(){
 //        // 配置验证码的显示方式和内容
 //        $config =    [
