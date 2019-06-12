@@ -25,14 +25,22 @@ class Login extends Controller
         $where['account_name'] = $_POST['name'];
         $where['password'] = md5($_POST['password']);
        // print_r(md5(123456));
+
+
+
         $users = db('user_login');
         $as = $users->where($where)->find();
+
+
+
         //print_r(session('users'));die;
         if($as){
             session('users',$as);
             $this->success('登陆成功', 'Index/index');
         }else{
-            $this->error('登陆失败！');
+            $this->error(
+
+                '登陆失败！');
         }
     }
 

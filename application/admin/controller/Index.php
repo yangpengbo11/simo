@@ -26,7 +26,7 @@ class Index extends Base
         $menu = db('menus')->where('id','in',$menu)->order('id','asc')->select();
         //print_r($menu);die;
         $menu = $this->getTree($menu);
-        //print_r($data);die;
+        //print_r($menu);die;
         $this->assign('menu',$menu);
         $this->assign('data',$data);
         return $this->fetch('index');
