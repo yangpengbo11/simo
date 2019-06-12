@@ -42,20 +42,33 @@
 		<div class="row cl">
 			<input type="hidden" name="id" {if condition="$data!=''"} value="{$data['id']}" {/if}>
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>存货分类标识：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" {if condition="$data!=''"} value="{$data['stock_id']}" {/if} placeholder="" id="stock_id" name="stock_id">
+			<div class="formControls col-xs-4 col-sm-5">
+				<span class="select-box">
+				<select name="inventory_class_id" class="select">
+					{foreach name="stock" item="vo"}
+						<option value='{$vo.inventory_class_id}'{if condition="$data!=''"} {if condition="$data['pid']==$vo.inventory_class_id"} selected="selected"{/if} {/if}>{$vo['inventory_class_name']}</option>
+					{/foreach}
+				</select>
+				</span>
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>半成品名称：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" {if condition="$data!=''"} value="{$data['half_Products_name']}" {/if} placeholder="" id="half_Products_name" name="half_Products_name">
+			<div class="formControls col-xs-4 col-sm-5">
+				<input type="text" class="input-text" {if condition="$data!=''"} value="{$data['half_product_name']}" {/if} placeholder="" id="half_product_name" name="half_product_name">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>父节点标识：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" {if condition="$data!=''"} value="{$data['pid']}" {/if} placeholder="" id="pid" name="pid">
+			<div class="formControls col-xs-4 col-sm-5">
+				<span class="select-box">
+				<select name="pid" class="select">
+					<option value="-1">顶级节点</option>
+					{foreach name="pids" item="vo"}
+						<option value='{$vo.id}'{if condition="$data!=''"} {if condition="$data['pid']==$vo.id"} selected="selected"{/if} {/if}>{$vo['half_Products_name']}</option>
+					{/foreach}
+				</select>
+				</span>
 			</div>
 		</div>
 		<div class="row cl">

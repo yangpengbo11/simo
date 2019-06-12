@@ -18,7 +18,11 @@ class Products extends Base
      */
      public function half_products_add(){
          $this->assign('data','');
-        return $this->fetch('half_products_post');
+         $pid = db('half_products')->select();
+         $stock = db('inventory_class')->order('inventory_class_id','asc')->select();
+         $this->assign('pids',$pid);
+         $this->assign('stock',$stock);
+         return $this->fetch('half_products_post');
      }
     /**
      *编辑半成品bom
@@ -26,16 +30,22 @@ class Products extends Base
      public function half_products_edit(){
          $id = input('id');
          $res = db('half_products')->where('id',$id)->find();
+         $pid = db('half_products')->select();
+         $stock = db('inventory_class')->order('inventory_class_id','asc')->select();
          $this->assign('data',$res);
+         $this->assign('pids',$pid);
+         $this->assign('stock',$stock);
          return $this->fetch('half_products_post');
      }
     /**
      *添加/编辑半成品bom post提交
      */
-     public function half_process_post(){
+     public function half_products_post(){
          if(empty($_POST['id'])){
             $data = array(
-                'process_name'=>$_POST['process_name'],
+                'inventory_class_id'=>$_POST['inventory_class_id'],
+                'half_product_name'=>$_POST['half_product_name'],
+                'pid'=>$_POST['pid'],
                 'create_time'=>date('Y-d-m H:i:s',time())
             );
             $res = db('half_products')->insert($data);
@@ -46,7 +56,9 @@ class Products extends Base
             }
          }else{
              $data = array(
-                 'process_name'=>$_POST['process_name']
+                 'inventory_class_id'=>$_POST['inventory_class_id'],
+                 'half_product_name'=>$_POST['half_product_name'],
+                 'pid'=>$_POST['pid']
              );
              $res = db('half_products')->where('id',$_POST['id'])->update($data);
              if($res){
