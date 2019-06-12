@@ -28,4 +28,17 @@ class Base extends Controller
 
     }
 
+    /**
+     * 模糊搜索公共方法
+     * @param String $table 表名
+     * @param String $likes 搜索字段
+     * @param String $vague 搜索
+     * @return mixed
+     */
+    public function getVague($table,$likes,$vague){
+        $where[$likes] = ['like', '%' . $vague . '%'];
+        $res = db($table)->where($where)->select();
+        return $res;
+    }
+
 }

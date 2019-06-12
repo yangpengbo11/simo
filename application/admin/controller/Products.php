@@ -9,6 +9,7 @@ class Products extends Base
      *半成品bom列表
      */
      public function half_products_list(){
+
          $list = db('half_products')->select();
          $this->assign('list',$list);
          return $this->fetch('half_products_list');
@@ -69,8 +70,43 @@ class Products extends Base
          }
      }
 
+    /**
+     *成品bom列表
+     */
+    public function products_list(){
+        $list = db('products')->select();
+        $this->assign('list',$list);
+        return $this->fetch('products_list');
+    }
 
+    /**
+     *编辑成品bom
+     */
+    public function products_edit(){
 
+    }
 
+    /**
+     *添加成品bom
+     */
+     public function products_add(){
 
+     }
+
+    /**
+     * 添加/编辑成品bom post提交
+     */
+     public function products_post(){
+
+     }
+
+    /**
+     * 搜索显示数据
+     * @return
+     */
+    public function vague(){
+        $vague = input('vague');
+        $list = $this->getVague('inventory','inventory_name',$vague);
+        return json($list);
+    }
 }
