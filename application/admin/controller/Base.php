@@ -28,4 +28,32 @@ class Base extends Controller
 
     }
 
+    /**
+     * 模糊搜索公共方法
+     * @param String $table 表名
+     * @param String $likes 搜索字段
+     * @param String $vague 搜索
+     * @return mixed
+     */
+    public function getVague($table,$likes,$vague){
+        $where[$likes] = ['like', '%' . $vague . '%'];
+        $res = db($table)->where($where)->select();
+        return $res;
+    }
+
+    public function getTreeData($data,$parent_class_id=0,$level=0){
+        $arrs=array();
+        foreach($data as $res){
+            $arr=array();
+            $arr['id']=$res['inventory_class_id'];
+            $arr['pId']=$res['parent_class_id'];
+            $arr['name']=$res['inventory_class_name'];
+            $arr['open']=false;
+            array_push($arrs, $arr);
+        }
+
+        return $arrs;
+
+    }
+
 }
