@@ -15,21 +15,18 @@
     <link rel="stylesheet" type="text/css" href="__LIB__/Hui-iconfont/1.0.8/iconfont.css" />
     <link rel="stylesheet" type="text/css" href="__STATIC__/h-ui.admin/skin/default/skin.css" id="skin" />
     <link rel="stylesheet" type="text/css" href="__STATIC__/h-ui.admin/css/style.css" />
-    <link rel="stylesheet" type="text/css" href="__LIB__/zTree/v3/css/zTreeStyle/zTreeStyle.css" />
-
     <!--[if IE 6]>
     <script type="text/javascript" src="__LIB__/DD_belatedPNG_0.0.8a-min.js" ></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
-    <title>存货分类管理</title>
+    <title>现存量管理</title>
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页
     <span class="c-gray en">&gt;</span>
     仓库管理
-
     <span class="c-gray en">&gt;</span>
-    存货分类管理
+    现存量管理
     <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
 </nav>
 <div class="page-container">
@@ -39,15 +36,48 @@
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
-		<a class="btn btn-primary radius" href="/admin/inventory_class/inventory_calss_add" ><i class="Hui-iconfont">&#xe600;</i> 添加存货分类</a>
-            <a class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加存货分类</a>
+		<a class="btn btn-primary radius" href="/admin/stock/stock_comm" ><i class="Hui-iconfont">&#xe600;</i> 添加</a>
 		</span>
     </div>
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead>
+            <tr class="text-c">
+                <th width="25"><input type="checkbox" name="id"></th>
+                <th>库房名称</th>
+                <th>存货编号</th>
+                <th>存货名称</th>
+                <th>规格型号</th>
+                <th>期初量</th>
+                <th>现存量</th>
+                <th>创建时间</th>
+                <th>备注</th>
+                <th width="100">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach $data as $v}
+            <tr class="text-c">
+                <td><input type="checkbox" name="id" value="{$v['stock_id']}"></td>
+                <td>{$v['name']}</td>
+                <td>{$v['inventory_code']}</td>
+                <td>{$v['inventory_name']}</td>
+                <td>{$v['specification_type']}</td>
+                <td>{$v['current_quantity']}</td>
+                <td>{$v['last_quantity']}</td>
+                <td>{$v['create_time']}</td>
+                <td>{$v['remarks']}</td>
 
-    <div style="width: 30%">
-        <ul id="bcTree" class="ztree" style=""></ul>
+                <td class="f-14">
+
+                    <a title="编辑" href="{:url('admin/stock/stock_comm',['id'=>$v['stock_id']])}" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+                    <a title="删除" href="javascript:;"  class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
     </div>
-
 </div>
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="__LIB__/jquery/1.9.1/jquery.min.js"></script>
@@ -59,83 +89,7 @@
 <script type="text/javascript" src="__LIB__/My97DatePicker/4.8/WdatePicker.js"></script>
 <script type="text/javascript" src="__LIB__/datatables/1.10.0/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="__LIB__/laypage/1.2/laypage.js"></script>
-<script type="text/javascript" src="__LIB__/zTree/v3/js/jquery.ztree.core-3.5.js" ></script>
-<script type="text/javascript" src="__LIB__/zTree/v3/js/jquery.ztree.excheck-3.5.js" ></script>
 <script type="text/javascript">
-
-    var zTreeObj;
-
-
-    var setting = {
-        view : {
-            showIcon : false,//是否显示图标
-            dblClickExpand : false,//是否双击展开/收起
-            selectedMulti : false,//是否允许同时选中多个节点
-            expandSpeed : 'fast',//展开速度fast、slow
-            showTitle : true, //是否显示节点的title提示信息
-            showLine: true,//是否显示节点间的连线
-            nameIsHTML : true //设置 name 属性是否支持 HTML 脚本
-        },
-        data : {
-            keep : {
-                parent : true
-            },
-            simpleData : {
-                enable : true,
-                idKey : "id",
-                pIdKey : "pId"
-            }
-        },
-
-        callback : {
-            /* 鼠标单击事件，判断是否是导航栏，然后跳转到展示页面 */
-            onClick : function(event, treeId, treeNode, clickFlag) {
-                var nodes = zTreeObj.getSelectedNodes();
-
-                //这里的逻辑是为修改和查看所预备的hidden
-                $("#checkNodeId").val(nodes[0].id);
-                $("#checkNodePid").val(nodes[0].pId);
-
-                //默认进入查看页面
-                //category_edit(0);
-                //alert(nodes[0].id+"    "+nodes[0].pId);
-            }
-        }
-
-    };
-
-
-    function initTree() {
-
-        jQuery.ajax({
-
-            url : "/admin/inventory_class/getjson",
-            data : {},
-            type : "POST",
-            dataType : "json",
-            cache : false,
-            success : function(data) {
-
-                data = eval(data);//ztree只认js对象，而不是字符串，所以eval转换下
-                zTreeObj = $.fn.zTree.init($("#bcTree"), setting, data);
-                $.fn.zTree.init($("#bcTree"), setting, data);
-                var treeObj = $.fn.zTree.getZTreeObj("tree");
-            }
-
-        });
-    }
-
-
-    $(document).ready(function(){
-        initTree();
-
-
-    });
-
-
-
-</script>
-<!--<script type="text/javascript">
     $('.table-sort').dataTable({
         "aaSorting": [[ 1, "desc" ]],//默认第几个排序
         "bStateSave": true,//状态保存
@@ -169,6 +123,6 @@
             });
         });
     }
-</script>-->
+</script>
 </body>
 </html>

@@ -23,7 +23,7 @@
     <![endif]-->
     <!--/meta 作为公共模版分离出去-->
 
-    <title>添加存货档案</title>
+    <title>添加现存量</title>
     <meta name="keywords" content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
     <meta name="description" content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
 </head>
@@ -31,71 +31,51 @@
 <nav class="breadcrumb">
     <i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>
     仓库管理 <span class="c-gray en">&gt;</span>
-    存货档案管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+    现存量管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
     <i class="Hui-iconfont">&#xe68f;</i></a>
 </nav>
 <div class="page-container">
-    <form class="form form-horizontal" id="form-article-add" action="/admin/inventory/inventory_post" method="post">
+    <form class="form form-horizontal" id="form-article-add" action="/admin/stock/stock_post" method="post">
         <div class="row cl">
-            <input type="hidden" name="inventory_id" value="{$data==''?'':$data['inventory_id']}">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>存货编号：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$data==''?'':$data['inventory_code']}" placeholder="" id="inventory_code" name="inventory_code">
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">图号：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$data==''?'':$data['dwg_code']}" placeholder="" id="dwg_code" name="dwg_code">
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">存货名称：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$data==''?'':$data['inventory_name']}" placeholder="" id="inventory_name" name="inventory_name">
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">规格型号：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$data==''?'':$data['specification_type']}" placeholder="" id="specification_type" name="specification_type">
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>计量单位：</label>
+            <input type="hidden" name="stock_id" value="{$data==''?'':$data['stock_id']}">
+            <label class="form-label col-xs-4 col-sm-2">库房：</label>
             <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select name="unit_code" class="select">
-                    {foreach $unit as $u}
-                       <option value="{$u['unit_code']}" {$data==''?'':$data['unit_code']==$u['unit_code']?'selected':''}>{$u['unit_name']}</option>
+				<select name="warehouse_id" class="select">
+                    {foreach $war as $u}
+                       <option value="{$u['id']}" {$data==''?'':$data['warehouse_id']==$u['id']?'selected':''}>{$u['name']}</option>
                     {/foreach}
 
 				</select>
 				</span>
             </div>
+
         </div>
+
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">货位：</label>
+            <label class="form-label col-xs-4 col-sm-2">存货名称：</label>
+            <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select name="inventory_id" class="select">
+                    {foreach $inv as $v}
+                       <option value="{$v['inventory_id']}" {$data==''?'':$data['inventory_id']==$v['inventory_id']?'selected':''}>{$v['inventory_name']}</option>
+                    {/foreach}
+				</select>
+				</span>
+            </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">期初：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$data==''?'':$data['define6']}" placeholder="" id="define6" name="define6">
+                <input type="text" class="input-text" value="{$data==''?'':$data['current_quantity']}" placeholder="" id="current_quantity" name="current_quantity">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">是否标准件：</label>
-            <div class="radio-box">
-                <input type="radio" value="1" id="radio-1" name="is_gb" {$data==''?'':$data['is_gb']==1?'checked':''}>
-                <label for="radio-1">是</label>
-            </div>
-            <div class="radio-box">
-                <input type="radio" value="0" id="radio-2" name="is_gb" {$data==''?'checked':$data['is_gb']==0?'checked':''}>
-                <label for="radio-2">否</label>
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">存货描述：</label>
+            <label class="form-label col-xs-4 col-sm-2">现存量：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$data==''?'':$data['inventory_desc']}" placeholder="" id="inventory_desc" name="inventory_desc">
+                <input type="text" class="input-text" value="{$data==''?'':$data['last_quantity']}" placeholder="" id="last_quantity" name="last_quantity">
             </div>
         </div>
+
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">备注：</label>
             <div class="formControls col-xs-8 col-sm-9">

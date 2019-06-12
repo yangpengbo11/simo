@@ -3,15 +3,41 @@
 
 namespace app\admin\controller;
 
+use phpDocumentor\Reflection\Types\Object_;
 use think\Request;
 class InventoryClass extends Base
 {
 
    public function inventory_class_list(){
-       $data=db('inventory_class')->order('inventory_class_id','asc')->select();
-       $this->assign('data',$data);
+       //$data=db('inventory_class')->order('inventory_class_id','asc')->select();
+      // $this->assign('data',$data);
+       //$request=new Request();
+       //$arr=$this->getTreeData($data);
+       //print_r($arr);die;
+       //print_r(json_encode($arr,JSON_UNESCAPED_UNICODE));die;
        return $this->fetch('inventory_class_list');
    }
+
+
+   public function getjson(){
+       $data=db('inventory_class')->order('inventory_class_id','asc')->select();
+       // $this->assign('data',$data);
+       //$request=new Request();
+       $arr=$this->getTreeData($data);
+       //print_r($arr);die;
+       //print_r(json_encode($arr,JSON_UNESCAPED_UNICODE));die;
+       //return $this->fetch('inventory_class_list');
+       return json_encode($arr,JSON_UNESCAPED_UNICODE);
+   }
+
+
+
+
+
+
+
+
+
 
    public function inventory_calss_add(){
        $this->assign('data','');
