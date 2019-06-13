@@ -106,7 +106,7 @@ class Products extends Base
      */
     public function vague(){
         $vague = input('vague');
-        $list = $this->getVague('inventory','inventory_name',$vague);
+        $list = $this->getVague('inventory','inventory_name|inventory_code',$vague);
         return json($list);
     }
 }
