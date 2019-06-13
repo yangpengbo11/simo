@@ -81,6 +81,7 @@ class Users extends Base
     public function number_add(){
         $res = db('roles')->select();
         $this->assign('data','');
+        $this->assign('role_id','');
         $this->assign('roles',$res);
         return $this->fetch('number_post');
     }
