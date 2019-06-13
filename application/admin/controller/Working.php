@@ -55,7 +55,13 @@ class Working extends Base
      * 工序流程配置列表
      */
      public function distribute_list(){
-         $list = db('process_flow')->select();
+         $list = db('process_flow')
+             ->alias('a')
+             ->join('tf_inventory_class b','b.inventory_class_id = a.inventory_class_id')
+             ->join('tf_process c','c.id = a.process_id')
+             ->field('a.*,b.inventory_class_name,c.process_name')
+             ->select();
+         //print_r($list);die;
          $this->assign('list',$list);
         return $this->fetch('distribute_list');
      }

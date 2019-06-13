@@ -45,7 +45,9 @@
 				<tr class="text-c">
 					<th width="25"><input type="checkbox" name="id"></th>
 					<th width="80">ID</th>
+                    <th>存货分类名称</th>
 					<th>工序名称</th>
+                    <th>工序顺序</th>
 					<th width="100">操作</th>
 				</tr>
 			</thead>
@@ -54,7 +56,9 @@
 				<tr class="text-c">
 					<td><input type="checkbox" name="id" value="{$vo['id']}"></td>
 					<td>{$vo['id']}</td>
-					<td class="text-content">{$vo['process_id']}</td>
+                    <td class="text-content">{$vo['inventory_class_name']}</td>
+					<td class="text-content">{$vo['process_name']}</td>
+                    <td class="text-content">{$vo['orders']}</td>
 					<td class="f-14"><a title="编辑" href="{:url('admin/Working/distribute_edit',['id'=>$vo['id']])}" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
 						<a title="删除" href="javascript:;"  class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
 				</tr>
