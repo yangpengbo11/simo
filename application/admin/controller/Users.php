@@ -51,7 +51,7 @@ class Users extends Base
             $arr = array(
                 'Job_number'=>$_POST['Job_number'],
                 'job_name'=>$_POST['job_name'],
-                'create_time'=>date('Y-d-m H:i:s',time())
+                'create_time'=>date('Y-m-d H:i:s',time())
             );
             $res = db('account')->insert($arr);
             if($res){
@@ -83,6 +83,8 @@ class Users extends Base
         $this->assign('data','');
         $this->assign('role_id','');
         $this->assign('roles',$res);
+        $list = db('process')->select();
+        $this->assign('process',$list);
         return $this->fetch('number_post');
     }
 
@@ -94,11 +96,14 @@ class Users extends Base
         $data = $list = db('user_login')
             ->alias('a')
             ->join('tf_account b','b.id = a.personnel_id')
-            ->field('b.*,a.*')
-            ->where(['login_id'=>$id])
+            ->join('tf_process_matching c','c.login_id = a.login_id')
+            ->field('b.*,a.*,c.inventory_class_id,c.process_id,c.types')
+            ->where(['a.login_id'=>$id])
             ->find();
         $u_r = db('user_roles')->where('login_id', $id)->find();
         $res = db('roles')->select();
+        $list = db('process')->select();
+        $this->assign('process',$list);
         //print_r($u_r);die;
         $this->assign('data',$data);
         $this->assign('role_id',$u_r['role_id']);
@@ -118,16 +123,38 @@ class Users extends Base
                 'account_name'=>$_POST['account_name'],
                 'password'=>md5($_POST['password']),
                 'personnel_id'=>$res['id'],
-                'create_time'=>date('Y-d-m H:i:s',time())
+                'create_time'=>date('Y-m-d H:i:s',time())
             );
+
             $login_id = db('user_login')->where('login_id',$_POST['id'])->update($arr);
-            if($login_id) {
+            if($login_id==1) {
                 $user = array(
                     'role_id' => $_POST['role_id'],
-                    'create_time' => date('Y-d-m H:i:s', time())
+                    'create_time' => date('Y-m-d H:i:s', time())
                 );
                 $u_r = db('user_roles')->where('login_id', $_POST['id'])->update($user);
+                //print_r($u_r);die;
+                if(!empty($_POST['inventory_class_name'])){
 
+                    $pro = db('process_matching')->where('login_id',$_POST['id'])->find();
+                    if(empty($pro)){
+                        $process = array(
+                            'login_id'=>$_POST['id'],
+                            'types'=>$_POST['types'],
+                            'inventory_class_id'=>$_POST['inventory_class_id'],
+                            'process_id'=>$_POST['process_id'],
+                            'create_time'=>date('Y-m-d H:i:s',time())
+                        );
+                        db('process_matching')->insert($process);
+                    }else{
+                        $process = array(
+                            'types'=>$_POST['types'],
+                            'inventory_class_id'=>$_POST['inventory_class_id'],
+                            'process_id'=>$_POST['process_id']
+                        );
+                        db('process_matching')->where('login_id',$_POST['id'])->update($process);
+                    }
+                }
                 //print_r(db('account')->getLastSql());die;
                 if ($u_r) {
                     $this->success('编辑成功.', 'Users/accountNumber_list');
@@ -144,16 +171,26 @@ class Users extends Base
                     'account_name'=>$_POST['account_name'],
                     'password'=>md5($_POST['password']),
                     'personnel_id'=>$res['id'],
-                    'create_time'=>date('Y-d-m H:i:s',time())
+                    'create_time'=>date('Y-m-d H:i:s',time())
                 );
                 $login_id = db('user_login')->insertGetId($arr);
                 if($login_id){
                     $user = array(
                         'role_id'=>$_POST['role_id'],
                         'login_id'=>$login_id,
-                        'create_time'=>date('Y-d-m H:i:s',time())
+                        'create_time'=>date('Y-m-d H:i:s',time())
                     );
                     $u_r = db('user_roles')->insert($user);
+                    if(!empty($_POST['inventory_class_name'])) {
+                        $process = array(
+                            'login_id' => $login_id,
+                            'types' => $_POST['types'],
+                            'inventory_class_id' => $_POST['inventory_class_id'],
+                            'process_id' => $_POST['process_id'],
+                            'create_time'=>date('Y-m-d H:i:s',time())
+                        );
+                        db('process_matching')->insert($process);
+                    }
                     if($u_r){
                         $this->success('添加成功.', 'Users/accountNumber_list');
                     }else{
@@ -210,7 +247,7 @@ class Users extends Base
         if(empty($_POST['id'])) {
             $data = array(
                 'role_name' => $_POST['role_name'],
-                'create_time' => date('Y-d-m H:i:s', time())
+                'create_time' => date('Y-m-d H:i:s', time())
             );
             $role = db('roles')->insertGetId($data);
             if ($role) {
@@ -218,7 +255,7 @@ class Users extends Base
                     $data1 = array(
                         'role_id' => $role,
                         'menus_id' => $vo,
-                        'create_time' => date('Y-d-m H:i:s', time())
+                        'create_time' => date('Y-m-d H:i:s', time())
                     );
                     db('roles_authority')->insert($data1);
                 }
@@ -229,7 +266,7 @@ class Users extends Base
         }else{
             $data = array(
                 'role_name' => $_POST['role_name'],
-                'create_time' => date('Y-d-m H:i:s', time())
+                'create_time' => date('Y-m-d H:i:s', time())
             );
             $role = db('roles')->where('id',$_POST['id'])->update($data);
             if ($role) {
@@ -238,7 +275,7 @@ class Users extends Base
                     $data1 = array(
                         'role_id' => $_POST['id'],
                         'menus_id' => $vo,
-                        'create_time' => date('Y-d-m H:i:s', time())
+                        'create_time' => date('Y-m-d H:i:s', time())
                     );
                     db('roles_authority')->insert($data1);
                 }
@@ -250,7 +287,7 @@ class Users extends Base
                         $data1 = array(
                             'role_id' => $_POST['id'],
                             'menus_id' => $vo,
-                            'create_time' => date('Y-d-m H:i:s', time())
+                            'create_time' => date('Y-m-d H:i:s', time())
                         );
                         db('roles_authority')->insert($data1);
                     }
@@ -258,5 +295,16 @@ class Users extends Base
                 }
             }
         }
+    }
+
+    /**
+     * 搜索显示数据
+     * @return
+     */
+    public function vague(){
+
+        $vague = input('vague');
+        $list = $this->getVague('inventory_class','inventory_class_name',$vague);
+        return json($list);
     }
 }

@@ -30,7 +30,7 @@ class Working extends Base
          if(empty($_POST['id'])){
             $data = array(
                 'process_name'=>$_POST['process_name'],
-                'create_time'=>date('Y-d-m H:i:s',time())
+                'create_time'=>date('Y-m-d H:i:s',time())
             );
             $res = db('process')->insert($data);
             if($res){
@@ -96,7 +96,7 @@ class Working extends Base
                 'process_id' => $_POST['process_id'],
                 'inventory_class_id' =>$_POST['inventory_class_id'],
                 'orders' => $_POST['orders'],
-                'create_time'=>date('Y-d-m H:i:s',time())
+                'create_time'=>date('Y-m-d H:i:s',time())
             );
             $res = db('process_flow')->insert($data);
             if($res){

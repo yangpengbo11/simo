@@ -45,7 +45,7 @@ class Products extends Base
                  'inventory_class_id'=>$_POST['inventory_class_id'],
                  'half_product_name'=>$_POST['half_product_name'],
                  'pid'=>$_POST['pid'],
-                 'create_time'=>date('Y-d-m H:i:s',time())
+                 'create_time'=>date('Y-m-d H:i:s',time())
              );
              $res = db('half_products')->insert($data);
              if($res){
@@ -114,7 +114,7 @@ class Products extends Base
                  'inventory_class_id'=>$_POST['inventory_class_id'],
                  'product_name'=>$_POST['product_name'],
                  'pid'=>$_POST['pid'],
-                 'create_time'=>date('Y-d-m H:i:s',time())
+                 'create_time'=>date('Y-m-d H:i:s',time())
              );
              $res = db('products')->insert($data);
              if($res){
