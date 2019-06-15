@@ -95,6 +95,7 @@ class Working extends Base
             $data = array(
                 'process_id' => $_POST['process_id'],
                 'inventory_class_id' =>$_POST['inventory_class_id'],
+                'flow_type' =>$_POST['flow_type'],
                 'orders' => $_POST['orders'],
                 'create_time'=>date('Y-m-d H:i:s',time())
             );
@@ -108,6 +109,7 @@ class Working extends Base
             $data = array(
                 'process_id' => $_POST['process_id'],
                 'inventory_class_id' =>$_POST['inventory_class_id'],
+                'flow_type' =>$_POST['flow_type'],
                 'orders' => $_POST['orders']
             );
             $res = db('process_flow')->where('id',$_POST['id'])->update($data);

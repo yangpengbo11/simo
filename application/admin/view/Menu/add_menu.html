@@ -64,7 +64,6 @@
 				<select name="types" class="select">
 					<option value="1" {if condition="$menu!=''"}{if condition="$menu['types']==1"} selected="selected"{/if}{/if}>显示菜单</option>
 					<option value="2" {if condition="$menu!=''"}{if condition="$menu['types']==2"} selected="selected"{/if}{/if}>隐藏菜单</option>
-					<option value="3" {if condition="$menu!=''"}{if condition="$menu['types']==3"} selected="selected"{/if}{/if}>工序</option>
 				</select>
 			</div>
 		</div>
@@ -72,7 +71,7 @@
 			<label class="form-label col-xs-4 col-sm-2">菜单链接：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" {if condition="$menu!=''"} value="{$menu['links']}" {/if} placeholder="" id="links" name="links">
-				<span>顶级菜单没有链接，工序没有链接</span>
+				<span>顶级菜单没有链接</span>
 			</div>
 
 		</div>

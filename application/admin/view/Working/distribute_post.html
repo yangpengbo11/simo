@@ -63,6 +63,17 @@
 			</div>
 		</div>
 		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>工序操作类型：</label>
+			<div class="formControls col-xs-4 col--5">
+				<span class="select-box">
+				<select name="flow_type" class="select">
+					<option value='1'{if condition="$data!=''"} {if condition="$data['flow_type']==1"} selected="selected"{/if} {/if}>扫码</option>
+					<option value='2'{if condition="$data!=''"} {if condition="$data['flow_type']==2"} selected="selected"{/if} {/if}>生码</option>
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
 			<input type="hidden" name="id" value="{$data==''?'':$data['id']}">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>顺序：</label>
 			<div class="formControls col-xs-4 col-sm-5">
