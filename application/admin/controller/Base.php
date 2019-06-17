@@ -41,13 +41,13 @@ class Base extends Controller
         return $res;
     }
 
-    public function getTreeData($data,$parent_class_id=0,$level=0){
+    public function getTreeData($data){
         $arrs=array();
         foreach($data as $res){
             $arr=array();
             $arr['id']=$res['inventory_class_id'];
             $arr['pId']=$res['parent_class_id'];
-            $arr['name']=$res['inventory_class_name'];
+            $arr['name']='('.$res['inventory_class_code'].')'.$res['inventory_class_name'];
             $arr['open']=false;
             array_push($arrs, $arr);
         }

@@ -36,7 +36,10 @@
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
-		<a class="btn btn-primary radius" href="/admin/stock/stock_comm" ><i class="Hui-iconfont">&#xe600;</i> 添加</a>
+		<a class="btn btn-primary radius" href="/admin/outenter/outenter_out" > 出库记录</a>
+            <a class="btn btn-primary radius" href="/admin/outenter/outenter_out/type/2" > 入库记录</a>
+            <a class="btn btn-primary radius" href="/admin/outenter/outenter_add/type/1" ><i class="Hui-iconfont">&#xe600;</i> 出库</a>
+            <a class="btn btn-primary radius" href="/admin/outenter/outenter_add/type/2" ><i class="Hui-iconfont">&#xe600;</i> 入库</a>
 		</span>
 
     </div>
@@ -45,12 +48,11 @@
             <thead>
             <tr class="text-c">
                 <th width="25"><input type="checkbox" name="id"></th>
-                <th>库房名称</th>
-                <th>存货编号</th>
-                <th>存货名称</th>
-                <th>规格型号</th>
-                <th>期初量</th>
-                <th>现存量</th>
+                <th>物料编码</th>
+                <th>数量</th>
+                <th>类型</th>
+                <th>库房</th>
+                <th>供应商</th>
                 <th>创建时间</th>
                 <th>备注</th>
                 <th width="100">操作</th>
@@ -59,19 +61,16 @@
             <tbody>
             {foreach $data as $v}
             <tr class="text-c">
-                <td><input type="checkbox" name="id" value="{$v['stock_id']}"></td>
+                <td><input type="checkbox" name="id" value="{$v['id']}"></td>
+                <td>{$v['materiel_coding']}</td>
+                <td>{$v['number']}</td>
+                <td>{$v['types']==1?'出库':'入库'}</td>
                 <td>{$v['name']}</td>
-                <td>{$v['inventory_code']}</td>
-                <td>{$v['inventory_name']}</td>
-                <td>{$v['specification_type']}</td>
-                <td>{$v['current_quantity']}</td>
-                <td>{$v['last_quantity']}</td>
+                <td>{$v['vendor_name']}</td>
                 <td>{$v['create_time']}</td>
                 <td>{$v['remarks']}</td>
-
                 <td class="f-14">
-
-                    <a title="编辑" href="{:url('admin/stock/stock_comm',['id'=>$v['stock_id']])}" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+                    <a title="编辑" href="{:url('admin/outenter/outenter_edit',['id'=>$v['id']])}" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
                     <a title="删除" href="javascript:;"  class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
                 </td>
             </tr>

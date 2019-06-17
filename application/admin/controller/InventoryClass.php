@@ -30,10 +30,48 @@ class InventoryClass extends Base
        return json_encode($arr,JSON_UNESCAPED_UNICODE);
    }
 
+   public function find(){
+       $id=$_POST['id'];
+       $data=db('inventory_class')->where(['inventory_class_id'=>$id])->find();
+       return json_encode($data,JSON_UNESCAPED_UNICODE);
+   }
+
+    public function getcode(){
+        $id=$_POST['id'];
+        $code=$_POST['code'];
+        $length=strpos($code,")")-1;
+        $codes=substr($code,1,$length);
+
+        $data=db('inventory_class')->where(['parent_class_id'=>$id])->order('inventory_class_id','desc')->select();
+        $cod="";
+        if($data){
+            $cod= $data[0]['inventory_class_code']+1;
+        }else{
+            $cod= $codes."01";
+        }
+        $arr=array(['parent_class_id'=>$id,'code'=>$cod]);
+        return json_encode($arr,JSON_UNESCAPED_UNICODE);
+    }
 
 
+    public function submit(Request $request){
+       $data=Request::instance()->post();
+       $id=$data['inventory_class_id'];
+       if(empty($id)){
+           $data['sts_date']=date('Y-m-d H:i:s');
+           $res=db('inventory_class')->insert($data);
+           if($res){
+               $this->success('添加成功','inventory_class/inventory_class_list');
+           }else{
+               $this->error('添加失败','inventory_class/inventory_class_list');
+           }
+       }else{
+           return "修改";
+       }
+       //return $data['inventory_class_code'];
+       // return json_encode($data,JSON_UNESCAPED_UNICODE);
 
-
+    }
 
 
 
@@ -52,8 +90,9 @@ class InventoryClass extends Base
    }
 
    public function inventory_class_post(){
-       if(empty($_POST['inventory_class_id'])){
-           $data=Request::instance()->post();
+       $data=Request::instance()->post();
+       $id=$data['inventory_class_id'];
+       if(empty($id)){
            $data['sts_date']=date('Y-m-d H:i:s');
            $res=db('inventory_class')->insert($data);
            if($res){

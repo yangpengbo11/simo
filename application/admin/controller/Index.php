@@ -36,10 +36,10 @@ class Index extends Base
         return $this->fetch('welcome');
     }
 
-    //无限极递归
 
 
-    public function qrcode(){
+
+    /*public function qrcode(){
 
         $erwei=new Erweima();
         $lists=array(
@@ -49,6 +49,6 @@ class Index extends Base
         );
         $erwei->qrcode($lists,10,2);
 
-    }
+    }*/
 
 }

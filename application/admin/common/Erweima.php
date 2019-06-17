@@ -7,7 +7,7 @@ namespace app\admin\common;
 class Erweima
 {
     public function qrcode(Array $lists,$size,$type){
-        //$type  二维码类型  1:流转码  2:半成品码（合成码） 3:成品码
+        //$type  二维码类型  1:流转码  2:半成品码（合成码） 3:成品码  4:库房基础码
         header('Content-Type: image/png');
         $date=new GetTime();
         $time=$date->ts_time();
@@ -19,10 +19,16 @@ class Erweima
         }else if($type==1){
             $data=$data.$lists['base_code']."&".$lists['base_code'];
         }*/
-
-        foreach ($lists as $list){
-            $data=$data.$list."*";
+        $data=$data.$lists['base_code']."*";
+        if(isset($lists['specification_type'])){
+            $data=$data.$lists['specification_type']."*";
+        }else if(isset($lists['figure_number'])){
+            $data=$data.$lists['figure_number']."*";
         }
+
+       /* foreach ($lists as $list){
+            $data=$data.$list."*";
+        }*/
         $data=$data.$time;
 
 
@@ -41,7 +47,8 @@ class Erweima
         //文件路径
         $filename="images/".$type."/".date("Ymd")."/".time().".png";
 
-        //把二维码信息保存到数据库
+        //把二维码信息保存到数据库H
+
         $lists['roam']=$time;
         $lists['qrcode_content']=$data;
         $lists['types']=$type;
@@ -49,8 +56,8 @@ class Erweima
         $res = db('qrcode_record')->insert($lists);
         //生成二维码图片
          $object->png($data, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
-
-
-
+        $id = db('qrcode_record')->getLastInsID();
+        //返回新增数据的自增主键id;
+        return $id;
     }
 }
