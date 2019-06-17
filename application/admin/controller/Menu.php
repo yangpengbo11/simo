@@ -63,7 +63,7 @@ class Menu extends Base
                 'menu_name'=>$_POST['menu_name'],
                 'types'=>$_POST['types'],
                 'links'=>$_POST['links'],
-                'create_time'=>date('Y-d-m H:i:s',time())
+                'create_time'=>date('Y-m-d H:i:s',time())
             );
             $res = db('menus')->insert($arr);
             if($res){

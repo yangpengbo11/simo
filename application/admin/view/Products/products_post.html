@@ -37,11 +37,11 @@
 	<span class="c-gray en">&gt;</span>
 	分类管理
 	<span class="c-gray en">&gt;</span>
-	半成品分类 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+	成品分类 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
 	<i class="Hui-iconfont">&#xe68f;</i></a>
 </nav>
 <div class="page-container">
-	<form action="/admin/Products/half_Products_post" method="post" class="form form-horizontal" id="form-article-add">
+	<form action="/admin/Products/products_post" method="post" class="form form-horizontal" id="form-article-add">
 		<div class="row cl">
 			<input type="hidden" name="id" {if condition="$data!=''"} value="{$data['id']}" {/if}>
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>存货分类标识：</label>
@@ -56,9 +56,9 @@
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>半成品名称：</label>
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>成品名称：</label>
 			<div class="formControls col-xs-4 col-sm-5">
-				<input type="text" class="input-text" {if condition="$data!=''"} value="{$data['half_product_name']}" {/if} placeholder="" id="half_product_name" name="half_product_name">
+				<input type="text" class="input-text" {if condition="$data!=''"} value="{$data['product_name']}" {/if} placeholder="" id="product_name" name="product_name">
 			</div>
 		</div>
 		<div class="row cl">
@@ -68,7 +68,7 @@
 				<select name="pid" class="select">
 					<option value="-1">顶级节点</option>
 					{foreach name="pids" item="vo"}
-						<option value='{$vo.id}'{if condition="$data!=''"} {if condition="$data['pid']==$vo.id"} selected="selected"{/if} {/if}>{$vo['half_product_name']}</option>
+						<option value='{$vo.id}'{if condition="$data!=''"} {if condition="$data['pid']==$vo.id"} selected="selected"{/if} {/if}>{$vo['product_name']}</option>
 					{/foreach}
 				</select>
 				</span>
@@ -82,11 +82,6 @@
                     <input type="text" id="inventory_name" name="inventory_name" class="input-text cl" placeholder="请输入档案名称或者档案编号" >
                     <ul id="searchResult" class="searchResult">
                     </ul>
-<!--                    <select name="pid" class="select">-->
-<!--                        {foreach name="pids" item="vo"}-->
-<!--                            <option value='{$vo.id}'{if condition="$data!=''"} {if condition="$data['pid']==$vo.id"} selected="selected"{/if} {/if}>{$vo['half_product_name']}</option>-->
-<!--                        {/foreach}-->
-<!--                    </select>-->
 				</span>
             </div>
         </div>
