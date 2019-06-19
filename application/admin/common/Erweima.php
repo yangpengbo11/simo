@@ -37,11 +37,12 @@ class Erweima
         $errorCorrectionLevel =intval($level) ;//容错级别
         $matrixPointSize = intval($size);//生成图片大小
         $object = new \QRcode();
-        ob_end_clean();//关键
+        //ob_end_clean();//关键
         //$code = urlencode($data);
         //创建文件夹
         $dir = "images/".$type."/".date("Ymd");
         if (!file_exists($dir)){
+
             mkdir ($dir,0777,true);
         }
         //文件路径

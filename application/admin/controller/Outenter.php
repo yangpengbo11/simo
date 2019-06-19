@@ -70,7 +70,10 @@ class Outenter extends Base
                     $lists=array('base_code'=>$data['materiel_coding']);
                     //print_r($lists['base_code']);die;
                     $erwei=new Erweima();
-                    $erwei->qrcode($lists,10,1);
+                    for($a=0;$a<200;$a++){
+                        $erwei->qrcode($lists,10,1);
+                    }
+
                 }
             }else{
                 db('stock')
