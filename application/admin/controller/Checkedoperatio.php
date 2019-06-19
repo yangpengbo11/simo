@@ -15,6 +15,7 @@ class Checkedoperatio extends Base
         $users = session('users');
         $res = db('process_matching')->where('login_id',$users['login_id'])->find();
         //print_r($res);die;
+        //$res['types'] = 2;
         $this->assign('login',$res);
         return $this->fetch('checkedOperatio_add');
     }
