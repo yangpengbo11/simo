@@ -154,34 +154,34 @@
     });
 </script>
 <script type="text/javascript">
-	//监听input框，实时渲染
-	$('#inventory_class_name').on('input', function() {
-		initSearchList($('#inventory_class_name').val());
-	function initSearchList (event) {
-		if(event !='') {
-			$.post("/admin/Working/vague/vague/"+event, function (data) {
-				var m ='';
-				for(var i=0;i<data.length;i++){
-					//console.log(data[i]);
-					m += "<li id='"+data[i].inventory_class_id+"' onclick='textClick("+data[i].inventory_class_id+")'>"+data[i].inventory_class_name+"</li>";
-				}
-				$('#searchResult').append(m);
-			});
-		}else{
-			$('#searchResult').hide();
-		}
-	}
-	function textClick(id){
-		var name = document.getElementById(id).innerHTML;
-		//console.log(name);
-		document.getElementById("inventory_class_name").value=name;
-		$("#inventory_class_id").attr("value",id);
-		$("#searchResult").css("display","none");
-	}
+//监听input框，实时渲染
+$('#inventory_class_name').on('input', function() {
+    initSearchList($('#inventory_class_name').val());
+});
 
-// $(function(){
-// 	var ue = UE.getEditor('editor');
-// });
+function initSearchList(event) {
+    if (event != '') {
+        $.post("/admin/Working/vague/vague/" + event, function (data) {
+            var m = '';
+            for (var i = 0; i < data.length; i++) {
+                //console.log(data[i]);
+                m += "<li id='" + data[i].inventory_class_id + "' onclick='textClick(" + data[i].inventory_class_id + ")' style='color: #F00;'>" + data[i].inventory_class_name + "</li>";
+            }
+            $('#searchResult').append(m);
+        });
+    } else {
+        $('#searchResult').hide();
+    }
+}
+
+function textClick(id) {
+    var name = document.getElementById(id).innerHTML;
+    //console.log(name);
+    document.getElementById("inventory_class_name").value = name;
+    $("#inventory_class_id").attr("value", id);
+    $("#searchResult").css("display", "none");
+}
+
 </script>
 </body>
 </html>

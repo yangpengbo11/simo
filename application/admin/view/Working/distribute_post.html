@@ -44,7 +44,7 @@
 			<div class="formControls col-xs-4 col-sm-5">
 				<span class="select-box">
                      <input type="hidden" id="inventory_class_id" name="inventory_class_id" value="{$data==''?'':$data['inventory_class_id']}">
-                    <input type="text" id="inventory_class_name" name="inventory_class_name" class="input-text cl" placeholder="请输入存货分类名称或者存货分类编号" >
+                    <input type="text" id="inventory_class_name" name="inventory_class_name" class="input-text cl" placeholder="请输入存货分类名称" >
                     <ul id="searchResult" class="searchResult">
                     </ul>
 				</span>
@@ -112,7 +112,7 @@
 				var m ='';
 				for(var i=0;i<data.length;i++){
 					//console.log(data[i]);
-					m += "<li id='"+data[i].inventory_class_id+"' onclick='textClick("+data[i].inventory_class_id+")'>"+data[i].inventory_class_name+"</li>";
+					m += "<li id='"+data[i].inventory_class_id+"' onclick='textClick("+data[i].inventory_class_id+")' style='color:#F00;'>"+data[i].inventory_class_name+"</li>";
 				}
 				$('#searchResult').append(m);
 			});
