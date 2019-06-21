@@ -1,0 +1,375 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="__LIB__/html5shiv.js"></script>
+    <script type="text/javascript" src="__LIB__/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="__STATIC__/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="__LIB__/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/h-ui.admin/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__LIB__/zTree/v3/css/zTreeStyle/zTreeStyle.css" />
+
+    <!--[if IE 6]>
+    <script type="text/javascript" src="__LIB__/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script>DD_belatedPNG.fix('*');</script>
+    <![endif]-->
+    <title>存货分类管理</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页
+    <span class="c-gray en">&gt;</span>
+    仓库管理
+
+    <span class="c-gray en">&gt;</span>
+    存货分类管理
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+</nav>
+<div class="page-container">
+    <div class="text-c">
+        <input type="text" name="" id="" placeholder="菜单名称、id" style="width:250px" class="input-text">
+        <button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+    </div>
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+
+            <a id="add" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加存货分类</a>
+            <a id="update" class="btn btn-primary radius" ><i class="Hui-iconfont">&#xe647;</i> 修改存货分类</a>
+		</span>
+    </div>
+
+    <div style="width: 30%;float: left">
+        <ul id="bcTree" class="ztree" style=""></ul>
+    </div>
+    <div style="width: 70%;height:100%;float: left">
+        <div id="reigth" style="width: 96%;margin: 50px auto">
+            <div id="sel" style="display: none;">
+                <div class="row cl">
+                            <input type="hidden" name="inventory_class_id1" value="">
+                            <label class="form-label col-xs-4 col-sm-2" >存货分类编号：</label>
+                            <div class="formControls col-xs-8 col-sm-9">
+                                    <input type="text"  class="input-text" value="" placeholder="" id="inventory_class_code1" name="inventory_class_code">
+                                </div>
+                        </div><br>
+                        <div class="row cl">
+                            <label class="form-label col-xs-4 col-sm-2">存货分类名称：</label>
+                            <div class="formControls col-xs-8 col-sm-9">
+                                    <input type="text" class="input-text" value="" placeholder="" id="inventory_class_name1" name="inventory_class_name">
+                                </div>
+                        </div><br>
+                        <div class="row cl">
+                            <label class="form-label col-xs-4 col-sm-2">生码规则：</label>
+                            <div class="formControls col-xs-8 col-sm-9">
+                                    <input type="text" class="input-text" value="" placeholder="" id="rule1" name="rule">
+                                </div>
+                        </div><br>
+
+                        <div class="row cl">
+                            <label class="form-label col-xs-4 col-sm-2">创建时间：</label>
+                            <div class="formControls col-xs-8 col-sm-9">
+                                    <input type="text" class="input-text" value="" placeholder="" id="sts_date1" name="sts_date">
+                                </div>
+                        </div><br>
+
+                        <div class="row cl">
+                            <label class="form-label col-xs-4 col-sm-2">更新时间：</label>
+                                <div class="formControls col-xs-8 col-sm-9">
+                                    <input type="text" class="input-text" value="" placeholder="" id="update_time1" name="rule">
+                                </div>
+                        </div>
+
+            </div>
+            <div id="insert" style="display: none;">
+                <form class="form form-horizontal" id="form-article-add" action="/admin/inventory_class/inventory_class_post" method="post">
+                <div class="row cl">
+                            <input type="hidden" id="inventory_class_id" name="inventory_class_id" value="">
+                            <input type="hidden" id="parent_class_id" name="parent_class_id" value="">
+                            <label class="form-label col-xs-4 col-sm-2" >存货分类编号：</label>
+                            <div class="formControls col-xs-8 col-sm-9">
+                                    <input type="text"  class="input-text" value="" placeholder="" id="inventory_class_code" name="inventory_class_code">
+                                </div>
+                </div><br>
+
+                <div class="row cl">
+                            <label class="form-label col-xs-4 col-sm-2">存货分类名称：</label>
+                            <div class="formControls col-xs-8 col-sm-9">
+                                    <input type="text" class="input-text" value="" placeholder="" id="inventory_class_name" name="inventory_class_name">
+                                </div>
+                </div><br>
+                <div class="row cl">
+                            <label class="form-label col-xs-4 col-sm-2">生码规则：</label>
+                            <div class="formControls col-xs-8 col-sm-9">
+                                <input type="text" class="input-text" value="" placeholder="" id="rule" name="rule">
+                                </div>
+                 </div><br>
+                <div class="row cl">
+                    <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                        <button   class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
+                        <button id="remove" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+                    </div>
+                </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="__LIB__/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__LIB__/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="__STATIC__/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="__STATIC__/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__LIB__/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="__LIB__/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="__LIB__/laypage/1.2/laypage.js"></script>
+<script type="text/javascript" src="__LIB__/zTree/v3/js/jquery.ztree.core-3.5.js" ></script>
+<script type="text/javascript" src="__LIB__/zTree/v3/js/jquery.ztree.excheck-3.5.js" ></script>
+<script type="text/javascript">
+
+    var zTreeObj;
+
+
+    var setting = {
+        view : {
+            showIcon : false,//是否显示图标
+            dblClickExpand : false,//是否双击展开/收起
+            selectedMulti : false,//是否允许同时选中多个节点
+            expandSpeed : 'fast',//展开速度fast、slow
+            showTitle : false, //是否显示节点的title提示信息
+            showLine: true,//是否显示节点间的连线
+            nameIsHTML : true //设置 name 属性是否支持 HTML 脚本
+        },
+        data : {
+            keep : {
+                parent : true
+            },
+            simpleData : {
+                enable : true,
+                idKey : "id",
+                pIdKey : "pId"
+            }
+        },
+
+        callback : {
+            /* 鼠标单击事件，判断是否是导航栏，然后跳转到展示页面 */
+            onClick : function(event, treeId, treeNode, clickFlag) {
+                var nodes = zTreeObj.getSelectedNodes();
+
+                //这里的逻辑是为修改和查看所预备的hidden
+                $("#checkNodeId").val(nodes[0].id);
+                $("#checkNodePid").val(nodes[0].pId);
+
+                //默认进入查看页面
+                //category_edit(0);
+                //alert(nodes[0].id+"    "+nodes[0].pId);
+                var id=nodes[0].id;
+                jQuery.ajax({
+                    url : "/admin/inventory_class/find",
+                    data : {id:id},
+                    type : "POST",
+                    dataType : "json",
+                    cache : false,
+                    success : function(data) {
+                        //alert(data);
+                        //$("#reigth").empty();
+                       data = eval('(' + data + ')');//ztree只认js对象，而不是字符串，所以eval转换下
+
+                        var update_time=data['update_Date'];
+                        if(update_time==null){
+                            update_time="";
+                        }
+                        $("#sel").css("display","block");
+                        $("#insert").css("display","none");
+                        $("#inventory_class_id1").val(data['inventory_class_id']);
+                        $("#inventory_class_code1").val(data['inventory_class_code']);
+                        $("#inventory_class_name1").val(data['inventory_class_name']);
+                        $("#rule1").val(data['rule']);
+                        $("#sts_date1").val(data['sts_date']);
+                        $("#update_Date1").val(update_time);
+
+                    }
+
+                });
+            }
+        }
+
+    };
+
+    function add() {
+        $("#inventory_class_id").val("");
+        $("#parent_class_id").val("");
+        $("#inventory_class_code").val("");
+        $("#inventory_class_name").val("");
+        $("#rule").val("");
+        var zTree = $.fn.zTree.getZTreeObj("bcTree"),
+           // isParent = e.data.isParent,
+            nodes = zTree.getSelectedNodes(),
+            treeNode = nodes[0];
+        var id=treeNode.id;
+        var code=treeNode.name;
+        //alert(treeNode.id);
+        jQuery.ajax({
+            url : "/admin/inventory_class/getcode",
+            data : {id:id,code:code},
+            type : "POST",
+            dataType : "json",
+            cache : false,
+            success : function(data) {
+                //alert(data);
+                data = eval('(' + data + ')');//ztree只认js对象，而不是字符串，所以eval转换下
+               // alert(data[0].code+"      "+data[0].parent_class_id);
+                $("#sel").css("display","none");
+                $("#insert").css("display","block");
+                $("#parent_class_id").val(data[0].parent_class_id);
+                $("#inventory_class_code").val(data[0].code);
+            }
+        });
+
+    };
+
+    function update() {
+        $("#inventory_class_id").val("");
+        $("#parent_class_id").val("");
+        $("#inventory_class_code").val("");
+        $("#inventory_class_name").val("");
+        $("#rule").val("");
+        //alert('update');
+        var zTree = $.fn.zTree.getZTreeObj("bcTree"),
+            // isParent = e.data.isParent,
+            nodes = zTree.getSelectedNodes(),
+            treeNode = nodes[0];
+        var id=treeNode.id;
+        var code=treeNode.name;
+        //alert(treeNode.id);
+        jQuery.ajax({
+            url : "/admin/inventory_class/find",
+            data : {id:id},
+            type : "POST",
+            dataType : "json",
+            cache : false,
+            success : function(data) {
+                //alert(data);
+                data = eval('(' + data + ')');//ztree只认js对象，而不是字符串，所以eval转换下
+                //alert(data['inventory_class_id']);
+                $("#sel").css("display","none");
+                $("#insert").css("display","block");
+                $("#inventory_class_id").val(data['inventory_class_id']);
+                $("#parent_class_id").val(data['parent_class_id']);
+                $("#inventory_class_code").val(data['inventory_class_code']);
+                $("#inventory_class_name").val(data['inventory_class_name']);
+                $("#rule").val(data['rule']);
+            }
+        });
+
+    };
+
+    function sub(){
+       // alert("提交");
+        var inventory_class_id=$("#inventory_class_id").val();
+        var parent_class_id=$("#parent_class_id").val();
+        var inventory_class_code=$("#inventory_class_code").val();
+        var inventory_class_name=$("#inventory_class_name").val();
+        var rule=$("#rule").val();
+        //alert(1111111111);
+        jQuery.ajax({
+            url : "/admin/inventory_class/submit",
+            data : {inventory_class_id:inventory_class_id,parent_class_id:parent_class_id,inventory_class_code:inventory_class_code,inventory_class_name:inventory_class_name,rule:rule},
+            type : "POST",
+            dataType : "text",
+            cache : false,
+            success : function(data) {
+                alert(data);
+               /* data = eval('(' + data + ')');//ztree只认js对象，而不是字符串，所以eval转换下
+                //alert(data[0].code+"      "+data[0].parent_class_id);
+                $("#sel").css("display","none");
+                $("#insert").css("display","block");
+                $("#parent_class_id").val(data[0].parent_class_id);
+                $("#inventory_class_code").val(data[0].code);*/
+            }
+        });
+    }
+    function remove(){
+        //alert("取消");
+        $("#sel").css("display","none");
+        $("#insert").css("display","none");
+        $("#inventory_class_id").val("");
+        $("#parent_class_id").val("");
+        $("#inventory_class_code").val("");
+        $("#inventory_class_name").val("");
+        $("#rule").val("");
+
+    }
+
+    function initTree() {
+        jQuery.ajax({
+            url : "/admin/Sweepcode/index",
+            data : {},
+            type : "POST",
+            dataType : "json",
+            cache : false,
+            success : function(data) {
+                data = eval(data);//ztree只认js对象，而不是字符串，所以eval转换下
+                zTreeObj = $.fn.zTree.init($("#bcTree"), setting, data);
+                $.fn.zTree.init($("#bcTree"), setting, data);
+                var treeObj = $.fn.zTree.getZTreeObj("tree");
+            }
+
+        });
+    }
+
+
+    $(document).ready(function(){
+        initTree();
+        $("#add").bind("click",add);
+        //$("#submit").bind("click",sub);
+        $("#remove").bind("click",remove);
+        $("#update").bind("click",update);
+    });
+
+</script>
+<!--<script type="text/javascript">
+    $('.table-sort').dataTable({
+        "aaSorting": [[ 1, "desc" ]],//默认第几个排序
+        "bStateSave": true,//状态保存
+        "aoColumnDefs": [
+            //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+            //{"orderable":false,"aTargets":[0,5]}// 制定列不参与排序
+        ]
+    });
+    /*系统-栏目-添加*/
+    function system_category_add(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+    /*系统-栏目-编辑*/
+    function system_category_edit(title,url,id,w,h){
+        layer_show(title,url,w,h);
+    }
+    /*系统-栏目-删除*/
+    function system_category_del(obj,id){
+        layer.confirm('确认要删除吗？',function(index){
+            $.ajax({
+                type: 'POST',
+                url: '',
+                dataType: 'json',
+                success: function(data){
+                    $(obj).parents("tr").remove();
+                    layer.msg('已删除!',{icon:1,time:1000});
+                },
+                error:function(data) {
+                    console.log(data.msg);
+                },
+            });
+        });
+    }
+</script>-->
+</body>
+</html>
