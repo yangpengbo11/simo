@@ -79,7 +79,7 @@
             <div class="formControls col-xs-4 col-sm-5">
 				<span class="select-box">
                      <input type="hidden" id="inventory_id" value="">
-                    <input type="text" id="inventory_name" name="inventory_name" class="input-text cl" placeholder="请输入档案名称或者档案编号" >
+                    <input type="text" id="inventory_name" name="inventory_name" class="input-text cl" placeholder="请输入档案名称" >
                     <ul id="searchResult" class="searchResult">
                     </ul>
 				</span>
@@ -117,7 +117,7 @@
                 var m ='';
                 for(var i=0;i<data.length;i++){
                     //console.log(data[i].inventory_name);
-                    m += "<li id='"+data[i].inventory_id+"' onclick='textClick("+data[i].inventory_id+")'>"+data[i].inventory_name+"</li>";
+                    m += "<li id='"+data[i].inventory_id+"' onclick='textClick("+data[i].inventory_id+")' style='color: #F00;'>"+data[i].inventory_name+"</li>";
                 }
                 $('#searchResult').append(m);
             });
@@ -132,12 +132,6 @@
         document.getElementById("inventory_name").value=name;
         $("#inventory_id").attr("value",id);
     }
-    // Internet Explorer
-    // function OnPropChanged (event) {
-    //     if (event.propertyName.toLowerCase () == "value") {
-    //         alert ("The new content: " + event.srcElement.value);
-    //     }
-    // }
 
 $(function(){
 	var ue = UE.getEditor('editor');
