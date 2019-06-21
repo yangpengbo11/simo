@@ -118,7 +118,7 @@ class Checkedoperatio extends Base
                         $data0['process_name'] = $process['process_name'];
                         $data0['operation_states'] = 1;
                         $data0['states'] = 3;
-                        db('qrcode')->where($where)->insert($data0);
+                        db('qrcode')->insert($data0);
                         $this->error('绑码成功！');
                     }else{
                         $this->error('被绑码编号不存在！');
