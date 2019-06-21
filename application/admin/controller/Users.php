@@ -1,9 +1,6 @@
 <?php
 namespace app\admin\controller;
 
-use think\Controller;
-use think\Db;
-
 class Users extends Base
 {
     /**
@@ -97,7 +94,8 @@ class Users extends Base
             ->alias('a')
             ->join('tf_account b','b.id = a.personnel_id')
             ->join('tf_process_matching c','c.login_id = a.login_id')
-            ->field('b.*,a.*,c.inventory_class_id,c.process_id,c.types')
+            ->join('tf_inventory_class d','c.inventory_class_id = d.inventory_class_id')
+            ->field('b.*,a.*,c.inventory_class_id,c.process_id,c.types,d.inventory_class_code')
             ->where(['a.login_id'=>$id])
             ->find();
         $u_r = db('user_roles')->where('login_id', $id)->find();
@@ -115,6 +113,7 @@ class Users extends Base
      * 增加/修改人员账号信息post提交
      */
     public function number_post(){
+
         if(!empty($_POST['id'])){//修改
             //print_r($_POST);die;
             $job_number = $_POST['Job_number'];
@@ -134,14 +133,14 @@ class Users extends Base
                 );
                 $u_r = db('user_roles')->where('login_id', $_POST['id'])->update($user);
                 //print_r($u_r);die;
-                if(!empty($_POST['inventory_class_name'])){
-
+                if(!empty($_POST['inventory_class_code'])){
+                    $inventory_class = db('inventory_class')->where('inventory_class_code',$_POST['inventory_class_code'])->find();
                     $pro = db('process_matching')->where('login_id',$_POST['id'])->find();
                     if(empty($pro)){
                         $process = array(
                             'login_id'=>$_POST['id'],
                             'types'=>$_POST['types'],
-                            'inventory_class_id'=>$_POST['inventory_class_id'],
+                            'inventory_class_id'=>$inventory_class['inventory_class_id'],
                             'process_id'=>$_POST['process_id'],
                             'create_time'=>date('Y-m-d H:i:s',time())
                         );
@@ -149,7 +148,7 @@ class Users extends Base
                     }else{
                         $process = array(
                             'types'=>$_POST['types'],
-                            'inventory_class_id'=>$_POST['inventory_class_id'],
+                            'inventory_class_id'=>$inventory_class['inventory_class_id'],
                             'process_id'=>$_POST['process_id']
                         );
                         db('process_matching')->where('login_id',$_POST['id'])->update($process);
@@ -165,40 +164,40 @@ class Users extends Base
                 $this->error('编辑失败！');
             }
         }else{//增加
-                $job_number = $_POST['Job_number'];
-                $res = db('account')->where('Job_number',$job_number)->find();
-                $arr = array(
-                    'account_name'=>$_POST['account_name'],
-                    'password'=>md5($_POST['password']),
-                    'personnel_id'=>$res['id'],
+            $job_number = $_POST['Job_number'];
+            $res = db('account')->where('Job_number',$job_number)->find();
+            $arr = array(
+                'account_name'=>$_POST['account_name'],
+                'password'=>md5($_POST['password']),
+                'personnel_id'=>$res['id'],
+                'create_time'=>date('Y-m-d H:i:s',time())
+            );
+            $login_id = db('user_login')->insertGetId($arr);
+            if($login_id){
+                $user = array(
+                    'role_id'=>$_POST['role_id'],
+                    'login_id'=>$login_id,
                     'create_time'=>date('Y-m-d H:i:s',time())
                 );
-                $login_id = db('user_login')->insertGetId($arr);
-                if($login_id){
-                    $user = array(
-                        'role_id'=>$_POST['role_id'],
-                        'login_id'=>$login_id,
+                $u_r = db('user_roles')->insert($user);
+                if(!empty($_POST['inventory_class_name'])) {
+                    $process = array(
+                        'login_id' => $login_id,
+                        'types' => $_POST['types'],
+                        'inventory_class_id' => $_POST['inventory_class_id'],
+                        'process_id' => $_POST['process_id'],
                         'create_time'=>date('Y-m-d H:i:s',time())
                     );
-                    $u_r = db('user_roles')->insert($user);
-                    if(!empty($_POST['inventory_class_name'])) {
-                        $process = array(
-                            'login_id' => $login_id,
-                            'types' => $_POST['types'],
-                            'inventory_class_id' => $_POST['inventory_class_id'],
-                            'process_id' => $_POST['process_id'],
-                            'create_time'=>date('Y-m-d H:i:s',time())
-                        );
-                        db('process_matching')->insert($process);
-                    }
-                    if($u_r){
-                        $this->success('添加成功.', 'Users/accountNumber_list');
-                    }else{
-                        $this->error('添加失败！');
-                    }
+                    db('process_matching')->insert($process);
+                }
+                if($u_r){
+                    $this->success('添加成功.', 'Users/accountNumber_list');
                 }else{
                     $this->error('添加失败！');
                 }
+            }else{
+                $this->error('添加失败！');
+            }
         }
     }
 
@@ -297,14 +296,14 @@ class Users extends Base
         }
     }
 
-    /**
-     * 搜索显示数据
-     * @return
-     */
-    public function vague(){
-
-        $vague = input('vague');
-        $list = $this->getVague('inventory_class','inventory_class_name',$vague);
-        return json($list);
-    }
+//    /**
+//     * 搜索显示数据
+//     * @return
+//     */
+//    public function vague(){
+//
+//        $vague = input('vague');
+//        $list = $this->getVague('inventory_class','inventory_class_name',$vague);
+//        return json($list);
+//    }
 }

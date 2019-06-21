@@ -80,7 +80,10 @@ class Working extends Base
      */
     public function distribute_edit(){
         $id = input('id');
-        $data = db('process_flow')->where('id',$id)->find();
+        $data = db('process_flow')
+            ->alias('a')
+            ->join('tf_inventory_class b','b.inventory_class_id = a.inventory_class_id')
+            ->where('a.id',$id)->find();
         $list = db('process')->select();
         $this->assign('data',$data);
         $this->assign('process',$list);
@@ -91,10 +94,17 @@ class Working extends Base
      * 工序流程配置添加/编辑post提交
      */
     public function distribute_post(){
+        if(empty($_POST['inventory_class_code'])){
+            $this->error('输入存货分类编码！');
+        }
+        $inventory_class = db('inventory_class')->where('inventory_class_code',$_POST['inventory_class_code'])->find();
+        if(empty($inventory_class)){
+            $this->error('输入存货分类编码不存在！');
+        }
         if(empty($_POST['id'])){
             $data = array(
                 'process_id' => $_POST['process_id'],
-                'inventory_class_id' =>$_POST['inventory_class_id'],
+                'inventory_class_id' =>$inventory_class['inventory_class_id'],
                 'flow_type' =>$_POST['flow_type'],
                 'orders' => $_POST['orders'],
                 'create_time'=>date('Y-m-d H:i:s',time())
@@ -108,7 +118,7 @@ class Working extends Base
         }else{
             $data = array(
                 'process_id' => $_POST['process_id'],
-                'inventory_class_id' =>$_POST['inventory_class_id'],
+                'inventory_class_id' =>$inventory_class['inventory_class_id'],
                 'flow_type' =>$_POST['flow_type'],
                 'orders' => $_POST['orders']
             );
@@ -121,16 +131,16 @@ class Working extends Base
         }
     }
 
-    /**
-     * 搜索显示数据
-     * @return
-     */
-    public function vague(){
-
-        $vague = input('vague');
-        $list = $this->getVague('inventory_class','inventory_class_name',$vague);
-        return json($list);
-    }
+//    /**
+//     * 搜索显示数据
+//     * @return
+//     */
+//    public function vague(){
+//
+//        $vague = input('vague');
+//        $list = $this->getVague('inventory_class','inventory_class_name',$vague);
+//        return json($list);
+//    }
 
 
 }
