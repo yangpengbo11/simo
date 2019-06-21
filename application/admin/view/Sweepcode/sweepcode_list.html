@@ -110,7 +110,7 @@
                     success : function(data) {
                         //alert(data);
                         //$("#reigth").empty();
-                       data = eval('(' + data + ')');//ztree只认js对象，而不是字符串，所以eval转换下
+                        data = eval('(' + data + ')');//ztree只认js对象，而不是字符串，所以eval转换下
 
                         var update_time=data['update_Date'];
                         if(update_time==null){
@@ -140,7 +140,7 @@
         $("#inventory_class_name").val("");
         $("#rule").val("");
         var zTree = $.fn.zTree.getZTreeObj("bcTree"),
-           // isParent = e.data.isParent,
+            // isParent = e.data.isParent,
             nodes = zTree.getSelectedNodes(),
             treeNode = nodes[0];
         var id=treeNode.id;
@@ -155,7 +155,7 @@
             success : function(data) {
                 //alert(data);
                 data = eval('(' + data + ')');//ztree只认js对象，而不是字符串，所以eval转换下
-               // alert(data[0].code+"      "+data[0].parent_class_id);
+                // alert(data[0].code+"      "+data[0].parent_class_id);
                 $("#sel").css("display","none");
                 $("#insert").css("display","block");
                 $("#parent_class_id").val(data[0].parent_class_id);
@@ -202,7 +202,7 @@
     };
 
     function sub(){
-       // alert("提交");
+        // alert("提交");
         var inventory_class_id=$("#inventory_class_id").val();
         var parent_class_id=$("#parent_class_id").val();
         var inventory_class_code=$("#inventory_class_code").val();
@@ -217,12 +217,12 @@
             cache : false,
             success : function(data) {
                 alert(data);
-               /* data = eval('(' + data + ')');//ztree只认js对象，而不是字符串，所以eval转换下
-                //alert(data[0].code+"      "+data[0].parent_class_id);
-                $("#sel").css("display","none");
-                $("#insert").css("display","block");
-                $("#parent_class_id").val(data[0].parent_class_id);
-                $("#inventory_class_code").val(data[0].code);*/
+                /* data = eval('(' + data + ')');//ztree只认js对象，而不是字符串，所以eval转换下
+                 //alert(data[0].code+"      "+data[0].parent_class_id);
+                 $("#sel").css("display","none");
+                 $("#insert").css("display","block");
+                 $("#parent_class_id").val(data[0].parent_class_id);
+                 $("#inventory_class_code").val(data[0].code);*/
             }
         });
     }
@@ -268,7 +268,7 @@
         //initTree();
         //$("#add").bind("click",add);
         //$("#submit").bind("click",sub);
-       // $("#remove").bind("click",remove);
+        // $("#remove").bind("click",remove);
         //$("#update").bind("click",update);
     });
 
