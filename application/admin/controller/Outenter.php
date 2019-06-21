@@ -12,8 +12,9 @@ class Outenter extends Base
             ->alias('a')
             ->join('warehouse b','a.storehouse_id=b.id')
             ->join('vendor c','c.vendor_id = a.supplier_id')
-            ->field('b.name,c.vendor_name,a.*')
-            ->where(['types'=>$type])
+            ->join('inventory d','d.inventory_code=a.materiel_coding')
+            ->field('b.name,c.vendor_name,a.*,d.inventory_name,d.specification_type')
+            ->where(['a.types'=>$type])
             ->select();
         //$data=db('out_enter_record')->where(['types'=>$type])->select();
         $this->assign('data',$data);
@@ -63,6 +64,7 @@ class Outenter extends Base
         unset($data['fals']);
         $res=db('out_enter_record')->insert($data);
         if($res){
+            $access_id=db('out_enter_record')->getLastInsID();
             if($data['types']==1){
                 db('stock')
                     ->where(['inventory_id'=>$ids['inventory_id']])
@@ -78,7 +80,7 @@ class Outenter extends Base
                     //print_r($lists['base_code']);die;
                     $erwei=new Erweima();
                     for($a=0;$a<$data['number'];$a++){
-                        $id=$erwei->qrcode($lists,10,1);
+                        $id=$erwei->qrcode($lists,10,1,$access_id);
 
                         $re=db('inventory_class')
                             ->where(['inventory_class_code'=>$res['inventory_class_code']])
@@ -111,14 +113,27 @@ class Outenter extends Base
                     ->setInc('last_quantity',$data['number']);
             }
 
-           $this->success('操作成功','outenter/outenter_out');
+           $this->success('操作成功','/admin/outenter/outenter_add/type/'.$data['types'],2);
         }else{
-            $this->error('操作失败','outenter/outenter_out');
+            $this->error('操作失败','/admin/outenter/outenter_add/type/'.$data['types']);
         }
     }
 
 
+    public function outenter_erweima(){
+        $id=input('id');
 
+        $data=db('qrcode_record')->where(['access_id'=>$id])->select();
+
+        if(empty($data)){
+            $this->error('没有二维码','/admin/outenter/outenter_out');
+        }else{
+
+            $this->assign('data',$data);
+            return $this->fetch('outenter_erweima');
+        }
+
+    }
 
 
 

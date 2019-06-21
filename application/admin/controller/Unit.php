@@ -33,6 +33,7 @@ class Unit extends Base
         if(empty($_POST['unit_id'])){
             $data=Request::instance()->post();
             $data['create_time']=date('Y-m-d H:i:s');
+            $data['states']=1;
             $res=db('unit')->insert($data);
             if($res){
                 $this->success('添加成功','unit/unit_list');

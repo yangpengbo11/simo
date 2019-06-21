@@ -6,7 +6,7 @@ namespace app\admin\common;
 
 class Erweima
 {
-    public function qrcode(Array $lists,$size,$type){
+    public function qrcode(Array $lists,$size,$type,$access_id=0){
         //$type  二维码类型  1:流转码  2:半成品码（合成码） 3:成品码  4:库房基础码
         header('Content-Type: image/png');
         $date=new GetTime();
@@ -54,6 +54,7 @@ class Erweima
         $lists['qrcode_content']=$data;
         $lists['types']=$type;
         $lists['links']=$filename;
+        $lists['access_id']=$access_id;
         $res = db('qrcode_record')->insert($lists);
         //生成二维码图片
          $object->png($data, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
