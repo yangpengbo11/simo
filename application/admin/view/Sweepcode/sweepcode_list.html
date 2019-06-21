@@ -40,86 +40,15 @@
     <div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
 
-            <a id="add" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加存货分类</a>
-            <a id="update" class="btn btn-primary radius" ><i class="Hui-iconfont">&#xe647;</i> 修改存货分类</a>
+            <input type="text" id="code">
+            <a id="update" class="btn btn-primary radius" ><i class="Hui-iconfont">&#xe647;</i> 查询成品bom</a>
 		</span>
     </div>
 
     <div style="width: 30%;float: left">
         <ul id="bcTree" class="ztree" style=""></ul>
     </div>
-    <div style="width: 70%;height:100%;float: left">
-        <div id="reigth" style="width: 96%;margin: 50px auto">
-            <div id="sel" style="display: none;">
-                <div class="row cl">
-                            <input type="hidden" name="inventory_class_id1" value="">
-                            <label class="form-label col-xs-4 col-sm-2" >存货分类编号：</label>
-                            <div class="formControls col-xs-8 col-sm-9">
-                                    <input type="text"  class="input-text" value="" placeholder="" id="inventory_class_code1" name="inventory_class_code">
-                                </div>
-                        </div><br>
-                        <div class="row cl">
-                            <label class="form-label col-xs-4 col-sm-2">存货分类名称：</label>
-                            <div class="formControls col-xs-8 col-sm-9">
-                                    <input type="text" class="input-text" value="" placeholder="" id="inventory_class_name1" name="inventory_class_name">
-                                </div>
-                        </div><br>
-                        <div class="row cl">
-                            <label class="form-label col-xs-4 col-sm-2">生码规则：</label>
-                            <div class="formControls col-xs-8 col-sm-9">
-                                    <input type="text" class="input-text" value="" placeholder="" id="rule1" name="rule">
-                                </div>
-                        </div><br>
 
-                        <div class="row cl">
-                            <label class="form-label col-xs-4 col-sm-2">创建时间：</label>
-                            <div class="formControls col-xs-8 col-sm-9">
-                                    <input type="text" class="input-text" value="" placeholder="" id="sts_date1" name="sts_date">
-                                </div>
-                        </div><br>
-
-                        <div class="row cl">
-                            <label class="form-label col-xs-4 col-sm-2">更新时间：</label>
-                                <div class="formControls col-xs-8 col-sm-9">
-                                    <input type="text" class="input-text" value="" placeholder="" id="update_time1" name="rule">
-                                </div>
-                        </div>
-
-            </div>
-            <div id="insert" style="display: none;">
-                <form class="form form-horizontal" id="form-article-add" action="/admin/inventory_class/inventory_class_post" method="post">
-                <div class="row cl">
-                            <input type="hidden" id="inventory_class_id" name="inventory_class_id" value="">
-                            <input type="hidden" id="parent_class_id" name="parent_class_id" value="">
-                            <label class="form-label col-xs-4 col-sm-2" >存货分类编号：</label>
-                            <div class="formControls col-xs-8 col-sm-9">
-                                    <input type="text"  class="input-text" value="" placeholder="" id="inventory_class_code" name="inventory_class_code">
-                                </div>
-                </div><br>
-
-                <div class="row cl">
-                            <label class="form-label col-xs-4 col-sm-2">存货分类名称：</label>
-                            <div class="formControls col-xs-8 col-sm-9">
-                                    <input type="text" class="input-text" value="" placeholder="" id="inventory_class_name" name="inventory_class_name">
-                                </div>
-                </div><br>
-                <div class="row cl">
-                            <label class="form-label col-xs-4 col-sm-2">生码规则：</label>
-                            <div class="formControls col-xs-8 col-sm-9">
-                                <input type="text" class="input-text" value="" placeholder="" id="rule" name="rule">
-                                </div>
-                 </div><br>
-                <div class="row cl">
-                    <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-                        <button   class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
-                        <button id="remove" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
-                    </div>
-                </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
 </div>
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="__LIB__/jquery/1.9.1/jquery.min.js"></script>
@@ -309,14 +238,18 @@
 
     }
 
-    function initTree() {
+    function initTree(qrcode_content) {
         jQuery.ajax({
             url : "/admin/Sweepcode/index",
-            data : {},
+            data : {'qrcode_content':qrcode_content},
             type : "POST",
             dataType : "json",
             cache : false,
             success : function(data) {
+                data=data.replace(/\"children\":\[{/g,'');
+                data=data.replace(/]}/g,'')
+                //console.log(data);
+                //data = [{"id":41,"pId":0,"name":"(EG200)","open":false},{"id":42,"pId":41,"name":"出线盒(EG200-225（网筋无字）)","open":false},{"id":43,"pId":41,"name":"出线盒(EG200-225（网筋无字）)","open":false},{"children":[{"id":44,"pId":43,"name":"端盖(YE3-200L-4)","open":false}]},{"id":45,"pId":41,"name":"端盖(YE3-200L-4)","open":false}]}];
                 data = eval(data);//ztree只认js对象，而不是字符串，所以eval转换下
                 zTreeObj = $.fn.zTree.init($("#bcTree"), setting, data);
                 $.fn.zTree.init($("#bcTree"), setting, data);
@@ -328,11 +261,15 @@
 
 
     $(document).ready(function(){
-        initTree();
-        $("#add").bind("click",add);
+        $("#update").click(function(){
+            var qrcode_content=$("#code").val();
+            initTree(qrcode_content);
+        });
+        //initTree();
+        //$("#add").bind("click",add);
         //$("#submit").bind("click",sub);
-        $("#remove").bind("click",remove);
-        $("#update").bind("click",update);
+       // $("#remove").bind("click",remove);
+        //$("#update").bind("click",update);
     });
 
 </script>

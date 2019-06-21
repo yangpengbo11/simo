@@ -27,6 +27,8 @@ class InventoryClass extends Base
        //print_r($arr);die;
        //print_r(json_encode($arr,JSON_UNESCAPED_UNICODE));die;
        //return $this->fetch('inventory_class_list');
+       /*var_dump($arr);
+       die();*/
        return json_encode($arr,JSON_UNESCAPED_UNICODE);
    }
 
