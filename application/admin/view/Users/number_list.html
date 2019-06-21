@@ -47,6 +47,7 @@
 					<th width="80">ID</th>
 					<th>登录账号</th>
 					<th>员工工号</th>
+					<th>工序名称</th>
 					<th>员工姓名</th>
 					<th width="100">操作</th>
 				</tr>
@@ -58,6 +59,7 @@
 					<td>{$vo['login_id']}</td>
 					<td class="text-content">{$vo['account_name']}</td>
 					<td class="text-content">{$vo['Job_number']}</td>
+					<td class="text-content">{$vo['process_name']}</td>
 					<td class="text-content">{$vo['job_name']}</td>
 					<td class="f-14"><a title="编辑" href="{:url('admin/Users/number_edit',['id'=>$vo['login_id']])}" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
 						<a title="删除" href="javascript:;"  class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>

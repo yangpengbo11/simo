@@ -66,7 +66,9 @@ class Users extends Base
         $list = db('user_login')
             ->alias('a')
             ->join('tf_account b','b.id = a.personnel_id')
-            ->field('b.*,a.login_id,a.account_name')
+            ->join('tf_process_matching c','a.login_id = c.login_id')
+            ->join('tf_process d','c.process_id = d.id')
+            ->field('b.*,a.login_id,a.account_name,c.inventory_class_id,c.process_id,d.process_name')
             ->select();
         $this->assign('list',$list);
         return $this->fetch('number_list');
