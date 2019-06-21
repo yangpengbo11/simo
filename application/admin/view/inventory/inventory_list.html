@@ -51,9 +51,7 @@
                <th>计量单位</th>
                 <th>货位</th>
                 <th>创建人</th>
-                <th>创建时间</th>
                 <th>变更人</th>
-                <th>变更时间</th>
                 <th width="100">操作</th>
             </tr>
             </thead>
@@ -68,9 +66,9 @@
                 <td>{$v['unit_code']}</td>
                 <td>{$v['define6']}</td>
                 <td>{$v['create_person']}</td>
-                <td>{$v['sts_date']}</td>
+
                 <td>{$v['modify_person']}</td>
-                <td>{$v['modify_date']}</td>
+
                 <td class="f-14">
                     <a title="详情" href="{:url('admin/inventory/inventory_detail',['id'=>$v['inventory_id']])}" style="text-decoration:none"> <i class="Hui-iconfont">&#xe725;</i></a>
                     <a title="编辑" href="{:url('admin/inventory/inventory_edit',['id'=>$v['inventory_id']])}" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
