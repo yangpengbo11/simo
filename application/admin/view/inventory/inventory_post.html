@@ -56,11 +56,18 @@
             </div>
         </div>
         <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">存货分类编码：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="{$data==''?'':$data['inventory_class_code']}" placeholder="" id="inventory_class_code" name="inventory_class_code">
+            </div>
+        </div>
+        <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">规格型号：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="{$data==''?'':$data['specification_type']}" placeholder="" id="specification_type" name="specification_type">
             </div>
         </div>
+
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>计量单位：</label>
             <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">

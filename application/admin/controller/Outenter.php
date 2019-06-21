@@ -45,7 +45,9 @@ class Outenter extends Base
     }
 
     public function outenter_post(){
+
         $data=Request::instance()->post();
+
         if($data['types']=='出库'){
             $data['types']=1;
         }elseif ($data['types']=='入库'){
@@ -65,13 +67,41 @@ class Outenter extends Base
                 db('stock')
                     ->where(['inventory_id'=>$ids['inventory_id']])
                     ->setDec('last_quantity',$data['number']);
-
                 if($fas==1){
+                    $code=$data['materiel_coding'];
+                    $res=db('inventory')
+                        ->where(['inventory_code'=>$code])
+                        ->find();
+                    /*var_dump($res);
+                    die();*/
                     $lists=array('base_code'=>$data['materiel_coding']);
                     //print_r($lists['base_code']);die;
                     $erwei=new Erweima();
-                    for($a=0;$a<200;$a++){
-                        $erwei->qrcode($lists,10,1);
+                    for($a=0;$a<$data['number'];$a++){
+                        $id=$erwei->qrcode($lists,10,1);
+
+                        $re=db('inventory_class')
+                            ->where(['inventory_class_code'=>$res['inventory_class_code']])
+                            ->find();
+
+                        $ress=db('process_flow')
+                            ->alias('a')
+                            ->join('process b','a.process_id=b.id')
+                            ->where(['inventory_class_id'=>$re['inventory_class_id']])
+                            ->select();
+                        /*var_dump($ress);
+                        break;
+                        die();*/
+                        $erweima=db('qrcode_record')
+                            ->where(['id'=>$id])
+                            ->find();
+
+                        foreach ($ress as $v){
+                            //$qrcode=array(['qrcode_content'=>$erweima['qrcode_content'],'process_name'=>$v['process_name'],'operation_states'=>0,'create_time'=>date('Y-m-d H:i:s'),'states'=>1]);
+                            db('qrcode')
+                                ->data(['qrcode_content'=>$erweima['qrcode_content'],'process_name'=>$v['process_name'],'operation_states'=>0,'create_time'=>date('Y-m-d H:i:s'),'states'=>1])
+                                ->insert();
+                        }
                     }
 
                 }
@@ -80,6 +110,7 @@ class Outenter extends Base
                     ->where(['inventory_id'=>$ids['inventory_id']])
                     ->setInc('last_quantity',$data['number']);
             }
+
            $this->success('操作成功','outenter/outenter_out');
         }else{
             $this->error('操作失败','outenter/outenter_out');

@@ -46,7 +46,7 @@ class Erweima
             mkdir ($dir,0777,true);
         }
         //文件路径
-        $filename="images/".$type."/".date("Ymd")."/".time().".png";
+        $filename="images/".$type."/".date("Ymd")."/".$time.".png";
 
         //把二维码信息保存到数据库H
 
