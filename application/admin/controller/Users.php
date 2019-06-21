@@ -98,7 +98,6 @@ class Users extends Base
             ->field('b.*,a.*,c.inventory_class_id,c.process_id,c.types,d.inventory_class_code')
             ->where(['a.login_id'=>$id])
             ->find();
-        print_r(db('user_login')->getLastSql());die;
         $u_r = db('user_roles')->where('login_id', $id)->find();
         $res = db('roles')->select();
         $list = db('process')->select();
