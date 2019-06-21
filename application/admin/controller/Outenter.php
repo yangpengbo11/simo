@@ -76,7 +76,10 @@ class Outenter extends Base
                         ->find();
                     /*var_dump($res);
                     die();*/
-                    $lists=array('base_code'=>$data['materiel_coding']);
+                    $materiel_coding=$data['materiel_coding'];
+                    $a=db('inventory')->where(['inventory_code'=>$materiel_coding])->find();
+                    $b=db('inventory_class')->where(['inventory_class_code'=>$a['inventory_class_code']])->find();
+                    $lists=array('base_code'=>$data['materiel_coding'],'specification_type'=>$a['specification_type'],'half_products_id'=>$b['inventory_class_id'],'half_products_name'=>$b['inventory_class_name']);
                     //print_r($lists['base_code']);die;
                     $erwei=new Erweima();
                     for($a=0;$a<$data['number'];$a++){

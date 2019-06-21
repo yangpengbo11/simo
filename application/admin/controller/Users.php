@@ -90,7 +90,7 @@ class Users extends Base
      */
     public function number_edit(){
         $id = input('id');
-        $data = $list = db('user_login')
+        $data =  db('user_login')
             ->alias('a')
             ->join('tf_account b','b.id = a.personnel_id')
             ->join('tf_process_matching c','c.login_id = a.login_id')
@@ -98,11 +98,12 @@ class Users extends Base
             ->field('b.*,a.*,c.inventory_class_id,c.process_id,c.types,d.inventory_class_code')
             ->where(['a.login_id'=>$id])
             ->find();
+        print_r(db('user_login')->getLastSql());die;
         $u_r = db('user_roles')->where('login_id', $id)->find();
         $res = db('roles')->select();
         $list = db('process')->select();
+
         $this->assign('process',$list);
-        //print_r($u_r);die;
         $this->assign('data',$data);
         $this->assign('role_id',$u_r['role_id']);
         $this->assign('roles',$res);
@@ -180,11 +181,12 @@ class Users extends Base
                     'create_time'=>date('Y-m-d H:i:s',time())
                 );
                 $u_r = db('user_roles')->insert($user);
-                if(!empty($_POST['inventory_class_name'])) {
+                if(!empty($_POST['inventory_class_code'])) {
+                    $inventory_class = db('inventory_class')->where('inventory_class_code',$_POST['inventory_class_code'])->find();
                     $process = array(
                         'login_id' => $login_id,
                         'types' => $_POST['types'],
-                        'inventory_class_id' => $_POST['inventory_class_id'],
+                        'inventory_class_id' => $inventory_class['inventory_class_id'],
                         'process_id' => $_POST['process_id'],
                         'create_time'=>date('Y-m-d H:i:s',time())
                     );
