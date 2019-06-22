@@ -65,9 +65,30 @@ class Users extends Base
     public function accountNumber_list(){
         $list = db('user_login')
             ->alias('a')
-            ->join('tf_account b','b.id = a.personnel_id')
+            ->join('tf_account b',' a.personnel_id = b.id')
             ->field('b.*,a.login_id,a.account_name')
             ->select();
+        foreach ($list as $k=>$v){
+            if(empty($v['process_id'])){
+                $v['process_id'] = 0;
+            }
+            $res = db('process_matching')
+                ->alias('a')
+                ->join('tf_process b','a.process_id = b.id')
+                ->join('tf_inventory_class c','a.inventory_class_id = c.inventory_class_id')
+                ->field('a.inventory_class_id,a.process_id,b.process_name,c.inventory_class_name')
+                ->where('a.login_id',$v['login_id'])
+                ->find();
+            if(!empty($res)){
+                $list[$k]['inventory_class_id'] =  $res['inventory_class_id'];
+                $list[$k]['inventory_class_name'] =  $res['inventory_class_name'];
+                $list[$k]['process_id'] =  $res['process_id'];
+                $list[$k]['process_name'] = $res['process_name'];
+            }else{
+                $list[$k]['inventory_class_name'] =  '';
+                $list[$k]['process_name'] ='';
+            }
+        }
         $this->assign('list',$list);
         return $this->fetch('number_list');
     }
