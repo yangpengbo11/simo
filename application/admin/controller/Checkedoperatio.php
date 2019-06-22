@@ -64,7 +64,7 @@ class Checkedoperatio extends Base
             $data = array(
                 'base_code'=>$inventory['inventory_class_code'],
                 'half_products_id' => $inventory['inventory_class_id'],
-                'half_products_name' => $inventory['inventory_class_name'],
+                'half_products_name' => $_POST['half_products_name'],
                 'specification_type'=>$_POST['specification_type'],
                 'figure_number'=>$_POST['figure_number']
             );

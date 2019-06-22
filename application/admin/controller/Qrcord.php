@@ -3,7 +3,7 @@
 
 namespace app\admin\controller;
 use app\admin\common\Erweima;
-
+use think\Request;
 class Qrcord extends Base
 {
 
@@ -22,10 +22,15 @@ class Qrcord extends Base
         return $this->fetch();
     }
 
+   public function qrcord_post(){
+        return $this->fetch();
+   }
 
     public function qrcord_add(){
+        $lists=Request::instance()->post();
+        $lists['base_code']="simo";
         $erweima =new Erweima();
-        $lists=array("base_code"=>"simo");
+        //$lists=array("base_code"=>"simo");
         $erweima->qrcode($lists,10,3);
         $this->success('生成二维码成功','/admin/qrcord/qrcord_list');
     }

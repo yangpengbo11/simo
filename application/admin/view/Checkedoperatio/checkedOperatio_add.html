@@ -61,6 +61,12 @@
 <!-- 生码操作页面 -->
 {if condition="$login['types']==2"}
 <div class="page-container">
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>部件名称：</label>
+        <div class="formControls col-xs-4 col-sm-7">
+            <input type="text" class="input-text"  value="" placeholder="图号" id="half_products_name" name="half_products_name">
+        </div>
+    </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>生成二维码图号：</label>
             <div class="formControls col-xs-4 col-sm-7">
@@ -99,13 +105,13 @@
 {if condition="$login['types']==3"}
 <div class="page-container">
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>绑码编号1：</label>
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>成品编码：</label>
             <div class="formControls col-xs-4 col-sm-5">
                 <input type="text" class="input-text"  value="" placeholder="扫码二维码的唯一编码" id="qrcode_content" name="qrcode_content1">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>被绑码编号：</label>
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>半成品编码：</label>
             <div class="formControls col-xs-4 col-sm-5">
                 <input type="text" class="input-text"  value="" placeholder="扫码二维码的唯一编码" id="qrcode_content" name="qrcode_content2">
             </div>
