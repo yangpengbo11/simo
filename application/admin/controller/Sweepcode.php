@@ -13,7 +13,6 @@ class Sweepcode extends Controller
      */
     public function index()
     {
-        //$qrcode_content = 'simo*190621202223758';
         $qrcode_content = $_POST['qrcode_content'];
         $simobom = db('qrcode_record')->where('qrcode_content',$qrcode_content)->select();
         $list = $this->SweepcodeData($simobom);
@@ -26,8 +25,12 @@ class Sweepcode extends Controller
         foreach($data as $key=>$value){
             $arr['id'] = $value['id'];
             $arr['pId'] = $value['pid'];
-           // $ss = db('inventory_class')->where('inventory_class_id',$value['half_products_id'])->find();
-            $arr['name']= $value['half_products_name'].'('.$value['specification_type'].')';
+            $ss = db('inventory')->where('inventory_code',$value['base_code'])->find();
+            if(!empty($ss)){
+                $arr['name']= $ss['inventory_name'].'('.$value['specification_type'].')';
+            }else{
+                $arr['name']= $value['half_products_name'].'('.$value['specification_type'].')';
+            }
             $arr['open']=false;
             $simobom = db('qrcode_record')->where('pid',$arr['id'])->select();
             $arrs[] = $arr;
