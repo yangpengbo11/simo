@@ -14,8 +14,6 @@ class Checkedoperatio extends Base
          */
         $users = session('users');
         $res = db('process_matching')->where('login_id',$users['login_id'])->find();
-        //print_r($res);die;
-        //$res['types'] = 2;
         $this->assign('login',$res);
         return $this->fetch('checkedOperatio_add');
     }
@@ -46,6 +44,9 @@ class Checkedoperatio extends Base
             $where['qrcode_content'] = $_POST['qrcode_content'];
             $where['process_name'] = $process['process_name'];
             $qrcode = db('qrcode')->where($where)->find();
+            if(empty($qrcode)){
+                $this->error('输入二维码内容不是你要处理的二维码！');
+            }
             if($qrcode['operation_states']==0){
                 $data0['operation_states'] = 1;
                 $data0['states'] = 1;
@@ -62,12 +63,18 @@ class Checkedoperatio extends Base
             //查找基础码
             $inventory = db('inventory_class')->where('inventory_class_id',$res['inventory_class_id'])->find();
             $data = array(
-                'base_code'=>$inventory['inventory_class_code'],
+                'base_code'=>$inventory['rule'],
                 'half_products_id' => $inventory['inventory_class_id'],
                 'half_products_name' => $_POST['half_products_name'],
                 'specification_type'=>$_POST['specification_type'],
                 'figure_number'=>$_POST['figure_number']
             );
+            foreach ($_POST['qrcode_content'] as $val) {
+                $qrcoed = db('qrcode_record')->where('qrcode_content', $val)->find();
+                if (!empty($qrcoed['pid']) || $qrcoed['pid'] == 0) {
+                    $this->error('输入二维码有误！');
+                }
+            }
             $erweima = new Erweima();
             $id = $erweima->qrcode($data,10,2);
             //修改父节点
