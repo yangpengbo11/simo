@@ -35,32 +35,24 @@
     <i class="Hui-iconfont">&#xe68f;</i></a>
 </nav>
 <div class="page-container">
-    <form class="form form-horizontal" id="form-article-add" action="/admin/qrcord/qrcord_add" method="post">
+    <form class="form form-horizontal" id="form-article-add" action="/admin/qrcord/qrcord_add" method="post" novalidate="novalidate">
         <div class="row cl">
 
-            <label class="form-label col-xs-4 col-sm-2">电机名称：</label>
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>电机名称：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="half_products_name" name="half_products_name">
             </div>
         </div>
 
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">电机型号：</label>
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>电机型号：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="specification_type" name="specification_type">
             </div>
         </div>
-
-
-
-
-
-
-
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-                <button  class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
-                <button onClick="removeIframe();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+                <button  class="btn btn-primary radius" type="submit" id="admin-role-save"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
             </div>
         </div>
     </form>
@@ -77,13 +69,25 @@
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/messages_zh.js"></script>
-<script type="text/javascript" src="__LIB__/webuploader/0.1.5/webuploader.min.js"></script>
-<script type="text/javascript" src="__LIB__/ueditor/1.4.3/ueditor.config.js"></script>
-<script type="text/javascript" src="__LIB__/ueditor/1.4.3/ueditor.all.min.js"> </script>
-<script type="text/javascript" src="__LIB__/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
 <script type="text/javascript">
 
-
+    $("#form-article-add").validate({
+        rules:{
+            half_products_name:{
+                required:true
+            },
+            specification_type:{
+                required:true
+            }
+        },
+        onkeyup:false,
+        focusCleanup:true,
+        success:"valid",
+        submitHandler:function(form){
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        }
+    });
 
 </script>
 <!--/请在上方写此页面业务相关的脚本-->

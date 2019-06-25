@@ -22,9 +22,6 @@ class Menu extends Base
     /**
      * 增加菜单
      * @return mixed
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
      */
     public function add_menu(){
         $data = db('menus')->order('id','asc')->select();
@@ -35,14 +32,23 @@ class Menu extends Base
         return $this->fetch('add_menu');
     }
 
-
-
-
     /**
      * post增加修改菜单
      * @return mixed
      */
     public function menu_post(){
+        if(!empty($_POST['menu_name'])){
+            $arr = db('menus')->where('menu_name',$_POST['menu_name'])->find();
+            if(empty($_POST['id'])){
+                if(!empty($arr)){
+                    $this->error('菜单名称已存在！');
+                }
+            }else{
+                if($_POST['id']!=$arr['id']){
+                    $this->error('菜单名称已存在！');
+                }
+            }
+        }
         if(!empty($_POST['id'])){
             $arr = [
                 'pid'=>$_POST['pid'],
