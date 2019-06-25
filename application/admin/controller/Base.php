@@ -35,6 +35,7 @@ class Base extends Controller
     }
 
 
+
     /**
      * 模糊搜索公共方法
      * @param String $table 表名
