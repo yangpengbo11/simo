@@ -37,7 +37,8 @@ class Login extends Controller
 
     public function login_out(){
         session('users','');
-        $this->success('','Login/login');
+        $res = $this->alert('退出登录成功！','/admin/Login/login',6,5);
+        return $res;
     }
 
     function alert($msg='',$url='',$icon='',$time=3){
