@@ -28,6 +28,13 @@ class Base extends Controller
 
     }
 
+    function alert($msg='',$url='',$icon='',$time=3){
+        $str='<script type="text/javascript" src="http://192.168.18.21/lib/jquery/1.9.1/jquery.min.js"></script><script type="text/javascript" src="http://192.168.18.21/lib/layer/2.4/layer.js"></script>';//加载jquery和layer
+        $str.='<script>$(function(){layer.msg("'.$msg.'",{icon:'.$icon.',time:'.($time*1000).'});setTimeout(function(){self.location.href="'.$url.'"},2000)});</script>';//主要方法
+        return $str;
+    }
+
+
     /**
      * 模糊搜索公共方法
      * @param String $table 表名

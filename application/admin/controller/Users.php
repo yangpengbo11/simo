@@ -32,6 +32,35 @@ class Users extends Base
      * 增加/修改人员信息post提交
      */
     public function account_post(){
+
+        if(!empty($_POST['Job_number'])){
+            $arr = db('account')->where('Job_number',$_POST['Job_number'])->find();
+            if(empty($_POST['id'])){
+                if(!empty($arr)){
+                    $res = $this->alert('人员工号已存在！重新输入','account_add',5,3);
+                    return $res;
+                }
+            }else{
+                if($_POST['id']!=$arr['id']&&!empty($arr)){
+                    $res = $this->alert('人员工号已存在！','account_edit/id/'.$_POST['id'],5,3);
+                    return $res;
+                }
+            }
+        }
+        if(!empty($_POST['job_name'])){
+            $arr = db('account')->where('job_name',$_POST['job_name'])->find();
+            if(empty($_POST['id'])){
+                if(!empty($arr)){
+                    $res = $this->alert('人员名称已存在！','account_add',5,3);
+                    return $res;
+                }
+            }else{
+                if($_POST['id']!=$arr['id']&&!empty($arr)){
+                    $res = $this->alert('人员名称已存在！','account_edit/id/'.$_POST['id'],5,3);
+                    return $res;
+                }
+            }
+        }
         if(!empty($_POST['id'])){//修改
             $arr = array(
                 'Job_number'=>$_POST['Job_number'],
@@ -40,9 +69,12 @@ class Users extends Base
             $res = db('account')->where('id',$_POST['id'])->update($arr);
             //print_r(db('account')->getLastSql());die;
             if($res){
-                $this->success('编辑成功.', 'Users/account_list');
+                //$this->success('编辑成功.', 'Users/account_list');
+                $res = $this->alert('编辑成功.','account_list',6,3);
+                return $res;
             }else{
-                $this->error('编辑失败！');
+                $res = $this->alert('编辑失败！','account_edit/id/'.$_POST['id'],5,3);
+                return $res;
             }
         }else{//增加
             $arr = array(
@@ -52,9 +84,11 @@ class Users extends Base
             );
             $res = db('account')->insert($arr);
             if($res){
-                $this->success('添加成功.', 'Users/account_list');
+                $res = $this->alert('添加成功.', 'account_list',6,3);
+                return $res;
             }else{
-                $this->error('添加失败！');
+                $res = $this->alert('添加失败！','account_add',5,3);
+                return $res;
             }
         }
     }
@@ -114,6 +148,35 @@ class Users extends Base
      */
     public function number_post(){
 
+        if(!empty($_POST['Job_number'])){
+            $arr = db('account')->where('Job_number',$_POST['Job_number'])->find();
+            if(empty($_POST['id'])){
+                if(!empty($arr)){
+                    $res = $this->alert('人员工号已存在！重新输入','number_add',5,3);
+                    return $res;
+                }
+            }else{
+                if($_POST['id']!=$arr['id']&&!empty($arr)){
+                    $res = $this->alert('人员工号已存在！','number_edit/id/'.$_POST['id'],5,3);
+                    return $res;
+                }
+            }
+        }
+
+        if(!empty($_POST['account_name'])){
+            $arr = db('user_login')->where('account_name',$_POST['account_name'])->find();
+            if(empty($_POST['id'])){
+                if(!empty($arr)){
+                    $res = $this->alert('账号名称已存在！重新输入','number_add',5,3);
+                    return $res;
+                }
+            }else{
+                if($_POST['id']!=$arr['id']&&!empty($arr)){
+                    $res = $this->alert('账号名称已存在！','number_edit/id/'.$_POST['id'],5,3);
+                    return $res;
+                }
+            }
+        }
         if(!empty($_POST['id'])){//修改
             //print_r($_POST);die;
             $job_number = $_POST['Job_number'];
@@ -156,12 +219,15 @@ class Users extends Base
                 }
                 //print_r(db('account')->getLastSql());die;
                 if ($u_r) {
-                    $this->success('编辑成功.', 'Users/accountNumber_list');
+                    $res = $this->alert('编辑成功！','accountNumber_list',6,3);
+                    return $res;
                 } else {
-                    $this->error('编辑失败！');
+                    $res = $this->alert('编辑失败！','accountNumber_edit/id/'.$_POST['id'],5,3);
+                    return $res;
                 }
             }else{
-                $this->error('编辑失败！');
+                $res = $this->alert('编辑失败！','accountNumber_edit/id/'.$_POST['id'],5,3);
+                return $res;
             }
         }else{//增加
             $job_number = $_POST['Job_number'];
@@ -192,12 +258,15 @@ class Users extends Base
                     db('process_matching')->insert($process);
                 }
                 if($u_r){
-                    $this->success('添加成功.', 'Users/accountNumber_list');
+                    $res = $this->alert('添加成功！','accountNumber_edit',6,3);
+                    return $res;
                 }else{
-                    $this->error('添加失败！');
+                    $res = $this->alert('添加失败！','accountNumber_add',5,3);
+                    return $res;
                 }
             }else{
-                $this->error('添加失败！');
+                $res = $this->alert('添加失败！','accountNumber_add',5,3);
+                return $res;
             }
         }
     }
@@ -244,6 +313,20 @@ class Users extends Base
      */
     public function role_post(){
         //$_POST
+        if(!empty($_POST['role_name'])){
+            $arr = db('roles')->where('role_name',$_POST['role_name'])->find();
+            if(empty($_POST['id'])){
+                if(!empty($arr)){
+                    $res = $this->alert('角色名称已存在！重新输入','role_add',5,3);
+                    return $res;
+                }
+            }else{
+                if($_POST['id']!=$arr['id']&&!empty($arr)){
+                    $res = $this->alert('角色名称已存在！','role_edit/id/'.$_POST['id'],5,3);
+                    return $res;
+                }
+            }
+        }
         if(empty($_POST['id'])) {
             $data = array(
                 'role_name' => $_POST['role_name'],
@@ -259,9 +342,11 @@ class Users extends Base
                     );
                     db('roles_authority')->insert($data1);
                 }
-                $this->success('添加成功！', 'Users/role_list');
+                $res = $this->alert('添加成功！','role_list',6,3);
+                return $res;
             } else {
-                $this->error('添加失败！');
+                $res = $this->alert('添加失败！','role_add',5,3);
+                return $res;
             }
         }else{
             $data = array(
@@ -279,7 +364,8 @@ class Users extends Base
                     );
                     db('roles_authority')->insert($data1);
                 }
-                $this->success('编辑成功！', 'Users/role_list');
+                $res = $this->alert('编辑成功！','role_list',6,3);
+                return $res;
             }else{
                 $sel = db('roles_authority')->where('role_id',$_POST['id'])->select();
                 if(empty($sel)){
@@ -291,7 +377,8 @@ class Users extends Base
                         );
                         db('roles_authority')->insert($data1);
                     }
-                    $this->success('编辑成功！', 'Users/role_list');
+                    $res = $this->alert('编辑成功！','role_list',6,3);
+                    return $res;
                 }
             }
         }

@@ -36,7 +36,7 @@
 	<i class="Hui-iconfont">&#xe68f;</i></a>
 </nav>
 <div class="page-container">
-	<form action="/admin/Users/number_post" method="post" class="form form-horizontal" id="form-article-add">
+	<form action="/admin/Users/number_post" name="form1" method="post" class="form form-horizontal" id="form-article-add" onsubmit="return checkForm()">
 		<div class="row col-xs-8 col-sm-5">
             <div class="row cl">
                 <input type="hidden" name="id" {if condition="$data!=''"} value="{$data['login_id']}" {/if}>
@@ -118,11 +118,36 @@
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/messages_zh.js"></script>
-<script type="text/javascript" src="__LIB__/webuploader/0.1.5/webuploader.min.js"></script>
-<script type="text/javascript" src="__LIB__/ueditor/1.4.3/ueditor.config.js"></script>
-<script type="text/javascript" src="__LIB__/ueditor/1.4.3/ueditor.all.min.js"> </script>
-<script type="text/javascript" src="__LIB__/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
 <script type="text/javascript">
+    function checkForm() {
+        var number = document.form1.Job_number;
+        var number1 = document.form1.account_name;
+        var number2 = document.form1.password;
+        var number3 = document.form1.inventory_class_code;
+        var roles = $("input[name='role_id']:checked").next("span").text();
+        if(number.value=='')
+        {
+            number.style.borderColor = '#c00';
+            number.placeholder = '员工工号必填';
+            return false;
+        }else if(number1.value==''){
+            number1.style.borderColor = '#c00';
+            number1.placeholder = '账号名称必填';
+            return false;
+        }else if(number2.value==''){
+            number2.style.borderColor = '#c00';
+            number2.placeholder = '账号密码必填';
+            return false;
+        }else if(roles=='检验员'){
+            number3.style.borderColor = '#c00';
+            number3.placeholder = '存货分类必填';
+            return false;
+        }
+        else
+        {
+            return  true;
+        }
+    }
 $(document).ready(function(){
     $("input[name=role_id]").each(function(){
         $(this).click(function(){
