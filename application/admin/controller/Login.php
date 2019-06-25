@@ -27,14 +27,23 @@ class Login extends Controller
         //print_r(session('users'));die;
         if($as){
             session('users',$as);
-            $this->success('登陆成功', 'Index/index');
+            $res = $this->alert('登陆成功！','/admin/Index/index',6,5);
+            return $res;
         }else{
-            $this->error('登陆失败,用户密码不匹配！');
+            $res = $this->alert('登陆失败,用户密码不匹配！','login',6,5);
+            return $res;
         }
     }
 
     public function login_out(){
         session('users','');
-        $this->success('','Login/login');
+        $res = $this->alert('退出登录成功！','/admin/Login/login',6,5);
+        return $res;
+    }
+
+    function alert($msg='',$url='',$icon='',$time=3){
+        $str='<script type="text/javascript" src="http://192.168.18.21/lib/jquery/1.9.1/jquery.min.js"></script><script type="text/javascript" src="http://192.168.18.21/lib/layer/2.4/layer.js"></script>';//加载jquery和layer
+        $str.='<script>$(function(){layer.msg("'.$msg.'",{icon:'.$icon.',time:'.($time*1000).'});setTimeout(function(){self.location.href="'.$url.'"},2000)});</script>';//主要方法
+        return $str;
     }
 }
