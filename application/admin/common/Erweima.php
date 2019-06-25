@@ -23,13 +23,20 @@ class Erweima
         if(isset($lists['specification_type'])){
             $data=$data.$lists['specification_type']."*";
         }else if(isset($lists['figure_number'])){
-            $data=$data.$lists['figure_number']."*";
+            $data=$data.$lists['figure_
+            number']."*";
         }
 
        /* foreach ($lists as $list){
             $data=$data.$list."*";
         }*/
-        $data=$data.$time;
+       if($type==1){
+           $data=$data.$lists['roam'];
+       }else{
+           $data=$data.$time;
+       }
+
+
 
 
         $level=3;
@@ -46,11 +53,18 @@ class Erweima
             mkdir ($dir,0777,true);
         }
         //文件路径
-        $filename="images/".$type."/".date("Ymd")."/".$time.".png";
+
+        if($type==1){
+            $filename="images/".$type."/".date("Ymd")."/".$lists['roam'].".png";
+        }else{
+            $filename="images/".$type."/".date("Ymd")."/".$time.".png";
+        }
+
 
         //把二维码信息保存到数据库H
-
-        $lists['roam']=$time;
+        if($type!=1){
+            $lists['roam']=$time;
+        }
         $lists['qrcode_content']=$data;
         $lists['types']=$type;
         $lists['links']=$filename;
@@ -58,7 +72,7 @@ class Erweima
         $res = db('qrcode_record')->insert($lists);
         //生成二维码图片
          $object->png($data, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
-        $id = db('qrcode_record')->getLastInsID();
+         $id = db('qrcode_record')->getLastInsID();
         //返回新增数据的自增主键id;
         return $id;
     }

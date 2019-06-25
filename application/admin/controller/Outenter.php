@@ -4,6 +4,7 @@
 namespace app\admin\controller;
 use think\Request;
 use app\admin\common\Erweima;
+use app\admin\common\GetTime;
 class Outenter extends Base
 {
     //出入库记录查询
@@ -21,7 +22,7 @@ class Outenter extends Base
         return $this->fetch('outenter_list');
     }
 
-    //添加查询库房，供应商
+    //添加出入库记录 查询库房，供应商
     public function outenter_add($type){
         $warehouse=db('warehouse')->select();
         $vendor=db('vendor')->select();
@@ -32,7 +33,7 @@ class Outenter extends Base
         return $this->fetch('outenter_post');
     }
 
-    //修改查询库房，供应商
+    //修改出入库记录 查询库房，供应商
     public function outenter_edit(){
         $id=input('id');
         $data=db('out_enter_record')->where(['id'=>$id])->find();
@@ -138,10 +139,42 @@ class Outenter extends Base
 
     }
 
+    public function outenter_fuma(){
 
+        return $this->fetch();
+    }
 
+    public function outenter_creweima(){
+        $data=Request::instance()->post();
+        $erwei=new Erweima();
+        $ti=new GetTime();
+        $t=$ti->ts_time();
+        $c=substr($t,0,11);
+        $d=substr($t,11);
+        $inventory=db('inventory')->where(['inventory_code'=>$data['materiel_coding']])->find();
+        for($i=1;$i<=$data['number'];$i++){
+            $a=$c.($d+$i);
+            $lists=array('base_code'=>$data['materiel_coding'],'roam'=>$a,'specification_type'=>$inventory['specification_type'],'figure_number'=>$inventory['dwg_code']);
+            $erwei->qrcode($lists,5,1);
+        }
+        $this->success('操作成功','/admin/outenter/outenter_fuma',1);
 
+    }
 
+    public function test(){
+        $ti=new GetTime();
+        $t=$ti->ts_time();
+        $c=substr($t,0,11);
+        $d=substr($t,11);
+        echo $t;
+        echo "<br>";
+        echo $c;
+        echo "<br>";
+        echo $d;
+        echo "<br>";
+        echo $c.($d+1);
+
+    }
 
 
 
