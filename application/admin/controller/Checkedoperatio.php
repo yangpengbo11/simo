@@ -45,16 +45,19 @@ class Checkedoperatio extends Base
             $where['process_name'] = $process['process_name'];
             $qrcode = db('qrcode')->where($where)->find();
             if(empty($qrcode)){
-                $this->error('输入二维码内容不是你要处理的二维码！');
+                $res = $this->alert('输入二维码内容不是你要处理的二维码！','checkedOperatio_add',5,5);
+                return $res;
             }
             if($qrcode['operation_states']==0){
                 $data0['operation_states'] = 1;
                 $data0['states'] = 1;
                 //增加操作时间，操作人员
                 db('qrcode')->where($where)->update($data0);
-                $this->error('扫码成功！');
+                $res = $this->alert('扫码成功！','checkedOperatio_add',6,5);
+                return $res;
             }else{
-                $this->error('已操作，不可以再次操作！');
+                $res = $this->alert('已操作，不可以再次操作！','checkedOperatio_add',5,5);
+                return $res;
             }
         }
         if($_POST['types']==2){
@@ -72,7 +75,8 @@ class Checkedoperatio extends Base
             foreach ($_POST['qrcode_content'] as $val) {
                 $qrcoed = db('qrcode_record')->where('qrcode_content', $val)->find();
                 if (!empty($qrcoed['pid']) || $qrcoed['pid'] == 0) {
-                    $this->error('输入二维码有误！');
+                    $res = $this->alert('输入的二维码不是您可操作的权限！','checkedOperatio_add',5,5);
+                    return $res;
                 }
             }
             $erweima = new Erweima();
@@ -104,9 +108,11 @@ class Checkedoperatio extends Base
                         db('qrcode')->insert($v_list);
                     }
                 }
-                $this->error('生码成功！');
+                $res = $this->alert('生码成功！','checkedOperatio_add',6,5);
+                return $res;
             }else{
-                $this->error('已操作，不可以再次操作！');
+                $res = $this->alert('已操作，不可以再次操作！','checkedOperatio_add',5,5);
+                return $res;
             }
         }
         //绑码（成品绑码）
@@ -129,14 +135,21 @@ class Checkedoperatio extends Base
                         $data0['states'] = 3;
                         db('qrcode')->insert($data0);
                         $this->error('绑码成功！');
+                        $res = $this->alert('绑码成功！','checkedOperatio_add',6,5);
+                        return $res;
                     }else{
+
                         $this->error('被绑码编号不存在！');
+                        $res = $this->alert('已操作，不可以再次操作！','checkedOperatio_add',5,5);
+                        return $res;
                     }
                 }else{
-                    $this->error('输入绑码编号不存在！');
+                    $res = $this->alert('输入绑码编号不存在！','checkedOperatio_add',5,5);
+                    return $res;
                 }
             }else{
-                $this->error('绑码编号不正确！');
+                $res = $this->alert('绑码编号不正确！','checkedOperatio_add',5,5);
+                return $res;
             }
         }
     }
