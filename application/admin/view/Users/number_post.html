@@ -120,6 +120,7 @@
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript">
     function checkForm() {
+        var log = true;
         var number = document.form1.Job_number;
         var number1 = document.form1.account_name;
         var number2 = document.form1.password;
@@ -129,24 +130,24 @@
         {
             number.style.borderColor = '#c00';
             number.placeholder = '员工工号必填';
-            return false;
-        }else if(number1.value==''){
+            log = false;
+        }
+        if(number1.value==''){
             number1.style.borderColor = '#c00';
             number1.placeholder = '账号名称必填';
-            return false;
-        }else if(number2.value==''){
+            log = false;
+        }
+        if(number2.value==''){
             number2.style.borderColor = '#c00';
             number2.placeholder = '账号密码必填';
-            return false;
-        }else if(roles=='检验员'){
+            log = false;
+        }
+        if(roles=='检验员'){
             number3.style.borderColor = '#c00';
             number3.placeholder = '存货分类必填';
-            return false;
+            log = false;
         }
-        else
-        {
-            return  true;
-        }
+        return  log;
     }
 $(document).ready(function(){
     $("input[name=role_id]").each(function(){

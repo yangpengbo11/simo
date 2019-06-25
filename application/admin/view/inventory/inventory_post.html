@@ -35,7 +35,7 @@
     <i class="Hui-iconfont">&#xe68f;</i></a>
 </nav>
 <div class="page-container">
-    <form class="form form-horizontal" id="form-article-add" action="/admin/inventory/inventory_post" method="post">
+    <form class="form form-horizontal" id="form-article-add" name="form1" action="/admin/inventory/inventory_post" method="post" onsubmit="return checkForm()">
         <div class="row cl">
             <input type="hidden" name="inventory_id" value="{$data==''?'':$data['inventory_id']}">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>存货编号：</label>
@@ -130,13 +130,48 @@
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/messages_zh.js"></script>
-<script type="text/javascript" src="__LIB__/webuploader/0.1.5/webuploader.min.js"></script>
-<script type="text/javascript" src="__LIB__/ueditor/1.4.3/ueditor.config.js"></script>
-<script type="text/javascript" src="__LIB__/ueditor/1.4.3/ueditor.all.min.js"> </script>
-<script type="text/javascript" src="__LIB__/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
 <script type="text/javascript">
 
-
+    function checkForm() {
+        var log = true;
+        var number = document.form1.inventory_code;
+        var number1 = document.form1.dwg_code;
+        var number2 = document.form1.inventory_name;
+        var number3 = document.form1.inventory_class_code;
+        var number4 = document.form1.specification_type;
+        var number5 = document.form1.define6;
+        if(number.value=='') {
+            number.style.borderColor = '#c00';
+            number.placeholder = '存货编号必填';
+            log = false;
+        }
+        if(number1.value==''){
+            number1.style.borderColor = '#c00';
+            number1.placeholder = '图号必填';
+            log = false;
+        }
+        if(number2.value==''){
+            number2.style.borderColor = '#c00';
+            number2.placeholder = '存货名称必填';
+            log = false;
+        }
+        if(number3.value==''){
+            number3.style.borderColor = '#c00';
+            number3.placeholder = '存货分类编码必填';
+            return false;
+        }
+        if(number4.value==''){
+            number4.style.borderColor = '#c00';
+            number4.placeholder = '规格型号必填';
+            log = false;
+        }
+        if(number5.value==''){
+            number5.style.borderColor = '#c00';
+            number5.placeholder = '货位必填';
+            log = false;
+        }
+        return log;
+    }
 
 </script>
 <!--/请在上方写此页面业务相关的脚本-->

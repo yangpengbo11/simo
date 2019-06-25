@@ -35,7 +35,7 @@
     <i class="Hui-iconfont">&#xe68f;</i></a>
 </nav>
 <div class="page-container">
-    <form class="form form-horizontal" id="form-article-add" action="/admin/qrcord/qrcord_add" method="post" novalidate="novalidate">
+    <form class="form form-horizontal" id="form-article-add" action="/admin/qrcord/qrcord_add" method="post" name="form1" onsubmit="return checkForm()" novalidate="novalidate">
         <div class="row cl">
 
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>电机名称：</label>
@@ -70,6 +70,23 @@
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript">
+
+    function checkForm() {
+        var log = true;
+        var number = document.form1.half_products_name;
+        var number1 = document.form1.specification_type;
+        if(number.value=='') {
+            number.style.borderColor = '#c00';
+            number.placeholder = '电机名称必填';
+            log = false;
+        }
+        if(number1.value==''){
+            number1.style.borderColor = '#c00';
+            number1.placeholder = '电机型号必填';
+            log = false;
+        }
+        return log;
+    }
 
     $("#form-article-add").validate({
         rules:{

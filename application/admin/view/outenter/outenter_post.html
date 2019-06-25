@@ -35,7 +35,7 @@
     <i class="Hui-iconfont">&#xe68f;</i></a>
 </nav>
 <div class="page-container">
-    <form class="form form-horizontal" id="form-article-add" action="/admin/outenter/outenter_post" method="post">
+    <form class="form form-horizontal" id="form-article-add" action="/admin/outenter/outenter_post" name="form1" onsubmit="return checkForm()" method="post">
         <div class="row cl">
             <input type="hidden" name="id" value="{$data==''?'':$data['id']}">
             <input type="hidden" name="snumber" value="{$data==''?'':$data['number']}">
@@ -132,6 +132,23 @@ $(function(){
         $("#fa").css("display","block")
     }
 });
+
+function checkForm() {
+    var log = true;
+    var number = document.form1.materiel_coding;
+    var number1 = document.form1.number;
+    if(number.value=='') {
+        number.style.borderColor = '#c00';
+        number.placeholder = '物料编码必填';
+        log = false;
+    }
+    if(number1.value==''){
+        number1.style.borderColor = '#c00';
+        number1.placeholder = '数量必填';
+        log = false;
+    }
+    return log;
+}
 
 </script>
 <!--/请在上方写此页面业务相关的脚本-->
