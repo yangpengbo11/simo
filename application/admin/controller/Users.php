@@ -355,13 +355,15 @@ class Users extends Base
             );
             $role = db('roles')->insertGetId($data);
             if ($role) {
-                foreach ($_POST['roles'] as $vo) {
-                    $data1 = array(
-                        'role_id' => $role,
-                        'menus_id' => $vo,
-                        'create_time' => date('Y-m-d H:i:s', time())
-                    );
-                    db('roles_authority')->insert($data1);
+                if(!empty($_POST['roles'])) {
+                    foreach ($_POST['roles'] as $vo) {
+                        $data1 = array(
+                            'role_id' => $role,
+                            'menus_id' => $vo,
+                            'create_time' => date('Y-m-d H:i:s', time())
+                        );
+                        db('roles_authority')->insert($data1);
+                    }
                 }
                 $res = $this->alert('添加成功！','role_list',6,3);
                 return $res;
