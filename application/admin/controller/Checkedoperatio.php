@@ -23,8 +23,10 @@ class Checkedoperatio extends Base
          * 判断是生码还是扫码
          * 1.扫码：
          * 根据输入编码改变唯一二维码操作表数据的状态
+         * 扫码是一个部件的工序不能跳跃顺序扫码
          * 2.生码：
          * 获取生码需要的数据
+         * 需要匹配半成品部件的由那几个存货分类构成做出相应的生码判断
          * 添加二维码记录生成新二维码之后改变之前部件二维码的父节点
          * 查找二维码操作表对应数据进行更改状态
          * 返回新的二维码
@@ -142,9 +144,12 @@ class Checkedoperatio extends Base
                 return $res;
             }
         }
-        //绑码（成品绑码）
-        //根据二维码内容区分半成品和成品
-        //半成品绑定成品二维码Id
+        /**
+         *绑码（成品绑码）
+         *当前成品由那些半成品的存货分类组成，根据此条件赛选半成品绑成品码
+         *根据二维码内容区分半成品和成品
+         *半成品绑定成品二维码Id
+         */
         if($_POST['types']==3){
             $_POST['qrcode_content1'];
             $pieces = explode("*", $_POST['qrcode_content1']);
@@ -165,7 +170,6 @@ class Checkedoperatio extends Base
                         $res = $this->alert('绑码成功！','checkedOperatio_add',6,5);
                         return $res;
                     }else{
-
                         $this->error('被绑码编号不存在！');
                         $res = $this->alert('已操作，不可以再次操作！','checkedOperatio_add',5,5);
                         return $res;
