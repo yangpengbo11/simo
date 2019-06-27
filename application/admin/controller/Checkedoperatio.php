@@ -48,6 +48,33 @@ class Checkedoperatio extends Base
                 $res = $this->alert('输入二维码内容不是你要处理的二维码！','checkedOperatio_add',5,5);
                 return $res;
             }
+            if(!empty($qrcode)){
+                //查找当前检验部件的工序之前工序是否操作
+                $flow = db('process_flow')->where('inventory_class_id',$res['inventory_class_id'])->order('flow_type asc')->select();
+                $ai = db('process_flow')
+                    ->where(['inventory_class_id'=>$res['inventory_class_id'],'process_id'=>$res['process_id']])
+                    ->find();
+                foreach ($flow as $v){
+                    if($v['flow_type']<$ai['flow_type']){
+                        $res = db('process_matching')
+                            ->field('login_id')
+                            ->where(['inventory_class_id'=>$v['inventory_class_id'],'process_id'=>$v['process_id']])
+                            ->select();
+                        $aicode = array();
+                        foreach ($res as $k=>$v1){
+                            $aicode[] =  db('user_login')->field('account_name')->where('login_id',$v1['login_id'])->find();
+                        }
+                        $aiqrcode = db('qrcode')
+                            ->where('qrcode_content',$_POST['qrcode_content'])
+                            ->where('operator','in',$aicode)
+                            ->find();
+                        if(empty($aiqrcode)){
+                            $res = $this->alert('扫描的二维码不能跳跃扫描！','checkedOperatio_add',5,5);
+                            return $res;
+                        }
+                    }
+                }
+            }
             if($qrcode['operation_states']==0){
                 $data0['operation_states'] = 1;
                 $data0['states'] = 1;
