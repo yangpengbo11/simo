@@ -38,7 +38,7 @@
 	<i class="Hui-iconfont">&#xe68f;</i></a>
 </nav>
 <div class="page-container">
-	<form action="/admin/Matching/matching_post" name="form1" method="post" class="form form-horizontal" id="form-article-add" onsubmit="return checkForm()">
+	<form action="/admin/Matching/matching_post" name="form1" method="post" class="form form-horizontal" id="form-article-add">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>电机型号：</label>
 			<div class="formControls col-xs-8 col-sm-9">
@@ -53,7 +53,7 @@
 		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-				<button onClick="article_save_submit();" class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 齐套检验</button>
+				<button class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 齐套检验</button>
 			</div>
 		</div>
 	</form>
@@ -74,24 +74,24 @@
 <script type="text/javascript" src="__LIB__/ueditor/1.4.3/ueditor.config.js"></script>
 <script type="text/javascript" src="__LIB__/ueditor/1.4.3/ueditor.all.min.js"> </script>
 <script type="text/javascript" src="__LIB__/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
-<script type="text/javascript">
-	function checkForm() {
-		$log = true;
-		var menus = document.form1.Job_number;
-		var menus1 = document.form1.job_name;
-		if(menus.value=='')
-		{
-			menus.style.borderColor = '#c00';
-			menus.placeholder = '人员工号必填';
-			$log =  false;
-		}
-		if(menus1.value==''){
-			menus1.style.borderColor = '#c00';
-			menus1.placeholder = '人员名称必填';
-			$log =  false;
-		}
-		return $log
-	}
-</script>
+<!--<script type="text/javascript">-->
+<!--	function checkForm() {-->
+<!--		$log = true;-->
+<!--		var menus = document.form1.Job_number;-->
+<!--		var menus1 = document.form1.job_name;-->
+<!--		if(menus.value=='')-->
+<!--		{-->
+<!--			menus.style.borderColor = '#c00';-->
+<!--			menus.placeholder = '人员工号必填';-->
+<!--			$log =  false;-->
+<!--		}-->
+<!--		if(menus1.value==''){-->
+<!--			menus1.style.borderColor = '#c00';-->
+<!--			menus1.placeholder = '人员名称必填';-->
+<!--			$log =  false;-->
+<!--		}-->
+<!--		return $log-->
+<!--	}-->
+<!--</script>-->
 </body>
 </html>

@@ -101,11 +101,18 @@ class Checkedoperatio extends Base
                 'specification_type'=>$_POST['specification_type'],
                 'figure_number'=>$_POST['figure_number']
             );
+            $arr = $_POST['specification_type'];
             foreach ($_POST['qrcode_content'] as $val) {
                 $qrcoed = db('qrcode_record')->where('qrcode_content', $val)->find();
                 if (!empty($qrcoed['pid']) || $qrcoed['pid'] == 0) {
                     $res = $this->alert('输入的二维码不是您可操作的权限！','checkedOperatio_add',5,5);
                     return $res;
+                }
+                if($arr != $qrcoed['specification_type']){
+                    $res = $this->alert('部件型号不匹配！','checkedOperatio_add',5,5);
+                    return $res;
+                }else{
+                    $arr = $qrcoed['specification_type'];
                 }
             }
             $erweima = new Erweima();
