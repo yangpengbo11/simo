@@ -81,9 +81,19 @@ class Checkedoperatio extends Base
                 $data0['operation_states'] = 1;
                 $data0['states'] = 1;
                 //增加操作时间，操作人员
-                db('qrcode')->where($where)->update($data0);
-                $res = $this->alert('扫码成功！','checkedOperatio_add',6,5);
-                return $res;
+                $id = db('qrcode')->where($where)->update($data0);
+                $data1 = array(
+                    'process_flow_id'=>$res['process_id']
+                );
+                if(!empty($id)){
+                    db('qrcode_record')->where('qrcode_content',$_POST['qrcode_content'])->update($data1);
+                    $res = $this->alert('扫码成功！','checkedOperatio_add',6,5);
+                    return $res;
+                }else{
+                    $res = $this->alert('扫码失败！','checkedOperatio_add',5,5);
+                    return $res;
+                }
+
             }else{
                 $res = $this->alert('已操作，不可以再次操作！','checkedOperatio_add',5,5);
                 return $res;
@@ -99,7 +109,8 @@ class Checkedoperatio extends Base
                 'half_products_id' => $inventory['inventory_class_id'],
                 'half_products_name' => $_POST['half_products_name'],
                 'specification_type'=>$_POST['specification_type'],
-                'figure_number'=>$_POST['figure_number']
+                'figure_number'=>$_POST['figure_number'],
+                'process_flow_id'=>$res['process_id']
             );
             $arr = $_POST['specification_type'];
             foreach ($_POST['qrcode_content'] as $val) {
@@ -166,7 +177,8 @@ class Checkedoperatio extends Base
                     $qrcode2 = db('qrcode_record')->where('qrcode_content',$_POST['qrcode_content2'])->find();
                     if($qrcode2){
                         $data = array(
-                            'pid'=>$qrcode1['id']
+                            'pid'=>$qrcode1['id'],
+                            'process_flow_id'=>$res['process_id']
                         );
                         db('qrcode_record')->where('qrcode_content',$_POST['qrcode_content2'])->update($data);
                         $data0['process_name'] = $process['process_name'];
