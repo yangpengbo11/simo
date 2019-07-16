@@ -36,12 +36,11 @@
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
-		<a class="btn btn-primary radius" href="/admin/outenter/outenter_out" > 出库记录</a>
-            <a class="btn btn-primary radius" href="/admin/outenter/outenter_out/type/2" > 入库记录</a>
-            <a class="btn btn-primary radius" href="/admin/outenter/outenter_add/type/1" ><i class="Hui-iconfont">&#xe600;</i> 出库</a>
-            <a class="btn btn-primary radius" href="/admin/outenter/outenter_add/type/2" ><i class="Hui-iconfont">&#xe600;</i> 入库</a>
+            <a class="btn btn-primary radius" href="/admin/outenter/outenter_out" > 入库记录</a>
+		    <a class="btn btn-primary radius" href="/admin/outenter/outenter_out/type/2" > 出库记录</a>
+            <a class="btn btn-primary radius" href="/admin/outenter/outenter_addi" ><i class="Hui-iconfont">&#xe600;</i> 入库</a>
+            <a class="btn btn-primary radius" href="/admin/outenter/outenter_addo" ><i class="Hui-iconfont">&#xe600;</i> 出库</a>
 		</span>
-
     </div>
     <div class="mt-20">
         <table class="table table-border table-bordered table-hover table-bg table-sort">
@@ -50,14 +49,16 @@
                 <th width="25"><input type="checkbox" name="id"></th>
                 <th>物料名称</th>
                 <th>物料编码</th>
+                <th>二维码</th>
                 <th>规格型号</th>
-                <th>数量</th>
                 <th>类型</th>
                 <th>库房</th>
                 <th>供应商</th>
-                <th>创建时间</th>
+                <th>批次号</th>
+                <th>操作人</th>
+                <th>操作时间</th>
                 <th>备注</th>
-                <th width="100">操作</th>
+                <th width="50">操作</th>
             </tr>
             </thead>
             <tbody>
@@ -65,12 +66,14 @@
             <tr class="text-c">
                 <td><input type="checkbox" name="id" value="{$v['id']}"></td>
                 <td>{$v['inventory_name']}</td>
+                <td>{$v['inventory_code']}</td>
                 <td>{$v['materiel_coding']}</td>
                 <td>{$v['specification_type']}</td>
-                <td>{$v['number']}</td>
-                <td>{$v['types']==1?'出库':'入库'}</td>
+                <td>{$v['types']==1?'入库':'出库'}</td>
                 <td>{$v['name']}</td>
                 <td>{$v['vendor_name']}</td>
+                <td>{$v['batch_mark']}</td>
+                <td>{$v['operator']}</td>
                 <td>{$v['create_time']}</td>
                 <td>{$v['remarks']}</td>
                 <td class="f-14">

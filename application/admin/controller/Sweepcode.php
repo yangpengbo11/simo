@@ -29,7 +29,7 @@ class Sweepcode extends Controller
             if(!empty($ss)){
                 $arr['name']= $ss['inventory_name'].'('.$value['specification_type'].')';
             }else{
-                $arr['name']= $value['half_products_name'].'('.$value['specification_type'].')';
+                $arr['name']= $value['inventory_class_name'].'('.$value['specification_type'].')';
             }
             $arr['open']=false;
             $simobom = db('qrcode_record')->where('pid',$arr['id'])->select();
