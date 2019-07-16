@@ -13,11 +13,12 @@ class Matching extends Base
     }
     /**
      * 配套区齐套检查post
+     * 'YE3-200L-4'
      */
     public function matching_post(){
-        $specification_type = 'YE3-200L-4';//$_POST['specification_type'];
-        //$number = $_POST['number'];
         $number = 3;
+        $specification_type = $_POST['specification_type'];
+        $number = $_POST['number'];
         $this->assign('specification_type',$specification_type);
         $this->assign('number',$number);
         return $this->fetch('matching_post');
