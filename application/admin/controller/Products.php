@@ -22,6 +22,7 @@ class Products extends Base
              $data = array(
                  'inventory_code'=>$_POST['inventory_code'],
                  'product_name'=>$_POST['product_name'],
+                 'specification_type'=>$_POST['specification_type'],
                  'pid'=>$_POST['pid'],
                  'create_time'=>date('Y-m-d H:i:s',time())
              );
@@ -35,6 +36,7 @@ class Products extends Base
              $data = array(
                  'inventory_code'=>$_POST['inventory_code'],
                  'product_name'=>$_POST['product_name'],
+                 'specification_type'=>$_POST['specification_type'],
                  'pid'=>$_POST['pid']
              );
              $res = db('products')->where('id',$_POST['id'])->update($data);
