@@ -40,9 +40,9 @@ class Inventory extends Base
            $data['sts_date']=date('Y-m-d H:i:s');
            $res=db('inventory')->insert($data);
            if($res){
-               $this->success('添加成功', 'inventory/inventory_list');
+               return $this->alert('添加成功','/admin/inventory/inventory_list',6);
            }else{
-               $this->error('添加失败','inventory/inventory_list');
+               return $this->alert('添加失败','/admin/inventory/inventory_list',5);
            }
        }else{
            $user=session('users');
@@ -51,23 +51,42 @@ class Inventory extends Base
            $data['modify_date']=date('Y-m-d H:i:s');
            $res=db('inventory')->update($data);
            if($res){
-               $this->success('修改成功', 'inventory/inventory_list');
+               return $this->alert('修改成功','/admin/inventory/inventory_list',6);
            }else{
-               $this->error('修改失败','inventory/inventory_list');
+               return $this->alert('修改失败','/admin/inventory/inventory_list',6);
+
            }
        }
+}
 
-   }
-
+//详情页
    public function inventory_detail(){
        $id=input('id');
        $data=db('inventory')->where(['inventory_id'=>$id])->find();
+       $data1=db('inventory_machnumber')->where(['inventory_code'=>$data['inventory_code'],'state'=>1])->select();
        $this->assign('data',$data);
+       $this->assign('data1',$data1);
        return $this->fetch('inventory_detail');
    }
 
+    //添加加工图号传存货编码参数
+   public function inventory_mpnumber($code){
+       $this->assign('code',$code);
+       return $this->fetch('inventory_mpnumberpost');
+   }
 
-
+   //添加加工图号
+   public function inventory_mpnumberpost(){
+       $data=Request::instance()->post();
+       $data['create_time']=date('Y-m-d H:i:s');
+       $data['state']=1;
+       $res=db('inventory_machnumber')->insert($data);
+       if($res){
+           return $this->alert('添加成功','/admin/inventory/inventory_list',6);
+       }else{
+           return $this->alert('添加失败','/admin/inventory/inventory_list',5);
+       }
+   }
 
 
 

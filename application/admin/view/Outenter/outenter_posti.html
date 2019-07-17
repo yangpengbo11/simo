@@ -35,27 +35,16 @@
     <i class="Hui-iconfont">&#xe68f;</i></a>
 </nav>
 <div class="page-container">
-    <form class="form form-horizontal" id="form-article-add" action="/admin/outenter/outenter_post" name="form1" onsubmit="return checkForm()" method="post">
+    <form class="form form-horizontal" id="form-article-add" action="/admin/outenter/outenter_posti" name="form1" onsubmit="return checkForm()" method="post">
         <div class="row cl">
             <input type="hidden" name="id" value="{$data==''?'':$data['id']}">
-            <input type="hidden" name="snumber" value="{$data==''?'':$data['number']}">
-            <label class="form-label col-xs-4 col-sm-2">物料编码：</label>
+
+            <label class="form-label col-xs-4 col-sm-2">二维码：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="{$data==''?'':$data['materiel_coding']}" placeholder="" id="materiel_coding" name="materiel_coding">
             </div>
         </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">数量：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$data==''?'':$data['number']}" placeholder="" id="number" name="number">
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">类型：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$type==''?$data['types']:$type==1?'出库':'入库'}" placeholder="" id="types" name="types">
-            </div>
-        </div>
+
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">库房：</label>
             <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
@@ -85,20 +74,7 @@
                 <input type="text" class="input-text" value="{$data==''?'':$data['remarks']}" placeholder="" id="remarks" name="remarks">
             </div>
         </div>
-        <div class="row cl" style="display: none;" id="fa">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否生码：</label>
-            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
-                <div class="radio-box">
-                    <input name="fals" type="radio" id="fals-1" value="1" checked>
-                    <label for="fals-1">是</label>
-                </div>
-                <div class="radio-box">
-                    <input type="radio" id="fals-2" name="fals" value="2">
-                    <label for="fals-2">否</label>
-                </div>
 
-            </div>
-        </div>
 
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
@@ -142,11 +118,11 @@ function checkForm() {
         number.placeholder = '物料编码必填';
         log = false;
     }
-    if(number1.value==''){
+    /*if(number1.value==''){
         number1.style.borderColor = '#c00';
         number1.placeholder = '数量必填';
         log = false;
-    }
+    }*/
     return log;
 }
 

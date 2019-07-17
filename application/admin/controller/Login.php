@@ -19,6 +19,7 @@ class Login extends Controller
      * @return mixed
      */
     public function login_post(){
+
         $where['account_name'] = $_POST['name'];
         $where['password'] = md5($_POST['password']);
        // print_r(md5(123456));
