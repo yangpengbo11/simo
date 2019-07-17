@@ -1,9 +1,6 @@
 <?php
 namespace app\admin\controller;
 
-use think\Controller;
-use think\db;
-
 class Menu extends Base
 {
     /**
@@ -41,11 +38,13 @@ class Menu extends Base
             $arr = db('menus')->where('menu_name',$_POST['menu_name'])->find();
             if(empty($_POST['id'])){
                 if(!empty($arr)){
-                    $this->error('菜单名称已存在！');
+                    $res = $this->alert('菜单名称已存在!','add_menu',5,3);
+                    return $res;
                 }
             }else{
-                if($_POST['id']!=$arr['id']){
-                    $this->error('菜单名称已存在！');
+                if($_POST['id']!=$arr['id']&&!empty($arr)){
+                    $res = $this->alert('菜单名称已存在!','edit_menu/id/'.$_POST['id'],5,3);
+                    return $res;
                 }
             }
         }
@@ -59,9 +58,11 @@ class Menu extends Base
             $res = db('menus')->where('id',$_POST['id'])->update($arr);
             //print_r(db('menus')->getLastSql());die;
             if($res){
-                $this->success('编辑成功.', 'Menu/menu_list');
+                $res = $this->alert('编辑成功.','menu_list',6,3);
+                return $res;
             }else{
-                $this->error('编辑失败！');
+                $res = $this->alert('编辑失败！','edit_menu/id/'.$_POST['id'],5,3);
+                return $res;
             }
         }else{
             $arr = array(
@@ -73,9 +74,11 @@ class Menu extends Base
             );
             $res = db('menus')->insert($arr);
             if($res){
-                $this->success('添加成功.', 'Menu/menu_list');
+                $res = $this->alert('添加成功.','menu_list',6,3);
+                return $res;
             }else{
-                $this->error('添加失败！');
+                $res = $this->alert('添加失败！','add_menu',5,3);
+                return $res;
             }
         }
     }

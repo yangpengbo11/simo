@@ -1,1 +1,4 @@
-.idea/
+#
+.idea
+/application/controller/Base.php
+/application/controller/Login.php
