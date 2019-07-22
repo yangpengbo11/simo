@@ -31,6 +31,10 @@ class Matching extends Base
 
     public function getQrcodeRecord(){
         $data = Request::instance()->post();
+//        $data = [
+//            'specification_type'=>'YE3-200L-4',
+//            'number' =>2
+//        ];
         /**
          * 查出所有有关电机型号的所有总装部件 数量
          * 根据总装部件显示子集部件 数量 再根据子集查找下个子集的子集
@@ -41,10 +45,15 @@ class Matching extends Base
          */
         $data1 = array();
         if(!empty($data['specification_type'])){
+            //return json_encode($data['number'],JSON_UNESCAPED_UNICODE);
             $product = db('products')->where('pid',0)->where('specification_type',$data['specification_type'])->find();
             $number = $data['number'];
             $data1 = $this->isQrcodeRecord($product['id'],$number,15);
+
         }
+        print_r($data1);die;
+
+        //return json_encode($data1);
         $arrs=$this->arrs($data1);
         return json_encode($arrs,JSON_UNESCAPED_UNICODE);
     }
@@ -87,11 +96,13 @@ class Matching extends Base
             ->select();
         return json_encode($product_list);
     }
-    public $data1=array();
+
     public function isQrcodeRecord($id,$number,$process_flow_id=0){
         $product_list = db('products')->where('pid',$id)->select();
+        //print_r($product_list);
         $data = array();
         foreach ($product_list as $k=>$v){
+            //print_r($v);
             $where=array();
             if(!empty($process_flow_id)){
                 $where['process_flow_id'] = $process_flow_id;
@@ -103,13 +114,21 @@ class Matching extends Base
                 ->where('pid','0')
                 ->where($where)
                 ->group('base_code')->find();
+            //print_r($find);die;
             if(!empty($find)){
+//                $product_lists = db('products')->where('pid',$v['id'])->find();
+//                if(!empty($product_lists)){
+//                    $find['children'] = $this->isQrcodeRecord($v['id'],$number);
+//                }
+            }else{
+                $find = $product_list[$k];
+                $find['counts'] = 0;
                 $product_lists = db('products')->where('pid',$v['id'])->find();
-                if(!empty($product_lists)|| $find['counts']<$number){
+                if(!empty($product_lists)){
                     $find['children'] = $this->isQrcodeRecord($v['id'],$number);
                 }
-                $data[$k] = $find;
             }
+            $data[$k] = $find;
         }
         return  $data;
     }
