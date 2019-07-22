@@ -77,6 +77,8 @@ class Outenter extends Base
     //出库操作
     public function outenter_posto(){
         $data=Request::instance()->post();
+       // print_r($data);die();
+
         $erweima=$data['materiel_coding'];
         //判断二维码是否存在
         $erweimas=$this->isexistence($erweima);
@@ -95,7 +97,26 @@ class Outenter extends Base
                     db('stock')
                         ->where(['inventory_id'=>$re['materiel_id']])
                         ->setDec('last_quantity');
-                    db('qrcode_record')->where('qrcode_content',$erweima)->update(['process_name'=>'出库','machnumber'=>$data['machnumber']]);
+                    if(isset($data['machnumber'])){
+                        db('qrcode_record')->where('qrcode_content',$erweima)->update(['process_name'=>'出库','machnumber'=>$data['machnumber']]);
+                    }else{
+                        db('qrcode_record')->where('qrcode_content',$erweima)->update(['process_name'=>'出库']);
+                    }
+                    //添加二维码操作记录
+                    $inventory_code=substr($erweima,0,strpos($erweima,'*'));
+                    $inventory_class_code=db('inventory')->where('inventory_code',$inventory_code)->find();
+                    $inventory_class_id=db('inventory_class')->where('inventory_class_code',$inventory_class_code['inventory_class_code'])->find();
+                    $ress=db('process_flow')
+                        ->alias('a')
+                        ->join('process b','a.process_id=b.id')
+                        ->where(['inventory_class_id'=>$inventory_class_id['inventory_class_id']])
+                        ->select();
+                    foreach ($ress as $v){
+                        //$qrcode=array(['qrcode_content'=>$erweima['qrcode_content'],'process_name'=>$v['process_name'],'operation_states'=>0,'create_time'=>date('Y-m-d H:i:s'),'states'=>1]);
+                        db('qrcode')
+                            ->data(['qrcode_content'=>$erweima,'process_name'=>$v['process_name'],'operation_states'=>0,'create_time'=>date('Y-m-d H:i:s'),'states'=>1])
+                            ->insert();
+                    }
                     return $this->alert('操作成功','/admin/outenter/outenter_addo',6);
                 }else{
                     return $this->alert('

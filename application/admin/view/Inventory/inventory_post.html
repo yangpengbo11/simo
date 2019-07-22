@@ -150,7 +150,7 @@
         var number2 = document.form1.inventory_name;
         var number3 = document.form1.inventory_class_code;
         var number4 = document.form1.specification_type;
-        var number5 = document.form1.define6;
+
         if(number.value=='') {
             number.style.borderColor = '#c00';
             number.placeholder = '存货编号必填';
@@ -176,11 +176,7 @@
             number4.placeholder = '规格型号必填';
             log = false;
         }
-        if(number5.value==''){
-            number5.style.borderColor = '#c00';
-            number5.placeholder = '货位必填';
-            log = false;
-        }
+
         return log;
     }
 

@@ -100,17 +100,13 @@
         var log = true;
 
         var number = document.form1.materiel_coding;
-        var number1 = document.form1.machnumber;
+
         if(number.value=='') {
             number.style.borderColor = '#c00';
             number.placeholder = '物料编码必填';
             log = false;
         }
-        if(number1.value==''){
-            number1.style.borderColor = '#c00';
-            number1.placeholder = '加工图号必填';
-            log = false;
-        }
+
         return log;
     }
 

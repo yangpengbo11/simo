@@ -143,9 +143,9 @@
             log = false;
         }
         if(roles=='检验员'){
-            number3.style.borderColor = '#c00';
-            number3.placeholder = '存货分类必填';
-            log = false;
+            /*number3.style.borderColor = '#c00';
+            number3.placeholder = '存货分类必填';*/
+            log = true;
         }
         return  log;
     }
@@ -153,7 +153,7 @@ $(document).ready(function(){
     $("input[name=role_id]").each(function(){
         $(this).click(function(){
             var discount = $(this).next("span").text();
-            if(discount=='检验员'){
+            if(discount=='检验员'||discount=='配套区检验员'){
                 document.getElementById('ids').style.display = "";
             }else{
                 document.getElementById('ids').style.display = "none";
@@ -163,7 +163,7 @@ $(document).ready(function(){
 });
 window.onload=function (){
     var roles = $("input[name='role_id']:checked").next("span").text();
-    if(roles=='检验员'){
+    if(roles=='检验员'||roles=='配套区检验员'){
         document.getElementById('ids').style.display = "";
     }else{
         document.getElementById('ids').style.display = "none";

@@ -103,28 +103,38 @@ class Checkedoperatio extends Base
             $users = session('users');
             $res = db('process_matching')->where('login_id',$users['login_id'])->find();
             //查找基础码
-            $inventory = db('inventory_class')->where('inventory_class_id',$res['inventory_class_id'])->find();
-            $data = array(
-                'base_code'=>$inventory['rule'],
+            //$inventory = db('inventory_class')->where('inventory_class_id',$res['inventory_class_id'])->find();
+            $inventory=db('inventory')->where(['inventory_code'=>$_POST['inventory_code']])->find();
+            $data =array(
+                'base_code'=>$_POST['inventory_code'],
+                'specification_type'=>$inventory['specification_type'],
+                'figure_number'=>$inventory['dwg_code'],
+                'inventory_class_code'=>$inventory['inventory_class_code'],
+                'inventory_class_name'=>$inventory['inventory_name'],
+                'process_flow_id'=>$res['process_id'],
+                'machnumber'=>$_POST['figure_number']
+            );
+            /*$data = array(
+                'base_code'=>$_POST['inventory_code'],
                 'half_products_id' => $inventory['inventory_class_id'],
-                'half_products_name' => $_POST['half_products_name'],
+                //'half_products_name' => $_POST['half_products_name'],
                 'specification_type'=>$_POST['specification_type'],
                 'figure_number'=>$_POST['figure_number'],
                 'process_flow_id'=>$res['process_id']
-            );
-            $arr = $_POST['specification_type'];
+            );*/
+           // $arr = $inventory['specification_type'];
             foreach ($_POST['qrcode_content'] as $val) {
                 $qrcoed = db('qrcode_record')->where('qrcode_content', $val)->find();
-                if (!empty($qrcoed['pid']) || $qrcoed['pid'] == 0) {
+                if (empty($qrcoed) || $qrcoed['pid'] != 0) {
                     $res = $this->alert('输入的二维码不是您可操作的权限！','checkedOperatio_add',5,5);
                     return $res;
                 }
-                if($arr != $qrcoed['specification_type']){
+                /*if($arr != $qrcoed['specification_type']){
                     $res = $this->alert('部件型号不匹配！','checkedOperatio_add',5,5);
                     return $res;
                 }else{
                     $arr = $qrcoed['specification_type'];
-                }
+                }*/
             }
             $erweima = new Erweima();
             $id = $erweima->qrcode($data,10,2);
@@ -150,6 +160,7 @@ class Checkedoperatio extends Base
                             'qrcode_content' => $qrcode1['qrcode_content'],
                             'process_name' => $process['process_name'],
                             'operation_states' => 0,
+                            'create_time'=>date('Y-m-d H:i:s'),
                             'states' =>1
                         );
                         db('qrcode')->insert($v_list);
@@ -215,4 +226,37 @@ class Checkedoperatio extends Base
 //        return json($list);
 //    }
 
+
+    public function checkedOperatio_pt(){
+        $users = session('users');
+        $res = db('process_matching')->where('login_id',$users['login_id'])->find();
+        $this->assign('login',$res);
+        return $this->fetch('checkedOperatio_pt');
+    }
+
+    public function checked_pt_post(){
+        $users = session('users');
+        $res = db('process_matching')->where('login_id',$users['login_id'])->find();
+        $process = db('process')->where('id',$res['process_id'])->find();
+        $data0 = array(
+            'process_name'  => $process['process_name'],
+            'qrcode_content' => $_POST['qrcode_content'],
+            'operator'         => $users['account_name'],
+            'operation_time'   => date('Y-m-d H:i:s',time()),
+            'operation_states' => 1,
+            'states' =>1
+        );
+        $data1 = array(
+            'process_flow_id'=>$res['process_id']
+        );
+        $id =  db('qrcode_record')->where('qrcode_content',$_POST['qrcode_content'])->update($data1);
+        if(!empty($id)){
+            db('qrcode')->insertGetId($data0);
+            $res = $this->alert('扫码成功！','checkedOperatio_pt',6,5);
+            return $res;
+        }else{
+            $res = $this->alert('扫码失败！','checkedOperatio_pt',5,5);
+            return $res;
+        }
+    }
 }

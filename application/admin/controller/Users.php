@@ -109,11 +109,17 @@ class Users extends Base
             $res = db('process_matching')
                 ->alias('a')
                 ->join('tf_process b','a.process_id = b.id')
-                ->join('tf_inventory_class c','a.inventory_class_id = c.inventory_class_id')
-                ->field('a.inventory_class_id,a.process_id,b.process_name,c.inventory_class_name')
+                //->join('tf_inventory_class c','a.inventory_class_id = c.inventory_class_id')
+                ->field('a.inventory_class_id,a.process_id,b.process_name')
                 ->where('a.login_id',$v['login_id'])
                 ->find();
             if(!empty($res)){
+                if(empty($res['inventory_class_id'])){
+                    $res['inventory_class_name'] = '';
+                }else{
+                   $a = db('inventory_class')->where('inventory_class_id',$res['inventory_class_id'])->find();
+                    $res['inventory_class_name'] =$a['inventory_class_name'];
+                }
                 $list[$k]['inventory_class_id'] =  $res['inventory_class_id'];
                 $list[$k]['inventory_class_name'] =  $res['inventory_class_name'];
                 $list[$k]['process_id'] =  $res['process_id'];
@@ -172,13 +178,13 @@ class Users extends Base
         if(!empty($_POST['Job_number'])){
             $arr = db('account')->where('Job_number',$_POST['Job_number'])->find();
             if(empty($_POST['id'])){
-                if(!empty($arr)){
-                    $res = $this->alert('人员工号已存在！重新输入','number_add',5,3);
+                if(empty($arr)){
+                    $res = $this->alert('人员工号不存在！重新输入','number_add',5,3);
                     return $res;
                 }
             }else{
-                if($_POST['id']!=$arr['id']&&!empty($arr)){
-                    $res = $this->alert('人员工号已存在！','number_edit/id/'.$_POST['id'],5,3);
+                if($_POST['id']!=$arr['id'] || empty($arr)){
+                    $res = $this->alert('人员工号不存在！','number_edit/id/'.$_POST['id'],5,3);
                     return $res;
                 }
             }
@@ -267,7 +273,7 @@ class Users extends Base
                     'create_time'=>date('Y-m-d H:i:s',time())
                 );
                 $u_r = db('user_roles')->insert($user);
-                if(!empty($_POST['inventory_class_code'])) {
+                //if(!empty($_POST['inventory_class_code'])) {
                     $inventory_class = db('inventory_class')->where('inventory_class_code',$_POST['inventory_class_code'])->find();
                     $process = array(
                         'login_id' => $login_id,
@@ -277,9 +283,9 @@ class Users extends Base
                         'create_time'=>date('Y-m-d H:i:s',time())
                     );
                     db('process_matching')->insert($process);
-                }
+               // }
                 if($u_r){
-                    $res = $this->alert('添加成功！','accountNumber_edit',6,3);
+                    $res = $this->alert('添加成功！','accountNumber_list',6,3);
                     return $res;
                 }else{
                     $res = $this->alert('添加失败！','accountNumber_add',5,3);
