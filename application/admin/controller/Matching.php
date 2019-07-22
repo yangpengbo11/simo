@@ -30,11 +30,11 @@ class Matching extends Base
      */
 
     public function getQrcodeRecord(){
-        $data = Request::instance()->post();
-//        $data = [
-//            'specification_type'=>'YE3-200L-4',
-//            'number' =>2
-//        ];
+        //$data = Request::instance()->post();
+       $data = [
+            'specification_type'=>'YE3-200L-4',
+           'number' =>2
+      ];
         /**
          * 查出所有有关电机型号的所有总装部件 数量
          * 根据总装部件显示子集部件 数量 再根据子集查找下个子集的子集
@@ -51,25 +51,22 @@ class Matching extends Base
             $data1 = $this->isQrcodeRecord($product['id'],$number,15);
 
         }
-        print_r($data1);die;
+        //print_r($data1);die;
 
         //return json_encode($data1);
         $arrs=$this->arrs($data1);
+        //print_r($arrs);die;
         return json_encode($arrs,JSON_UNESCAPED_UNICODE);
     }
 
     public $arr_s=array();
     public function arrs($data){
+        //print_r($data);die();
         foreach ($data as $k=>$v){
             if(!empty($data[$k])) {
                 $arr['id'] = $v['id'];
                 $arr['pId'] = $v['pid'];
-                $ss = db('inventory')->where('inventory_code', $v['base_code'])->find();
-                if (!empty($ss)) {
-                    $arr['name'] = $ss['inventory_name'] . '(' . $v['specification_type'] . ')(' . $v['counts'] . ')';
-                } else {
-                    $arr['name'] = $v['inventory_class_name'] . '(' . $v['specification_type'] . ')(' . $v['counts'] . ')';
-                }
+                $arr['name'] = $v['inventory_class_name'] . '(' . $v['specification_type'] . ')(' . $v['counts'] . ')';
                 $arr['open'] = false;
                 if (!empty($v['children'])) {
                     $arr['children'] = $this->arrs($v['children']);
@@ -77,6 +74,7 @@ class Matching extends Base
                 $this->arr_s[] = $arr;
             }
         }
+
         return $this->arr_s;
     }
 
@@ -99,7 +97,7 @@ class Matching extends Base
 
     public function isQrcodeRecord($id,$number,$process_flow_id=0){
         $product_list = db('products')->where('pid',$id)->select();
-        //print_r($product_list);
+        //print_r($product_list); die();
         $data = array();
         foreach ($product_list as $k=>$v){
             //print_r($v);
@@ -116,11 +114,15 @@ class Matching extends Base
                 ->group('base_code')->find();
             //print_r($find);die;
             if(!empty($find)){
-//                $product_lists = db('products')->where('pid',$v['id'])->find();
-//                if(!empty($product_lists)){
-//                    $find['children'] = $this->isQrcodeRecord($v['id'],$number);
-//                }
+               $find['id'] = $v['id'];
+               $find['pid'] = $v['pid'];
+               $product_lists = db('products')->where('pid',$v['id'])->find();
+               if(!empty($product_lists)){
+                   $find['children'] = $this->isQrcodeRecord($v['id'],$number);
+               }
             }else{
+                $product_list[$k]['base_code'] = $product_list[$k]['inventory_code'];
+                $product_list[$k]['inventory_class_name'] = $product_list[$k]['product_name'];
                 $find = $product_list[$k];
                 $find['counts'] = 0;
                 $product_lists = db('products')->where('pid',$v['id'])->find();

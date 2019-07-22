@@ -130,7 +130,7 @@
             dataType : "json",
             cache : false,
             success : function(data) {
-                console.log(data);
+                console.log(eval(data));
                 data = eval(data);//ztree只认js对象，而不是字符串，所以eval转换下
                 zTreeObj = $.fn.zTree.init($("#bcTree"), setting, data);
                 $.fn.zTree.init($("#bcTree"), setting, data);
