@@ -41,8 +41,8 @@ class Matching extends Base
          */
         $data1 = array();
         if(!empty($data['specification_type'])){
-            $product = db('products')->where('specification_type',$data['specification_type'])->find();
-            $number = 3;
+            $product = db('products')->where('pid',0)->where('specification_type',$data['specification_type'])->find();
+            $number = $data['number'];
             $data1 = $this->isQrcodeRecord($product['id'],$number,15);
         }
         $arrs=$this->arrs($data1);

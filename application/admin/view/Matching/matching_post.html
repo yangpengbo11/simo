@@ -121,9 +121,10 @@
     };
     function initTree() {
         var id = '{$specification_type}';
+        var number = '{$number}';
         jQuery.ajax({
             url : "/admin/matching/getQrcodeRecord",
-            data : {specification_type:id},
+            data : {specification_type:id,number:number},
             type : "POST",
             dataType : "json",
             cache : false,
