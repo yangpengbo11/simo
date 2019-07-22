@@ -84,11 +84,11 @@ class Matching extends Base
      */
     public function qrcodeRecord(){
         $id = input('id');
-        $product = db('qrcode_record')->where('id',$id)->find();
+        $product = db('products')->where('id',$id)->find();
         $product_list = db('qrcode_record')
             ->alias('a')
             ->join('tf_process b', 'a.process_flow_id = b.id')
-            ->where('a.base_code',$product['base_code'])
+            ->where('a.base_code',$product['inventory_code'])
             ->where('a.pid',0)
             ->where('a.specification_type',$product['specification_type'])
             ->select();
