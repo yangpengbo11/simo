@@ -30,11 +30,7 @@ class Matching extends Base
      */
 
     public function getQrcodeRecord(){
-        //$data = Request::instance()->post();
-       $data = [
-            'specification_type'=>'YE3-200L-4',
-           'number' =>2
-      ];
+        $data = Request::instance()->post();
         /**
          * 查出所有有关电机型号的所有总装部件 数量
          * 根据总装部件显示子集部件 数量 再根据子集查找下个子集的子集
@@ -45,36 +41,32 @@ class Matching extends Base
          */
         $data1 = array();
         if(!empty($data['specification_type'])){
-            //return json_encode($data['number'],JSON_UNESCAPED_UNICODE);
             $product = db('products')->where('pid',0)->where('specification_type',$data['specification_type'])->find();
             $number = $data['number'];
             $data1 = $this->isQrcodeRecord($product['id'],$number,15);
 
         }
-        //print_r($data1);die;
-
-        //return json_encode($data1);
-        $arrs=$this->arrs($data1);
-        //print_r($arrs);die;
+        $arrs=$this->arrs($data1,$data['number']);
         return json_encode($arrs,JSON_UNESCAPED_UNICODE);
     }
-
     public $arr_s=array();
-    public function arrs($data){
-        //print_r($data);die();
+    public function arrs($data,$number){
         foreach ($data as $k=>$v){
             if(!empty($data[$k])) {
                 $arr['id'] = $v['id'];
                 $arr['pId'] = $v['pid'];
-                $arr['name'] = $v['inventory_class_name'] . '(' . $v['specification_type'] . ')(' . $v['counts'] . ')';
+                if($v['counts']>$number){
+                    $arr['name'] = '<div style="color:red">'.$v['inventory_class_name'] . '(' . $v['specification_type'] . ')(' . $v['counts'] . ')</div>';
+                }else{
+                    $arr['name'] = '<div style="color:green">'.$v['inventory_class_name'] . '(' . $v['specification_type'] . ')(' . $v['counts'] . ')</div>';
+                }
                 $arr['open'] = false;
                 if (!empty($v['children'])) {
-                    $arr['children'] = $this->arrs($v['children']);
+                    $arr['children'] = $this->arrs($v['children'],$number);
                 }
                 $this->arr_s[] = $arr;
             }
         }
-
         return $this->arr_s;
     }
 

@@ -38,7 +38,7 @@
 </nav>
 <div class="page-container">
     <div style="width: 30%;float: left;min-height:400px;overflow-y:auto;max-height:500px;">
-        <span style="color:green">到总装的部件名称（规格型号）（数量）</span>
+        <span>到总装的部件名称（规格型号）（数量）</span>
         <ul id="bcTree" class="ztree" style=""></ul>
     </div>
     <div style="width: 70%;height:100%;float: left">
@@ -112,8 +112,13 @@
                         data = JSON.parse(data);
                         var m= '';
                         for (var i=0;i<data.length;i++) {
-                            m += '<tr class="text-c" ><td>'+data[i].inventory_class_name+'('+data[i].specification_type+')</td><td>'+data[i].base_code+'</td><td>'+data[i].process_name+'</td></tr>';
-                        }
+                            if(data[i].process_name=='入配套区'){
+                                m += '<tr class="text-c"><td  style="color: green">'+data[i].inventory_class_name+'('+data[i].specification_type+')</td><td  style="color: green">'+data[i].base_code+'</td><td  style="color: green">'+data[i].process_name+'</td></tr>';
+                            }else{
+                                m += '<tr class="text-c"><td style="color: red">'+data[i].inventory_class_name+'('+data[i].specification_type+')</td><td style="color: red">'+data[i].base_code+'</td><td style="color: red">'+data[i].process_name+'</td></tr>';
+                            }
+
+                    }
                         $('#text').html(m);
                     }
                 });
