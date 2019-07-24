@@ -84,15 +84,70 @@ class Matching extends Base
      */
     public function qrcodeRecord(){
         $id = input('id');
+        $number = input('number');
         $product = db('products')->where('id',$id)->find();
-        $product_list = db('qrcode_record')
+        $arr = db('qrcode_record')
             ->alias('a')
             ->join('tf_process b', 'a.process_flow_id = b.id')
             ->where('a.base_code',$product['inventory_code'])
             ->where('a.pid',0)
             ->where('a.specification_type',$product['specification_type'])
             ->select();
-        return json_encode($product_list);
+        $a = count($arr);
+        $num = $number-$a;
+        if($num>0){
+            $list = $this->getRecord($id,$arr,$num);
+        }
+        return json_encode($list);
+    }
+
+    /**
+     * @return array
+     */
+    public function getRecord($id,$arr,$num)
+    {
+        $product = db('products')->where('pid',$id)->select();
+        if(count($product)==0){
+            $product = db('products')->where('id',$id)->find();
+            $arrs[0]['id'] = $product['id'];
+            $arrs[0]['inventory_class_name'] = $product['product_name'];
+            $arrs[0]['specification_type'] = $product['specification_type'];
+            $arrs[0]['counts'] =$num;
+            $arrs[0]['pid'] =0;
+            $arrs[0]['base_code'] = $product['inventory_code'];
+            $arrs[0]['process_name'] = '未入库';
+            $arr = array_merge($arr,$arrs);
+        }else{
+            foreach ($product as $v){
+                $arrs = db('qrcode_record')
+                    ->alias('a')
+                    ->field('*,count(base_code) as counts')
+                    ->join('tf_process b', 'a.process_flow_id = b.id')
+                    ->where('a.base_code',$v['inventory_code'])
+                    ->where('a.pid',0)
+                    ->where('a.specification_type',$v['specification_type'])
+                    ->select();
+                if(is_array($arrs)){
+                    $arrs[0]['id'] = $v['id'];
+                    $arrs[0]['inventory_class_name'] = $v['product_name'];
+                    $arrs[0]['specification_type'] = $v['specification_type'];
+                    $arrs[0]['counts'] =$num;
+                    $arrs[0]['pid'] =0;
+                    $arrs[0]['base_code'] = $v['inventory_code'];
+                    $arrs[0]['process_name'] = '未入库';
+                    $arr = array_merge($arr,$arrs);
+                }else{
+                    $arr = array_merge($arr,$arrs);
+                    $a = count($arrs);
+                    $num = $num-$a;
+                    if($num>0){
+                        $arr = $this->getRecord($v['id'],$arr,$num);
+                    }
+                }
+            }
+        }
+
+        return $arr;
     }
 
     public function isQrcodeRecord($id,$number,$process_flow_id=0){
