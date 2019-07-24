@@ -97,6 +97,8 @@ class Matching extends Base
         $num = $number-$a;
         if($num>0){
             $list = $this->getRecord($id,$arr,$num);
+        }else{
+            $list = $arr;
         }
         return json_encode($list);
     }
