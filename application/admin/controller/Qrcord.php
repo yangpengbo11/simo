@@ -32,6 +32,7 @@ class Qrcord extends Base
         $erweima =new Erweima();
         //$lists=array("base_code"=>"simo");
         $erweima->qrcode($lists,10,3);
-        $this->success('生成二维码成功','/admin/qrcord/qrcord_list');
+        return $this->alert('生成二维码成功','/admin/qrcord/qrcord_list',6,3);
+        //$this->success('生成二维码成功','/admin/qrcord/qrcord_list');
     }
 }

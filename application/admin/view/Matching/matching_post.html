@@ -112,7 +112,7 @@
                         data = JSON.parse(data);
                         var m= '';
                         for (var i=0;i<data.length;i++) {
-                            m += '<tr class="text-c" style="background-color:green"><td>'+data[i].inventory_class_name+'('+data[i].specification_type+')</td><td>'+data[i].base_code+'</td><td>'+data[i].process_name+'</td></tr>';
+                            m += '<tr class="text-c" ><td>'+data[i].inventory_class_name+'('+data[i].specification_type+')</td><td>'+data[i].base_code+'</td><td>'+data[i].process_name+'</td></tr>';
                         }
                         $('#text').html(m);
                     }

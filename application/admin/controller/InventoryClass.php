@@ -56,7 +56,7 @@ class InventoryClass extends Base
     }
 
 
-    public function submit(Request $request){
+    public function submit(){
        $data=Request::instance()->post();
        $id=$data['inventory_class_id'];
        if(empty($id)){
