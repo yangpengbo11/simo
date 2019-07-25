@@ -16,7 +16,6 @@ class Matching extends Base
      * 'YE3-200L-4'
      */
     public function matching_post(){
-        $number = 3;
         $specification_type = $_POST['specification_type'];
         $number = $_POST['number'];
         $this->assign('specification_type',$specification_type);
