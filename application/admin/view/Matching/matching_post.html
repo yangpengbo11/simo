@@ -108,7 +108,7 @@
                     dataType : "json",
                     cache : false,
                     success : function(data) {
-                       console.log(data);
+                        console.log(data);
                         data = JSON.parse(data);
                         var m= '';
                         for (var i=0;i<data.length;i++) {
@@ -118,7 +118,7 @@
                                 m += '<tr class="text-c"><td style="color: red">'+data[i].inventory_class_name+'('+data[i].specification_type+')</td><td style="color: red">'+data[i].base_code+'</td><td style="color: red">'+data[i].process_name+'</td></tr>';
                             }
 
-                    }
+                        }
                         $('#text').html(m);
                     }
                 });

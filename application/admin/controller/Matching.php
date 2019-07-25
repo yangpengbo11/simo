@@ -16,7 +16,6 @@ class Matching extends Base
      * 'YE3-200L-4'
      */
     public function matching_post(){
-        $number = 3;
         $specification_type = $_POST['specification_type'];
         $number = $_POST['number'];
         $this->assign('specification_type',$specification_type);
@@ -46,7 +45,7 @@ class Matching extends Base
             $data1 = $this->isQrcodeRecord($product['id'],$number,15);
 
         }
-        $arrs=$this->arrs($data1,$data['number']);
+        $arrs=$this->arrs($data1,$number);
         return json_encode($arrs,JSON_UNESCAPED_UNICODE);
     }
     public $arr_s=array();
@@ -55,7 +54,7 @@ class Matching extends Base
             if(!empty($data[$k])) {
                 $arr['id'] = $v['id'];
                 $arr['pId'] = $v['pid'];
-                if($v['counts']>$number){
+                if($v['counts']<$number){
                     $arr['name'] = '<div style="color:red">'.$v['inventory_class_name'] . '(' . $v['specification_type'] . ')(' . $v['counts'] . ')</div>';
                 }else{
                     $arr['name'] = '<div style="color:green">'.$v['inventory_class_name'] . '(' . $v['specification_type'] . ')(' . $v['counts'] . ')</div>';
