@@ -103,7 +103,6 @@ class Checkedoperatio extends Base
             $users = session('users');
             $res = db('process_matching')->where('login_id',$users['login_id'])->find();
             //查找基础码
-            //$inventory = db('inventory_class')->where('inventory_class_id',$res['inventory_class_id'])->find();
             $inventory=db('inventory')->where(['inventory_code'=>$_POST['inventory_code']])->find();
             $data =array(
                 'base_code'=>$_POST['inventory_code'],
@@ -114,27 +113,12 @@ class Checkedoperatio extends Base
                 'process_flow_id'=>$res['process_id'],
                 'machnumber'=>$_POST['figure_number']
             );
-            /*$data = array(
-                'base_code'=>$_POST['inventory_code'],
-                'half_products_id' => $inventory['inventory_class_id'],
-                //'half_products_name' => $_POST['half_products_name'],
-                'specification_type'=>$_POST['specification_type'],
-                'figure_number'=>$_POST['figure_number'],
-                'process_flow_id'=>$res['process_id']
-            );*/
-           // $arr = $inventory['specification_type'];
             foreach ($_POST['qrcode_content'] as $val) {
                 $qrcoed = db('qrcode_record')->where('qrcode_content', $val)->find();
                 if (empty($qrcoed) || $qrcoed['pid'] != 0) {
                     $res = $this->alert('输入的二维码不是您可操作的权限！','checkedOperatio_add',5,5);
                     return $res;
                 }
-                /*if($arr != $qrcoed['specification_type']){
-                    $res = $this->alert('部件型号不匹配！','checkedOperatio_add',5,5);
-                    return $res;
-                }else{
-                    $arr = $qrcoed['specification_type'];
-                }*/
             }
             $erweima = new Erweima();
             $id = $erweima->qrcode($data,10,2);
@@ -150,12 +134,19 @@ class Checkedoperatio extends Base
                 $data0['process_name'] = $process['process_name'];
                 $data0['operation_states'] = 1;
                 $data0['states'] = 2;
+                $qrcode1 = db('qrcode_record')->where('id',$id)->find();
+                $data0['qrcode_content'] = $qrcode1['qrcode_content'];
+                $data0['create_time'] = date('Y-m-d H:i:s',time());
+                $insert_qr = db('qrcode')->insert($data0);
                 //查找当前部件的所有工序
+//                if(!$insert_qr){
+//                    $res = $this->alert('生码失败！','checkedOperatio_add',5,5);
+//                    return $res;
+//                }
                 $flow = db('process_flow')->where('inventory_class_id',$res['inventory_class_id'])->select();
                 foreach ($flow as $v){
                     if($v['flow_type']==1){
                         $process = db('process')->where('id',$v['process_id'])->find();
-                        $qrcode1 = db('qrcode_record')->where('id',$id)->find();
                         $v_list = array(
                             'qrcode_content' => $qrcode1['qrcode_content'],
                             'process_name' => $process['process_name'],
