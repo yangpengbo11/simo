@@ -11,10 +11,9 @@ class Outenter extends Base
     public function outenter_out($type=1){
         $data=db('out_enter_record')
             ->alias('a')
-            ->join('warehouse b','a.storehouse_id=b.id')
-            ->join('vendor c','c.vendor_id = a.supplier_id')
-            ->join('inventory d','d.inventory_id=a.materiel_id')
-            ->field('b.name,c.vendor_name,a.*,d.inventory_name,d.inventory_code,d.specification_type')
+            ->join('vendor c','c.vendor_id = a.supplier_id','left')
+            ->join('inventory d','d.inventory_id=a.materiel_id','left')
+            ->field('c.vendor_name,a.*,d.inventory_name,d.inventory_code,d.specification_type')
             ->where(['a.types'=>$type])
             ->select();
         $this->assign('data',$data);
@@ -23,12 +22,7 @@ class Outenter extends Base
 
     //添加入库记录 查询库房，供应商
     public function outenter_addi(){
-        $warehouse=db('warehouse')->select();
-        $vendor=db('vendor')->select();
         $this->assign('data','');
-        //$this->assign('type',$type);
-        $this->assign('warehouse',$warehouse);
-        $this->assign('vendor',$vendor);
         return $this->fetch('outenter_posti');
     }
 
@@ -55,7 +49,7 @@ class Outenter extends Base
                    db('stock')
                        ->where(['inventory_id'=>$inventory_id['inventory_id']])
                        ->setInc('last_quantity');
-                   db('qrcode_record')->where('qrcode_content',$erweima)->update(['process_name'=>'入库']);
+                   db('qrcode_record')->where('qrcode_content',$erweima)->update(['process_name'=>'入库','process_flow_id'=>2]);
                    return $this->alert('操作成功','/admin/outenter/outenter_addi',6);
                }else{
                    return $this->alert('
@@ -98,9 +92,9 @@ class Outenter extends Base
                         ->where(['inventory_id'=>$re['materiel_id']])
                         ->setDec('last_quantity');
                     if(isset($data['machnumber'])){
-                        db('qrcode_record')->where('qrcode_content',$erweima)->update(['process_name'=>'出库','machnumber'=>$data['machnumber']]);
+                        db('qrcode_record')->where('qrcode_content',$erweima)->update(['process_name'=>'出库','machnumber'=>$data['machnumber'],'process_flow_id'=>3]);
                     }else{
-                        db('qrcode_record')->where('qrcode_content',$erweima)->update(['process_name'=>'出库']);
+                        db('qrcode_record')->where('qrcode_content',$erweima)->update(['process_name'=>'出库','process_flow_id'=>3]);
                     }
                     //添加二维码操作记录
                     $inventory_code=substr($erweima,0,strpos($erweima,'*'));
@@ -120,7 +114,7 @@ class Outenter extends Base
                     return $this->alert('操作成功','/admin/outenter/outenter_addo',6);
                 }else{
                     return $this->alert('
-                   入库失败','/admin/outenter/outenter_addo',5);
+                   出库失败','/admin/outenter/outenter_addo',5);
                 }
             }else{
                 return $this->alert('此物料已出库','/admin/outenter/outenter_addo',5);
@@ -162,13 +156,12 @@ class Outenter extends Base
             $d=substr($t,11);
             for($i=1;$i<=$data['number'];$i++){
                 $a=$c.($d+$i);
-                $lists=array('base_code'=>$data['materiel_coding'],'roam'=>$a,'specification_type'=>$inventory['specification_type'],'figure_number'=>$inventory['dwg_code'],'inventory_class_code'=>$inventory['inventory_class_code'],'inventory_class_name'=>$inventory['inventory_name']);
+                $lists=array('base_code'=>$data['materiel_coding'],'roam'=>$a,'specification_type'=>$inventory['specification_type'],'figure_number'=>$inventory['dwg_code'],'inventory_class_code'=>$inventory['inventory_class_code'],'inventory_class_name'=>$inventory['inventory_name'],'process_flow_id'=>1);
                 $erwei->qrcode($lists,5,1);
             }
-            $this->success('操作成功','/admin/outenter/outenter_fuma',1);
+            return $this->alert('操作成功','/admin/outenter/outenter_fuma',6);
         }else{
-           return
-               $this->alert('系统没有此物料的档案，请先添加档案','/admin/inventory/inventory_add',5);
+           return $this->alert('系统没有此物料的档案，请先添加档案','/admin/inventory/inventory_add',5);
         }
     }
 
@@ -181,6 +174,32 @@ public function selmachnumber(){
     $data=db('inventory_machnumber')->where(['inventory_code'=>$inventory_code])->select();
     return json_encode($data,JSON_UNESCAPED_UNICODE);
 }
+
+//添加供应商查询
+public function outenter_gys($ids){
+    // $arr= explode(",",$ids);
+    $data=db('vendor')->select();
+    $this->assign('data',$data);
+    $this->assign('ids',$ids);
+    return $this->fetch('outenter_gysp');
+
+}
+
+public function outenter_sgys(){
+        $data=Request::instance()->post();
+    $ids=explode(",",$data['ids']);
+    $ini['id'] = array('in',$ids);
+    $res = db('out_enter_record')->where($ini)->setField('supplier_id',$data['supplier_id']);
+    if($res){
+        return $this->alert('操作成功','/admin/outenter/outenter_out',6);
+    }else{
+        return $this->alert('操作失败','/admin/outenter/outenter_out',5);
+    }
+
+
+}
+
+
 
 
 

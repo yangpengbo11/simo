@@ -69,6 +69,19 @@
         </div>
 
         <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">库房：</label>
+            <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select name="storehouse_id" class="select">
+                    {foreach $warehouse as $w}
+                       <option value="{$w['id']}" {$data==''?'':$data['storehouse_id']==$w['id']?'selected':''}>{$w['name']}</option>
+                    {/foreach}
+
+				</select>
+				</span>
+            </div>
+        </div>
+
+        <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>计量单位：</label>
             <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
 				<select name="unit_code" class="select">
@@ -80,6 +93,7 @@
 				</span>
             </div>
         </div>
+
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">货位：</label>
             <div class="formControls col-xs-8 col-sm-9">

@@ -7,14 +7,19 @@ use think\Request;
 class Inventory extends Base
 {
    public function inventory_list(){
-      $data=db('inventory')->order('inventory_id','asc')->select();
+    // $data=db('inventory')->order('inventory_id','asc')->select();
+       $data=db('inventory')
+           ->alias('a')
+           ->join('warehouse b','a.storehouse_id=b.id')
+           ->select();
       $this->assign('data',$data);
       return $this->fetch();
    }
 
    public function inventory_add(){
        $unit=db('unit')->where(['states'=>'1'])->select();
-
+       $warehouse=db('warehouse')->select();
+       $this->assign('warehouse',$warehouse);
        $this->assign('unit',$unit);
        $this->assign('data','');
        return $this->fetch('inventory_post');
@@ -25,6 +30,8 @@ class Inventory extends Base
        $data=db('inventory')->where(['inventory_id'=>$id])->find();
        $unit=db('unit')->where(['states'=>'1'])->select();
        //var_dump($data);
+       $warehouse=db('warehouse')->select();
+       $this->assign('warehouse',$warehouse);
       $this->assign('unit',$unit);
        $this->assign('data',$data);
        return $this->fetch('inventory_post');
@@ -62,7 +69,12 @@ class Inventory extends Base
 //详情页
    public function inventory_detail(){
        $id=input('id');
-       $data=db('inventory')->where(['inventory_id'=>$id])->find();
+       $data=db('inventory')
+           ->alias('a')
+           ->join('warehouse b','a.storehouse_id=b.id')
+           ->where(['inventory_id'=>$id])
+           ->find();
+       //var_dump($data);die();
        $data1=db('inventory_machnumber')->where(['inventory_code'=>$data['inventory_code'],'state'=>1])->select();
        $this->assign('data',$data);
        $this->assign('data1',$data1);

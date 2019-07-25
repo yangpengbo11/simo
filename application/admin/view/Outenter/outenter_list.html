@@ -38,6 +38,7 @@
 		<span class="l">
             <a class="btn btn-primary radius" href="/admin/outenter/outenter_out" > 入库记录</a>
 		    <a class="btn btn-primary radius" href="/admin/outenter/outenter_out/type/2" > 出库记录</a>
+            <a class="btn btn-primary radius" id="gys">添加供货商</a>
             <a class="btn btn-primary radius" href="/admin/outenter/outenter_addi" ><i class="Hui-iconfont">&#xe600;</i> 入库</a>
             <a class="btn btn-primary radius" href="/admin/outenter/outenter_addo" ><i class="Hui-iconfont">&#xe600;</i> 出库</a>
 		</span>
@@ -46,13 +47,12 @@
         <table class="table table-border table-bordered table-hover table-bg table-sort">
             <thead>
             <tr class="text-c">
-                <th width="25"><input type="checkbox" name="id"></th>
+                <th width="25"><input type="checkbox"></th>
                 <th>物料名称</th>
                 <th>物料编码</th>
                 <th>二维码</th>
                 <th>规格型号</th>
                 <th>类型</th>
-                <th>库房</th>
                 <th>供应商</th>
                 <th>批次号</th>
                 <th>操作人</th>
@@ -70,7 +70,7 @@
                 <td>{$v['materiel_coding']}</td>
                 <td>{$v['specification_type']}</td>
                 <td>{$v['types']==1?'入库':'出库'}</td>
-                <td>{$v['name']}</td>
+
                 <td>{$v['vendor_name']}</td>
                 <td>{$v['batch_mark']}</td>
                 <td>{$v['operator']}</td>
@@ -131,5 +131,26 @@
         });
     }
 </script>
+<script>
+    $(function(){
+        $("#gys").click(function(){
+
+       var a= $("input[name=id]:checked");
+       if(a.length>0){
+           var ids="";
+           for(var i=0;i<a.length;i++){
+               if(i==a.length-1){
+                   ids=ids+a[i].value;
+               }else{
+                   ids=ids+a[i].value+",";
+               }
+           }
+           location.href="/admin/outenter/outenter_gys/ids/"+ids;
+       }
+
+    });
+    })
+</script>
+
 </body>
 </html>

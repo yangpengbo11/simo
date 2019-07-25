@@ -35,16 +35,19 @@
     <i class="Hui-iconfont">&#xe68f;</i></a>
 </nav>
 <div class="page-container">
-    <form class="form form-horizontal" id="form-article-add" action="/admin/outenter/outenter_posti" name="form1" onsubmit="return checkForm()" method="post">
+    <form class="form form-horizontal" id="form-article-add" action="/admin/outenter/outenter_sgys" name="form1" method="post">
+        <input type="hidden" name="ids" value="{$ids}">
         <div class="row cl">
-            <input type="hidden" name="id" value="{$data==''?'':$data['id']}">
-
-            <label class="form-label col-xs-4 col-sm-2">二维码：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$data==''?'':$data['materiel_coding']}" placeholder="" id="materiel_coding" name="materiel_coding">
+            <label class="form-label col-xs-4 col-sm-2">供货商：</label>
+            <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select name="supplier_id" class="select">
+                    {foreach $data as $w}
+                       <option value="{$w['vendor_id']}">{$w['vendor_name']}</option>
+                    {/foreach}
+				</select>
+				</span>
             </div>
         </div>
-
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
                 <button  class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
@@ -69,25 +72,7 @@
 <script type="text/javascript" src="__LIB__/ueditor/1.4.3/ueditor.config.js"></script>
 <script type="text/javascript" src="__LIB__/ueditor/1.4.3/ueditor.all.min.js"> </script>
 <script type="text/javascript" src="__LIB__/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
-<script type="text/javascript">
 
-function checkForm() {
-    var log = true;
-    var number = document.form1.materiel_coding;
-    if(number.value=='') {
-        number.style.borderColor = '#c00';
-        number.placeholder = '物料编码必填';
-        log = false;
-    }
-    /*if(number1.value==''){
-        number1.style.borderColor = '#c00';
-        number1.placeholder = '数量必填';
-        log = false;
-    }*/
-    return log;
-}
-
-</script>
 <!--/请在上方写此页面业务相关的脚本-->
 </body>
 </html>
