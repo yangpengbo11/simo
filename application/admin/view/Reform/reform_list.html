@@ -1,0 +1,111 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" >
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="__LIB__/html5shiv.js"></script>
+<script type="text/javascript" src="__LIB__/respond.min.js"></script>
+
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="__STATIC__/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="__STATIC__/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="__LIB__/Hui-iconfont/1.0.8/iconfont.css" />
+
+<link rel="stylesheet" type="text/css" href="__STATIC__/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="__STATIC__/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="__LIB__/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<!--/meta 作为公共模版分离出去-->
+
+<link href="__LIB__/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>
+	<span class="c-gray en">&gt;</span>
+	二维码管理
+	<span class="c-gray en">&gt;</span>
+	改制复新项
+</nav>
+<div class="page-container">
+	<form action="/admin/Reform/reform_post" name="form1" method="post" class="form form-horizontal" id="form-article-add">
+		<div class="row cl">
+			<label class="form-label col-xs-5 col-sm-1"></label>
+			<label class="form-label col-xs-5 col-sm-2" style="text-align:right">新成品码：</label>
+			<div class="formControls col-xs-8 col-sm-8">
+				<input type="text" class="input-text" style="border: solid 1px #b4b4b7;" id="simo_product" name="simo_product">
+			</div>
+		</div>
+		<div class="mt-20">
+			<table class="table table-border table-bordered table-hover table-bg table-sort">
+				<thead>
+				<tr class="text-c">
+					<th>存货编号</th>
+					<th>存货名称</th>
+					<th>规格型号</th>
+					<th>加工图号</th>
+					<th width="280">改制复新操作</th>
+					<th width="200">改制旧部件去向</th>
+					<th>二维码</th>
+				</tr>
+				</thead>
+				<tbody>
+				{foreach $list as $v}
+				<tr class="text-c">
+					<td>{$v['base_code']}</td>
+					<td>{$v['inventory_class_name']}</td>
+					<td>{$v['specification_type']}</td>
+					<td>{$v['figure_number']}</td>
+					<td class="f-14">
+						<input type="hidden" name="id[]" value="{$v['id']}"/>
+						<input type="radio" name="reform{$v['id']}" value="0" checked/> 不变
+						<input type="radio" name="reform{$v['id']}" value="1"/> 改制
+						<input type="radio" name="reform{$v['id']}" value="2"/> 复新
+					</td>
+					<td class="f-14">
+						<input type="radio" name="reforms{$v['id']}" value="0" checked/> 库房
+						<input type="radio" name="reforms{$v['id']}" value="1"/> 废品库
+					</td>
+					<td class="f-14">
+						<a href="{:url('/admin/Reform/reform_detail',['id'=>$v['id']])}" target="_Blank" style="text-decoration:none">打印二维码</a>
+					</td>
+				</tr>
+				{/foreach}
+				</tbody>
+			</table>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<button  class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
+				<button onClick="removeIframe();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="__LIB__/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="__LIB__/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="__STATIC__/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="__STATIC__/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__LIB__/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript" src="__LIB__/webuploader/0.1.5/webuploader.min.js"></script>
+<script type="text/javascript" src="__LIB__/ueditor/1.4.3/ueditor.config.js"></script>
+<script type="text/javascript" src="__LIB__/ueditor/1.4.3/ueditor.all.min.js"> </script>
+<script type="text/javascript" src="__LIB__/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
+</body>
+</html>

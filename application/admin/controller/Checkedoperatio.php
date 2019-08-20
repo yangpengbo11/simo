@@ -83,7 +83,8 @@ class Checkedoperatio extends Base
                 //增加操作时间，操作人员
                 $id = db('qrcode')->where($where)->update($data0);
                 $data1 = array(
-                    'process_flow_id'=>$res['process_id']
+                    'process_flow_id'=>$res['process_id'],
+                    'create_time' => date('Y-m-d H:i:s')
                 );
                 if(!empty($id)){
                     db('qrcode_record')->where('qrcode_content',$_POST['qrcode_content'])->update($data1);
@@ -125,7 +126,8 @@ class Checkedoperatio extends Base
             //修改父节点
             foreach ($_POST['qrcode_content'] as $val){
                 $data = array(
-                    'pid'=>$id
+                    'pid'=>$id,
+                    'create_time' => date('Y-m-d H:i:s')
                 );
                 db('qrcode_record')->where('qrcode_content',$val)->update($data);
             }
@@ -177,22 +179,21 @@ class Checkedoperatio extends Base
                 $qrcode1 = db('qrcode_record')->where('qrcode_content',$_POST['qrcode_content1'])->find();
                 if($qrcode1){
                     $qrcode2 = db('qrcode_record')->where('qrcode_content',$_POST['qrcode_content2'])->find();
-                    if($qrcode2){
+                    if($qrcode2&&$qrcode1['specification_type']==$qrcode2['specification_type']){
                         $data = array(
                             'pid'=>$qrcode1['id'],
-                            'process_flow_id'=>$res['process_id']
+                            'process_flow_id'=>$res['process_id'],
+                            'create_time' => date('Y-m-d H:i:s')
                         );
                         db('qrcode_record')->where('qrcode_content',$_POST['qrcode_content2'])->update($data);
                         $data0['process_name'] = $process['process_name'];
                         $data0['operation_states'] = 1;
                         $data0['states'] = 3;
                         db('qrcode')->insert($data0);
-                        $this->error('绑码成功！');
                         $res = $this->alert('绑码成功！','checkedOperatio_add',6,5);
                         return $res;
                     }else{
-                        $this->error('被绑码编号不存在！');
-                        $res = $this->alert('已操作，不可以再次操作！','checkedOperatio_add',5,5);
+                        $res = $this->alert('已操作或部件与成品型号不一致！','checkedOperatio_add',5,5);
                         return $res;
                     }
                 }else{

@@ -158,6 +158,7 @@ class Matching extends Base
                 ->field('*,count(base_code) as counts')
                 ->where('base_code',$v['inventory_code'])
                 ->where('pid','0')
+                ->where('states',0)
                 ->where($where)
                 ->group('base_code')->find();
             //print_r($find);die;
@@ -181,5 +182,28 @@ class Matching extends Base
             $data[$k] = $find;
         }
         return  $data;
+    }
+
+    //预锁定
+    public function preLocking(){
+        //型号，时间，工序
+        $type = input('specification_type');
+        $number = input('number');
+        $product = db('products')->where('pid',0)->where('specification_type',$type)->find();
+        $product_list = db('products')->where('pid',$product['id'])->select();
+        foreach ($product_list as $v){
+            $list = db('qrcode_record')
+                ->where('base_code',$v['inventory_code'])
+                ->where('pid',0)
+                ->where('process_flow_id',15)
+                ->order('roam','asc')
+                ->limit(0,$number)
+                ->select();
+            foreach ($list as $v){
+                db('qrcode_record')->where('id',$v['id'])->update(array('states'=>1));
+            }
+        }
+        $res = $this->alert('锁定成功！','/admin/Matching/matching_inspect',6,3);
+        return $res;
     }
 }
