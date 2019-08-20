@@ -97,10 +97,16 @@ class Users extends Base
      * 登录账号列表
      */
     public function accountNumber_list(){
+        $user = session('users');
+        $where = array();
+        if($user['dep_id']!=0){
+            $where['dep_id'] = $user['dep_id'];
+        }
         $list = db('user_login')
             ->alias('a')
             ->join('tf_account b',' a.personnel_id = b.id')
             ->field('b.*,a.login_id,a.account_name')
+            ->where($where)
             ->select();
         foreach ($list as $k=>$v){
             if(empty($v['process_id'])){
@@ -140,6 +146,8 @@ class Users extends Base
         $res = db('roles')->select();
         $this->assign('data','');
         $this->assign('role_id','');
+        $dep = db('department')->select();
+        $this->assign('dep',$dep);
         $this->assign('roles',$res);
         $list = db('process')->select();
         $this->assign('process',$list);
@@ -162,7 +170,8 @@ class Users extends Base
         $u_r = db('user_roles')->where('login_id', $id)->find();
         $res = db('roles')->select();
         $list = db('process')->select();
-
+        $dep = db('department')->select();
+        $this->assign('dep',$dep);
         $this->assign('process',$list);
         $this->assign('data',$data);
         $this->assign('role_id',$u_r['role_id']);
@@ -189,7 +198,6 @@ class Users extends Base
                 }
             }
         }
-
         if(!empty($_POST['account_name'])){
             $arr = db('user_login')->where('account_name',$_POST['account_name'])->find();
             if(empty($_POST['id'])){
@@ -211,6 +219,7 @@ class Users extends Base
             $arr = array(
                 'account_name'=>$_POST['account_name'],
                 'password'=>md5($_POST['password']),
+                'dep_id' =>$_POST['dep_id'],
                 'personnel_id'=>$res['id'],
                 'create_time'=>date('Y-m-d H:i:s',time())
             );
@@ -262,6 +271,7 @@ class Users extends Base
             $arr = array(
                 'account_name'=>$_POST['account_name'],
                 'password'=>md5($_POST['password']),
+                'dep_id' =>$_POST['dep_id'],
                 'personnel_id'=>$res['id'],
                 'create_time'=>date('Y-m-d H:i:s',time())
             );
@@ -413,14 +423,49 @@ class Users extends Base
         }
     }
 
-//    /**
-//     * 搜索显示数据
-//     * @return
-//     */
-//    public function vague(){
-//
-//        $vague = input('vague');
-//        $list = $this->getVague('inventory_class','inventory_class_name',$vague);
-//        return json($list);
-//    }
+    //部门管理
+    public function department_list(){
+        $list = db('department')->select();
+        $this->assign('list',$list);
+        return $this->fetch('department_list');
+    }
+    //添加部门
+    public function department_add(){
+        $this->assign('data','');
+        return $this->fetch('department_post');
+    }
+    //编辑部门
+    public function department_edit(){
+        $id = input('id');
+        $data = db('department')->where('id',$id)->find();
+        $this->assign('data',$data);
+        return $this->fetch('department_post');
+    }
+
+    //修改添加post提交处理
+    public function department_post(){
+        $id = input('id');
+        $name = input('dep_name');
+        if(empty($id)){
+            $data = array('dep_name'=>$name);
+            $res = db('department')->insert($data);
+            if($res){
+                $res = $this->alert('添加成功！','department_list',6,3);
+                return $res;
+            }else{
+                $res = $this->alert('添加失败！','department_add',5,3);
+                return $res;
+            }
+        }else{
+            $data = array('dep_name'=>$name);
+            $res = db('department')->where('id',$id)->update($data);
+            if($res){
+                $res = $this->alert('编辑成功！','department_list',6,3);
+                return $res;
+            }else{
+                $res = $this->alert('编辑失败！','department_list',5,3);
+                return $res;
+            }
+        }
+    }
 }

@@ -31,7 +31,7 @@ class Login extends Controller
             $res = $this->alert('登陆成功！','/admin/index/index',6,5);
             return $res;
         }else{
-            $res = $this->alert('登陆失败,用户密码不匹配！','login',6,5);
+            $res = $this->alert('登陆失败,用户密码不匹配！','login',5,5);
             return $res;
         }
     }
