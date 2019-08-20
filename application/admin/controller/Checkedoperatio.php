@@ -186,8 +186,10 @@ class Checkedoperatio extends Base
                             'create_time' => date('Y-m-d H:i:s')
                         );
                         db('qrcode_record')->where('qrcode_content',$_POST['qrcode_content2'])->update($data);
+                        $data0['qrcode_content'] = $_POST['qrcode_content2'];
                         $data0['process_name'] = $process['process_name'];
                         $data0['operation_states'] = 1;
+                        $data0['create_time'] = date('Y-m-d H:i:s');
                         $data0['states'] = 3;
                         db('qrcode')->insert($data0);
                         $res = $this->alert('绑码成功！','checkedOperatio_add',6,5);
