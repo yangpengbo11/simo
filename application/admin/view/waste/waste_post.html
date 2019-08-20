@@ -23,51 +23,25 @@
     <![endif]-->
     <!--/meta 作为公共模版分离出去-->
 
-    <title>出入库操作</title>
+    <title>入废料库</title>
     <meta name="keywords" content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
     <meta name="description" content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
 </head>
 <body>
 <nav class="breadcrumb">
     <i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>
-    仓库管理 <span class="c-gray en">&gt;</span>
-    出入库管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+    废料管理 <span class="c-gray en">&gt;</span>
+    入废料库 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
     <i class="Hui-iconfont">&#xe68f;</i></a>
 </nav>
 <div class="page-container">
-    <form class="form form-horizontal" id="form-article-add" action="/admin/outenter/outenter_posto" name="form1" onsubmit="return checkForm()" method="post">
+    <form class="form form-horizontal" id="form-article-add" action="/admin/waste/waste_post" name="form1" onsubmit="return checkForm()" method="post">
         <div class="row cl">
-
             <label class="form-label col-xs-4 col-sm-2">二维码：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="materiel_coding" name="materiel_coding">
             </div>
         </div>
-        <!--<div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">加工图号：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="machnumber" name="machnumber">
-            </div>
-        </div>-->
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">加工图号：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-				<span class="select-box">
-				<select id="machnumber" name="machnumber" class="select">
-					<!--<option value="0">请选择</option>-->
-
-				</select>
-				</span>
-            </div>
-        </div>
-
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">备注：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="remarks" name="remarks">
-            </div>
-        </div>
-
 
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
@@ -95,52 +69,22 @@
 <script type="text/javascript" src="__LIB__/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
 <script type="text/javascript">
 
-
     function checkForm() {
         var log = true;
-
         var number = document.form1.materiel_coding;
-
         if(number.value=='') {
             number.style.borderColor = '#c00';
-            number.placeholder = '物料编码必填';
+            number.placeholder = '二维码必填';
             log = false;
         }
-
+        /*if(number1.value==''){
+            number1.style.borderColor = '#c00';
+            number1.placeholder = '数量必填';
+            log = false;
+        }*/
         return log;
     }
 
-</script>
-<script type="text/javascript">
-    $(function(){
-        $("#machnumber").focus(function(){
-            var ddl=$("#machnumber");
-            ddl.empty();
-          var materiel_coding=$("#materiel_coding").val();
-          if(materiel_coding!=""){
-              jQuery.ajax({
-                  url : "/admin/Outenter/selmachnumber",
-                  data : {materiel_coding:materiel_coding},
-                  type : "POST",
-                  dataType : "json",
-                  cache : false,
-                  success : function(data) {
-                      var result = eval('(' + data + ')');//ztree只认js对象，而不是字符串，所以eval转换下
-                      $(result).each(function (key) {
-                          //添加option 对应Json对象名称
-                          var opt = $("<option></option>").text(result[key].machnumber).val(result[key].machnumber);
-                          ddl.append(opt);
-                      });
-                  }
-
-              })
-          }
-        });
-
-        /*$("#machnumber").blur(function(){
-            $("#machnumber").empty();
-        });*/
-    })
 </script>
 <!--/请在上方写此页面业务相关的脚本-->
 </body>

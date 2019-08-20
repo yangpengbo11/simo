@@ -32,11 +32,9 @@ class Outenter extends Base
        $erweima=$data['materiel_coding'];
        //判断二维码是否存在
        $erweimas=$this->isexistence($erweima);
-       //var_dump($this->isexistence($erweima)); die();
        if($erweimas){
-           //判断二维码是否
-           //是未入库状态
-           if($erweimas['process_name']==null){
+           //判断二维码是否是未入库状态
+           if($erweimas['process_flow_id']==1){
                $code=substr($erweima,0,stripos($erweima,'*'));
                $inventory_id=db('inventory')->where(['inventory_code'=>$code])->field('inventory_id')->find();
                $data['materiel_id']=$inventory_id['inventory_id'];
@@ -49,11 +47,14 @@ class Outenter extends Base
                    db('stock')
                        ->where(['inventory_id'=>$inventory_id['inventory_id']])
                        ->setInc('last_quantity');
-                   db('qrcode_record')->where('qrcode_content',$erweima)->update(['process_name'=>'入库','process_flow_id'=>2]);
+                   $qrcode_record=array(
+                       'process_flow_id'=>2,
+                       'create_time'=>date('Y-m-d H:i:s',time())
+                   );
+                   db('qrcode_record')->where('qrcode_content',$erweima)->update($qrcode_record);
                    return $this->alert('操作成功','/admin/outenter/outenter_addi',6);
                }else{
-                   return $this->alert('
-                   入库失败','/admin/outenter/outenter_addi',5);
+                   return $this->alert('入库失败','/admin/outenter/outenter_addi',5);
                }
            }else{
                return $this->alert('此物料已出库','/admin/outenter/outenter_addi',5);
@@ -71,16 +72,12 @@ class Outenter extends Base
     //出库操作
     public function outenter_posto(){
         $data=Request::instance()->post();
-       // print_r($data);die();
-
         $erweima=$data['materiel_coding'];
         //判断二维码是否存在
         $erweimas=$this->isexistence($erweima);
-        //var_dump($this->isexistence($erweima)); die();
         if($erweimas){
-            //判断二维码是否
-            //是未出库状态
-            if($erweimas['process_name']=="入库"){
+            //判断二维码是否是未出库状态
+            if($erweimas['process_flow_id']==2){
                 $re=db('out_enter_record')->where(['materiel_coding'=>$erweima,'types'=>1])->find();
                 unset($re['id']);
                 $re['types']=2;
@@ -92,9 +89,19 @@ class Outenter extends Base
                         ->where(['inventory_id'=>$re['materiel_id']])
                         ->setDec('last_quantity');
                     if(isset($data['machnumber'])){
-                        db('qrcode_record')->where('qrcode_content',$erweima)->update(['process_name'=>'出库','machnumber'=>$data['machnumber'],'process_flow_id'=>3]);
+                        $qrcode_record=array(
+                            'process_flow_id'=>3,
+                            'create_time'=>date('Y-m-d H:i:s',time()),
+                            'machnumber'=>$data['machnumber']
+                        );
+                        db('qrcode_record')->where('qrcode_content',$erweima)->update($qrcode_record);
                     }else{
-                        db('qrcode_record')->where('qrcode_content',$erweima)->update(['process_name'=>'出库','process_flow_id'=>3]);
+                        $qrcode_record=array(
+                            'process_flow_id'=>3,
+                            'create_time'=>date('Y-m-d H:i:s',time())
+
+                        );
+                        db('qrcode_record')->where('qrcode_content',$erweima)->update($qrcode_record);
                     }
                     //添加二维码操作记录
                     $inventory_code=substr($erweima,0,strpos($erweima,'*'));
@@ -126,22 +133,17 @@ class Outenter extends Base
 
     public function outenter_erweima(){
         $id=input('id');
-
         $data=db('qrcode_record')->where(['access_id'=>$id])->select();
-
         if(empty($data)){
             $this->error('没有二维码','/admin/outenter/outenter_out');
         }else{
-
             $this->assign('data',$data);
             return $this->fetch('outenter_erweima');
         }
-
     }
 
     //跳转到生成流转码的页面
     public function outenter_fuma(){
-
         return $this->fetch();
     }
    //入库之前生成流转码
@@ -182,11 +184,10 @@ public function outenter_gys($ids){
     $this->assign('data',$data);
     $this->assign('ids',$ids);
     return $this->fetch('outenter_gysp');
-
 }
 
 public function outenter_sgys(){
-        $data=Request::instance()->post();
+    $data=Request::instance()->post();
     $ids=explode(",",$data['ids']);
     $ini['id'] = array('in',$ids);
     $res = db('out_enter_record')->where($ini)->setField('supplier_id',$data['supplier_id']);
@@ -195,8 +196,6 @@ public function outenter_sgys(){
     }else{
         return $this->alert('操作失败','/admin/outenter/outenter_out',5);
     }
-
-
 }
 
 

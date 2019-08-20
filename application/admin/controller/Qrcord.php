@@ -35,4 +35,7 @@ class Qrcord extends Base
         return $this->alert('生成二维码成功','/admin/qrcord/qrcord_list',6,3);
         //$this->success('生成二维码成功','/admin/qrcord/qrcord_list');
     }
+
+
+
 }

@@ -35,6 +35,7 @@
     <i class="Hui-iconfont">&#xe68f;</i></a>
 </nav>
 <div class="page-container">
+
     <form class="form form-horizontal" id="form-article-add" name="form1" action="/admin/inventory/inventory_post" method="post" onsubmit="return checkForm()">
         <div class="row cl">
             <input type="hidden" name="inventory_id" value="{$data==''?'':$data['inventory_id']}">
@@ -142,6 +143,7 @@
             </div>
         </div>
     </form>
+
 </div>
 
 <!--_footer 作为公共模版分离出去-->

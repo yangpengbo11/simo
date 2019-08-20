@@ -2,6 +2,7 @@
 
 namespace app\admin\controller;
 use app\admin\common\Erweima;
+use think\Request;
 
 class Checkedoperatio extends Base
 {
@@ -16,6 +17,54 @@ class Checkedoperatio extends Base
         $res = db('process_matching')->where('login_id',$users['login_id'])->find();
         $this->assign('login',$res);
         return $this->fetch('checkedOperatio_add');
+    }
+
+    public function waste_pt(){
+        return $this->fetch('waste_pt');
+    }
+
+    public function waste(){
+        $data=Request::instance()->post();
+        $users = session('users');
+        $res = db('process_matching')->where('login_id',$users['login_id'])->find();
+        $process = db('process')->where('id',$res['process_id'])->find();
+        $where['qrcode_content'] = $data['qrcode_content'];
+        $where['process_name'] = $process['process_name'];
+        $qrcode = db('qrcode')->where($where)->find();
+        if(!empty($qrcode)){
+            $data0 = array(
+                'operator'         => $users['account_name'],
+                'operation_time'   => date('Y-m-d H:i:s',time()),
+                'operation_states' => 0,
+                'operation_states'=>1,
+                'states'=>1
+            );
+            //增加操作时间，操作人员
+            $id = db('qrcode')->where($where)->update($data0);
+        }
+        $process_name='';
+        if($data['is_assemble']==20){
+            $process_name='工废';
+        }else{
+            $process_name='料废';
+        }
+        $data1 = array(
+            'operator'         => $users['account_name'],
+            'operation_time'   => date('Y-m-d H:i:s',time()),
+            'operation_states'=>1,
+            'states'=>4,
+            'qrcode_content'=>$data['qrcode_content'],
+            'create_time'=>date('Y-m-d H:i:s',time()),
+            'process_name'=>$process_name
+        );
+        $insert_qr = db('qrcode')->insert($data1);
+        $data2 = array(
+            'process_flow_id'=>$data['is_assemble'],
+            'create_time'=>date('Y-m-d H:i:s',time())
+        );
+        db('qrcode_record')->where('qrcode_content',$data['qrcode_content'])->update($data2);
+        $res = $this->alert('操作成功！','/admin/checkedoperatio/waste_pt',6,5);
+        return $res;
     }
 
     public function checkedOperatio_post(){
@@ -77,6 +126,7 @@ class Checkedoperatio extends Base
                     }
                 }
             }
+
             if($qrcode['operation_states']==0){
                 $data0['operation_states'] = 1;
                 $data0['states'] = 1;

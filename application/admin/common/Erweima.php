@@ -23,8 +23,7 @@ class Erweima
         if(isset($lists['specification_type'])){
             $data=$data.$lists['specification_type']."*";
         }else if(isset($lists['figure_number'])){
-            $data=$data.$lists['figure_
-            number']."*";
+            $data=$data.$lists['figure_number']."*";
         }
 
        /* foreach ($lists as $list){
@@ -35,9 +34,6 @@ class Erweima
        }else{
            $data=$data.$time;
        }
-
-
-
 
         $level=3;
         Vendor('phpqrcode.phpqrcode');
@@ -59,7 +55,6 @@ class Erweima
         }else{
             $filename="images/".$type."/".date("Ymd")."/".$time.".png";
         }
-
 
         //把二维码信息保存到数据库H
         if($type!=1){
