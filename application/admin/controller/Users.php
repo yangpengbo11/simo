@@ -239,7 +239,7 @@ class Users extends Base
                         $process = array(
                             'login_id'=>$_POST['id'],
                             'types'=>$_POST['types'],
-                            'inventory_class_id'=>$inventory_class['inventory_class_id'],
+                            'inventory_class_id'=>$inventory_class['inventory_class_code'],
                             'process_id'=>$_POST['process_id'],
                             'create_time'=>date('Y-m-d H:i:s',time())
                         );
