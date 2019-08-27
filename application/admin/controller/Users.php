@@ -163,10 +163,11 @@ class Users extends Base
             ->alias('a')
             ->join('tf_account b','b.id = a.personnel_id')
             ->join('tf_process_matching c','c.login_id = a.login_id')
-            ->join('tf_inventory_class d','c.inventory_class_id = d.inventory_class_id')
+            ->join('tf_inventory_class d','c.inventory_class_id = d.inventory_class_code')
             ->field('b.*,a.*,c.inventory_class_id,c.process_id,c.types,d.inventory_class_code')
             ->where(['a.login_id'=>$id])
             ->find();
+        print_r($data);die;
         $u_r = db('user_roles')->where('login_id', $id)->find();
         $res = db('roles')->select();
         $list = db('process')->select();
