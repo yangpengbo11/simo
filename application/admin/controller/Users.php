@@ -167,7 +167,6 @@ class Users extends Base
             ->field('b.*,a.*,c.inventory_class_id,c.process_id,c.types,d.inventory_class_code')
             ->where(['a.login_id'=>$id])
             ->find();
-        print_r($data);die;
         $u_r = db('user_roles')->where('login_id', $id)->find();
         $res = db('roles')->select();
         $list = db('process')->select();
@@ -286,10 +285,14 @@ class Users extends Base
                 $u_r = db('user_roles')->insert($user);
                 //if(!empty($_POST['inventory_class_code'])) {
                     $inventory_class = db('inventory_class')->where('inventory_class_code',$_POST['inventory_class_code'])->find();
+                    if(empty($inventory_class)){
+                        $res = $this->alert('添加失败,不存在的存货分类编码','accountNumber_add',5,3);
+                        return $res;
+                    }
                     $process = array(
                         'login_id' => $login_id,
                         'types' => $_POST['types'],
-                        'inventory_class_id' => $inventory_class['inventory_class_id'],
+                        'inventory_class_id' => $inventory_class['inventory_class_code'],
                         'process_id' => $_POST['process_id'],
                         'create_time'=>date('Y-m-d H:i:s',time())
                     );
