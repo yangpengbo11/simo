@@ -183,7 +183,7 @@ class Checkedoperatio extends Base
                 $qrcode1 = db('qrcode_record')->where('qrcode_content',$_POST['qrcode_content1'])->find();
                 if($qrcode1){
                     $qrcode2 = db('qrcode_record')->where('qrcode_content',$_POST['qrcode_content2'])->find();
-                    if($qrcode2&&$qrcode1['specification_type']==$qrcode2['specification_type']){
+                    if($qrcode2){
                         $data = array(
                             'pid'=>$qrcode1['id'],
                             'process_flow_id'=>$res['process_id'],
@@ -191,23 +191,23 @@ class Checkedoperatio extends Base
                         );
                         db('qrcode_record')->where('qrcode_content',$_POST['qrcode_content2'])->update($data);
                         $data0['qrcode_content'] = $_POST['qrcode_content2'];
-                        $data0['process_name'] = $process['process_name'];
+                        $data0['process_name'] = '总装';
                         $data0['operation_states'] = 1;
                         $data0['create_time'] = date('Y-m-d H:i:s');
                         $data0['states'] = 3;
                         db('qrcode')->insert($data0);
-                        $res = $this->alert('绑码成功！','checkedOperatio_add',6,5);
+                        $res = $this->alert('绑码成功！','checked_zb',6,5);
                         return $res;
                     }else{
-                        $res = $this->alert('已操作或部件与成品型号不一致！','checkedOperatio_add',5,5);
+                        $res = $this->alert('已操作或部件与成品型号不一致！','checked_zb',5,5);
                         return $res;
                     }
                 }else{
-                    $res = $this->alert('输入绑码编号不存在！','checkedOperatio_add',5,5);
+                    $res = $this->alert('输入绑码编号不存在！','checked_zb',5,5);
                     return $res;
                 }
             }else{
-                $res = $this->alert('绑码编号不正确！','checkedOperatio_add',5,5);
+                $res = $this->alert('绑码编号不正确！','checked_zb',5,5);
                 return $res;
             }
         }
@@ -224,11 +224,17 @@ class Checkedoperatio extends Base
 //        return json($list);
 //    }
 
+   //总装帮码
+    public function checked_zb(){
+        return $this->fetch();
+    }
 
+
+   //入配套区
     public function checkedOperatio_pt(){
-        $users = session('users');
+        /*$users = session('users');
         $res = db('process_matching')->where('login_id',$users['login_id'])->find();
-        $this->assign('login',$res);
+        $this->assign('login',$res);*/
         return $this->fetch('checkedOperatio_pt');
     }
 
@@ -237,7 +243,7 @@ class Checkedoperatio extends Base
         $res = db('process_matching')->where('login_id',$users['login_id'])->find();
         $process = db('process')->where('id',$res['process_id'])->find();
         $data0 = array(
-            'process_name'  => $process['process_name'],
+            'process_name'  =>'入配套区',
             'qrcode_content' => $_POST['qrcode_content'],
             'operator'         => $users['account_name'],
             'operation_time'   => date('Y-m-d H:i:s',time()),
@@ -245,7 +251,7 @@ class Checkedoperatio extends Base
             'states' =>1
         );
         $data1 = array(
-            'process_flow_id'=>$res['process_id']
+            'process_flow_id'=>15
         );
         $id =  db('qrcode_record')->where('qrcode_content',$_POST['qrcode_content'])->update($data1);
         if(!empty($id)){

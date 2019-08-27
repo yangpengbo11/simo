@@ -192,7 +192,7 @@ class Users extends Base
                     return $res;
                 }
             }else{
-                if($_POST['id']!=$arr['id'] || empty($arr)){
+                if(empty($arr)){
                     $res = $this->alert('人员工号不存在！','number_edit/id/'.$_POST['id'],5,3);
                     return $res;
                 }
@@ -203,11 +203,6 @@ class Users extends Base
             if(empty($_POST['id'])){
                 if(!empty($arr)){
                     $res = $this->alert('账号名称已存在！重新输入','number_add',5,3);
-                    return $res;
-                }
-            }else{
-                if($_POST['id']!=$arr['id']&&!empty($arr)){
-                    $res = $this->alert('账号名称已存在！','number_edit/id/'.$_POST['id'],5,3);
                     return $res;
                 }
             }
@@ -247,7 +242,7 @@ class Users extends Base
                     }else{
                         $process = array(
                             'types'=>$_POST['types'],
-                            'inventory_class_id'=>$inventory_class['inventory_class_id'],
+                            'inventory_class_id'=>$inventory_class['inventory_class_code'],
                             'process_id'=>$_POST['process_id']
                         );
                         db('process_matching')->where('login_id',$_POST['id'])->update($process);
@@ -283,7 +278,7 @@ class Users extends Base
                     'create_time'=>date('Y-m-d H:i:s',time())
                 );
                 $u_r = db('user_roles')->insert($user);
-                //if(!empty($_POST['inventory_class_code'])) {
+                if(!empty($_POST['inventory_class_code'])) {
                     $inventory_class = db('inventory_class')->where('inventory_class_code',$_POST['inventory_class_code'])->find();
                     if(empty($inventory_class)){
                         $res = $this->alert('添加失败,不存在的存货分类编码','accountNumber_add',5,3);
@@ -297,7 +292,7 @@ class Users extends Base
                         'create_time'=>date('Y-m-d H:i:s',time())
                     );
                     db('process_matching')->insert($process);
-               // }
+               }
                 if($u_r){
                     $res = $this->alert('添加成功！','accountNumber_list',6,3);
                     return $res;
