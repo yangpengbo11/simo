@@ -120,8 +120,7 @@ class Outenter extends Base
                     }
                     return $this->alert('操作成功','/admin/outenter/outenter_addo',6);
                 }else{
-                    return $this->alert('
-                   出库失败','/admin/outenter/outenter_addo',5);
+                    return $this->alert('出库失败','/admin/outenter/outenter_addo',5);
                 }
             }else{
                 return $this->alert('此物料已出库','/admin/outenter/outenter_addo',5);
