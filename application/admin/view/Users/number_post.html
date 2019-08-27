@@ -51,7 +51,7 @@
 				<select name="dep_id" class="select">
                      <option value="0" {$data==''?'':$data['dep_id']==0?'selected':''}>其他部门</option>
                     {foreach $dep as $u}
-                       <option value="{$u['dep_name']}" {$data==''?'':$data['dep_id']==$u['dep_id']?'selected':''}>{$u['dep_name']}</option>
+                       <option value="{$u['dep_name']}" {$data['dep_id']==$u['id']?'selected':''} >{$u['dep_name']}</option>
                     {/foreach}
 				</select>
 				</span>
