@@ -33,6 +33,9 @@ class Reform extends Base
          */
         $arr_id =$_POST['id'];
         $content = $_POST['simo_product'];
+        if(empty($content)){
+            $this->error('没有新成品码无法改制复新！');
+        }
         $id = db('qrcode_record')->where('qrcode_content',$content)->find();
         foreach ($arr_id as $k=>$v){
             $reform1 = $_POST['reform'.$v];
