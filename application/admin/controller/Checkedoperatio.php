@@ -50,11 +50,14 @@ class Checkedoperatio extends Base
             $qr_code = db('qrcode_record')->where($where)->find();
             $where['process_name'] = $process['process_name'];
             $qrcode = db('qrcode')->where($where)->find();
-            if(empty($qrcode)||$res['inventory_class_id']!=$qr_code['inventory_class_code']){
+            $a=strpos($qr_code['inventory_class_code'], $res['inventory_class_id']);
+
+            if(empty($qrcode)||$a===false){
+
                 $res = $this->alert('输入二维码内容不是你要处理的二维码！','checkedOperatio_add',5,5);
                 return $res;
             }
-            if(!empty($qrcode)&&$res['inventory_class_id']==$qr_code['inventory_class_code']){
+            if(!empty($qrcode)&&$a==0){
                 //查找当前检验部件的工序之前工序是否操作
                 $flow = db('process_flow')->where('inventory_class_id',$res['inventory_class_id'])->order('flow_type asc')->select();
                 $ai = db('process_flow')
@@ -186,7 +189,7 @@ class Checkedoperatio extends Base
                     if($qrcode2){
                         $data = array(
                             'pid'=>$qrcode1['id'],
-                            'process_flow_id'=>$res['process_id'],
+                            'process_flow_id'=>16,
                             'create_time' => date('Y-m-d H:i:s')
                         );
                         db('qrcode_record')->where('qrcode_content',$_POST['qrcode_content2'])->update($data);
@@ -251,7 +254,8 @@ class Checkedoperatio extends Base
             'states' =>1
         );
         $data1 = array(
-            'process_flow_id'=>15
+            'process_flow_id'=>15,
+            'create_time'=>date('Y-m-d H:i:s')
         );
         $id =  db('qrcode_record')->where('qrcode_content',$_POST['qrcode_content'])->update($data1);
         if(!empty($id)){
