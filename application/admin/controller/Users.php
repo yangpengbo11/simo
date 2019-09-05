@@ -3,6 +3,16 @@ namespace app\admin\controller;
 
 class Users extends Base
 {
+    private $roleid;
+    private $dep_id;
+    public function _initialize()
+    {
+        //初始化获取角色ID
+        $user = session('users');
+        $this->roleid = $user['personnel_id'];
+        $this->dep_id = $user['dep_id'];
+    }
+
     /**
      * 人员档案列表
      */
@@ -12,6 +22,7 @@ class Users extends Base
         $this->assign('data',$data);
         return $this->fetch('account_list');
     }
+
     /**
      * 增加人员信息
      */
@@ -143,13 +154,20 @@ class Users extends Base
      * 增加人员信息
      */
     public function number_add(){
-        $res = db('roles')->select();
+        $where = array();
+        if($this->dep_id==0){
+            $where['dep_id'] = $this->dep_id;
+            $dep = db('department')->where('id',$this->dep_id)->select();
+            $list = db('process')->where('dep_id',$this->dep_id)->select();
+        }else{
+            $dep = db('department')->select();
+            $list = db('process')->select();
+        }
+        $res = db('roles')->where($where)->select();
         $this->assign('data','');
         $this->assign('role_id','');
-        $dep = db('department')->select();
         $this->assign('dep',$dep);
         $this->assign('roles',$res);
-        $list = db('process')->select();
         $this->assign('process',$list);
         return $this->fetch('number_post');
     }
@@ -168,9 +186,16 @@ class Users extends Base
             ->where(['a.login_id'=>$id])
             ->find();
         $u_r = db('user_roles')->where('login_id', $id)->find();
-        $res = db('roles')->select();
-        $list = db('process')->select();
-        $dep = db('department')->select();
+        $where = array();
+        if($this->dep_id==0){
+            $where['dep_id'] = $this->dep_id;
+            $dep = db('department')->where('id',$this->dep_id)->select();
+            $list = db('process')->where('dep_id',$this->dep_id)->select();
+        }else{
+            $dep = db('department')->select();
+            $list = db('process')->select();
+        }
+        $res = db('roles')->where($where)->select();
         $this->assign('dep',$dep);
         $this->assign('process',$list);
         $this->assign('data',$data);
@@ -321,11 +346,16 @@ class Users extends Base
      * @return mixed
      */
     public function role_add(){
-
-        $data = db('menus')->order('id','asc')->select();
+        $role = db('department')->order('id','asc')->select();
+        $data = db('roles_authority')
+            ->alias('a')
+            ->join('tf_menus b','b.id = a.menus_id')
+            ->field('b.*,a.menus_id,a.states')
+            ->where('role_id',$this->roleid)->order('a.menus_id','asc')->select();
         $data = $this->getTree($data);
         $this->assign('data','');
         $this->assign('datas',$data);
+        $this->assign('role',$role);
         return $this->fetch('role_post');
     }
 
@@ -337,10 +367,16 @@ class Users extends Base
     public function role_edit(){
         $id = input('id');
         $role = db('roles')->where('id',$id)->find();
-        $data = db('menus')->order('id','asc')->select();
+        $data = db('roles_authority')
+            ->alias('a')
+            ->join('tf_menus b','b.id = a.menus_id')
+            ->field('b.*,a.menus_id,a.states')
+            ->where('role_id',$this->roleid)->order('a.menus_id','asc')->select();
         $data = $this->getTree($data);
         $this->assign('datas',$data);
         $this->assign('data',$role);
+        $roles = db('department')->order('id','asc')->select();
+        $this->assign('role',$roles);
         return $this->fetch('role_post');
     }
 

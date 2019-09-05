@@ -37,10 +37,21 @@
 </nav>
 <div class="page-container">
 	<form action="/admin/Users/role_post" name="form1" method="post" class="form form-horizontal" id="form-article-add" onsubmit="return checkForm()">
-		<div class="row col-xs-8 col-sm-5">
+        <div class="row col-xs-8 col-sm-5">
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-4"><span class="c-red">*</span>所属部门：</label>
+                <div class="formControls col-xs-8 col-sm-8">
+                    <select name="dep_id" class="select" style="width:10rem">
+                        <option value="0" if condition="$data['dep_id']==0"}selected="selected"{/if}>其他部门</option>
+                        {foreach name="role" item="vo"}
+                        <option value="{$vo.id}" {if condition="$data!=''" }{if condition="$data['dep_id']==$vo.id"}selected="selected"{/if}{/if}>{$vo.dep_name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
             <div class="row cl">
                 <label class="form-label col-xs-4 col-sm-4"><span class="c-red">*</span>角色名称：</label>
-                <div class="formControls col-xs-8 col-sm-8">
+                <div class="formControls col-xs-8 col-sm-6">
                     <input type="hidden" name="id" {if condition="$data!=''"} value="{$data['id']}" {/if}>
                     <input type="text" class="input-text" {if condition="$data!=''"} value="{$data['role_name']}" {/if} placeholder="" id="role_name" name="role_name">
                 </div>
