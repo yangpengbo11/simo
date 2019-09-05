@@ -90,7 +90,7 @@ class Working extends Base
         return $this->fetch('distribute_post');
     }
 
-    /**
+    /*
      * 工序流程配置添加/编辑post提交
      */
     public function distribute_post(){
@@ -111,7 +111,7 @@ class Working extends Base
             );
             $res = db('process_flow')->insert($data);
             if($res){
-                $this->success('添加成功.', 'Working/distribute_list');
+                $this->success('添加成功！', 'Working/distribute_list');
             }else{
                 $this->error('添加失败！');
             }
@@ -131,16 +131,15 @@ class Working extends Base
         }
     }
 
-//    /**
-//     * 搜索显示数据
-//     * @return
-//     */
-//    public function vague(){
-//
-//        $vague = input('vague');
-//        $list = $this->getVague('inventory_class','inventory_class_name',$vague);
-//        return json($list);
-//    }
+   /*
+    * 搜索显示数据
+    * @return
+    */
+   /*public function vague(){
+       $vague = input('vague');
+       $list = $this->getVague('inventory_class','inventory_class_name',$vague);
+       return json($list);
+    }*/
 
 
 }

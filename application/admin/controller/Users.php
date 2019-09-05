@@ -347,16 +347,17 @@ class Users extends Base
      */
     public function role_add(){
         $role = db('department')->order('id','asc')->select();
-        if($this->roleid!=0){
+        if($this->dep_id!=0){
             $data = db('roles_authority')
                 ->alias('a')
                 ->join('tf_menus b','b.id = a.menus_id')
                 ->field('b.*,a.menus_id,a.states')
                 ->where('role_id',$this->roleid)->order('a.menus_id','asc')->select();
         }else{
-            $data = db('roles')->select();
+            $data = db('menus')->select();
         }
         $data = $this->getTree($data);
+        //print_r($data);die();
         $this->assign('data','');
         $this->assign('datas',$data);
         $this->assign('role',$role);
@@ -371,14 +372,17 @@ class Users extends Base
     public function role_edit(){
         $id = input('id');
         $role = db('roles')->where('id',$id)->find();
-        if($this->roleid!=0){
+        if($this->dep_id!=0){
             $data = db('roles_authority')
                 ->alias('a')
                 ->join('tf_menus b','b.id = a.menus_id')
                 ->field('b.*,a.menus_id,a.states')
                 ->where('role_id',$this->roleid)->order('a.menus_id','asc')->select();
+            //print_r($data);die();
         }else{
-            $data = db('roles')->select();
+
+            $data = db('menus')->select();
+           // print_r($data);die();
         }
         $data = $this->getTree($data);
         $this->assign('datas',$data);
