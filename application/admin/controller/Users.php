@@ -9,7 +9,8 @@ class Users extends Base
     {
         //初始化获取角色ID
         $user = session('users');
-        $this->roleid = $user['personnel_id'];
+        $roles = db('user_roles')->where('login_id',$user['login_id'])->find();
+        $this->roleid =$roles['role_id'];
         $this->dep_id = $user['dep_id'];
     }
 
@@ -357,7 +358,6 @@ class Users extends Base
             $data = db('menus')->select();
         }
         $data = $this->getTree($data);
-        //print_r($data);die();
         $this->assign('data','');
         $this->assign('datas',$data);
         $this->assign('role',$role);
@@ -378,11 +378,9 @@ class Users extends Base
                 ->join('tf_menus b','b.id = a.menus_id')
                 ->field('b.*,a.menus_id,a.states')
                 ->where('role_id',$this->roleid)->order('a.menus_id','asc')->select();
-            //print_r($data);die();
         }else{
 
             $data = db('menus')->select();
-           // print_r($data);die();
         }
         $data = $this->getTree($data);
         $this->assign('datas',$data);
