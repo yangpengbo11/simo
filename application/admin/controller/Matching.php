@@ -19,8 +19,41 @@ class Matching extends Base
         $specification_type = $_POST['specification_type'];
         $number = $_POST['number'];
         $this->assign('specification_type',$specification_type);
+        $data1 = array();
+        if(!empty($_POST['specification_type'])){
+            $product = db('products')->where('pid',0)->where('specification_type',$_POST['specification_type'])->find();
+            $number = $_POST['number'];
+            $data1 = $this->isQrcodeRecord($product['id'],$number,15);
+
+        }
+        $res = $this->filter_by_value($data1,'counts',0);
+        if(!empty($res)){
+            $counts = 0;
+            $this->assign('counts',$counts);
+        }else{
+            $counts = 1;
+            $this->assign('counts',$counts);
+        }
         $this->assign('number',$number);
         return $this->fetch('matching_post');
+    }
+
+
+    /*
+        * 根据二维数组某个字段的值查找数组
+       */
+    function filter_by_value ($array, $index, $value)
+    {
+        if (is_array($array) && count($array) > 0) {
+            foreach (array_keys($array) as $key) {
+                $temp[$key] = $array[$key][$index];
+
+                if ($temp[$key] == $value) {
+                    $newarray[$key] = $array[$key];
+                }
+            }
+        }
+        return $newarray;
     }
 
     /**

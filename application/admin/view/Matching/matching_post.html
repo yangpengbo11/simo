@@ -41,6 +41,7 @@
     </div>
     <div style="width: 70%;height:100%;float: left">
         <div id="reigth" style="width: 96%;margin: 50px auto">
+            {if condition="$counts==1"}
             <div class="mt-10">
                 <form action="/admin/Matching/preLocking" name="form1" method="post" class="form form-horizontal" id="form-article-add">
                     <input type="hidden" name="specification_type" value="{$specification_type}">
@@ -48,6 +49,7 @@
                     <button class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i>锁定部件配套的电机</button>
                 </form>
             </div>
+            {/if}
             <div class="mt-20">
                 <table class="table table-border table-bordered table-hover table-bg table-sort">
                     <thead>
