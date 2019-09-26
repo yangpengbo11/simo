@@ -25,8 +25,7 @@ class Login extends Controller
        // print_r(md5(123456));
         $users = db('user_login');
         $as = $users->where($where)->find();
-        //print_r(session('users'));die;
-        if($as){
+        if(!empty($as)&&$as['states']===1){
             session('users',$as);
             $res = $this->alert('登陆成功！','/admin/index/index',6,5);
             return $res;
