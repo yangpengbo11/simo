@@ -65,7 +65,7 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">计量单位：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$data['unit_code']}" placeholder="" id="unit_code" name="unit_code">
+                <input type="text" class="input-text" value="{$data['unit_name']}" placeholder="" id="unit_code" name="unit_code">
             </div>
         </div>
         <div class="row cl">
@@ -134,6 +134,7 @@
             </div>
         </div>-->
     </form>
+
     {if condition="$data1!=null"}
     <div class="mt-20" style="width: 83%;margin:30px auto;">
         <table class="table table-border table-bordered table-hover table-bg table-sort">
@@ -165,6 +166,28 @@
         </table>
     </div>
     {/if}
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+		<a class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加加工图号</a>
+		</span>
+    </div>
+    <div>
+        <form>
+            <div class="row cl">
+                <input type="hidden" name="inventory_code" value="{$data['inventory_code']}">
+                <label class="form-label col-xs-4 col-sm-2">存货编号：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" value="" placeholder="" id="machnumber" name="machnumber">
+                </div>
+            </div>
+            <div class="row cl">
+                <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                    <button  class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
+                    <button onClick="removeIframe();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
 <!--_footer 作为公共模版分离出去-->
