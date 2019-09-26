@@ -156,7 +156,7 @@ class Users extends Base
      */
     public function number_add(){
         $where = array();
-        if($this->dep_id==0){
+        if($this->dep_id!=0){
             $where['dep_id'] = $this->dep_id;
             $dep = db('department')->where('id',$this->dep_id)->select();
             $list = db('process')->where('dep_id',$this->dep_id)->select();
@@ -188,7 +188,7 @@ class Users extends Base
             ->find();
         $u_r = db('user_roles')->where('login_id', $id)->find();
         $where = array();
-        if($this->dep_id==0){
+        if($this->dep_id!=0){
             $where['dep_id'] = $this->dep_id;
             $dep = db('department')->where('id',$this->dep_id)->select();
             $list = db('process')->where('dep_id',$this->dep_id)->select();
