@@ -10,7 +10,8 @@ class Inventory extends Base
     // $data=db('inventory')->order('inventory_id','asc')->select();
        $data=db('inventory')
            ->alias('a')
-           ->join('warehouse b','a.storehouse_id=b.id')
+           ->join('warehouse b','a.storehouse_id=b.id','left')
+           ->join('unit c','a.unit_code=c.unit_code','left')
            ->select();
       $this->assign('data',$data);
       return $this->fetch();
@@ -37,23 +38,31 @@ class Inventory extends Base
        return $this->fetch('inventory_post');
    }
 
-
    public function inventory_post(){
+       $user=session('users');
+       $data=Request::instance()->post();
+
+       if(!empty($data['machnumber'])){
+           $machnumbers=$data['machnumber'];
+       }
+       unset($data['machnumber']);
        if(empty($_POST['inventory_id'])){
-           $user=session('users');
-           //var_dump($user['account_name']);
-           $data=Request::instance()->post();
            $data['create_person']=$user['account_name'];
            $data['sts_date']=date('Y-m-d H:i:s');
            $res=db('inventory')->insert($data);
            if($res){
+               if(isset($machnumbers)){
+                   $machnumber= explode(",", $machnumbers);
+                   foreach ($machnumber as $val){
+                       $data1=array('inventory_code'=>$data['inventory_code'],'machnumber'=>$val,'create_time'=>date('Y-m-d H:i:s'),'state'=>1);
+                       db('inventory_machnumber')->insert($data1);
+                   }
+               }
                return $this->alert('添加成功','/admin/inventory/inventory_list',6);
            }else{
                return $this->alert('添加失败','/admin/inventory/inventory_list',5);
            }
        }else{
-           $user=session('users');
-           $data=Request::instance()->post();
            $data['modify_person']=$user['account_name'];
            $data['modify_date']=date('Y-m-d H:i:s');
            $res=db('inventory')->update($data);
@@ -64,14 +73,15 @@ class Inventory extends Base
 
            }
        }
-}
+   }
 
 //详情页
    public function inventory_detail(){
        $id=input('id');
        $data=db('inventory')
            ->alias('a')
-           ->join('warehouse b','a.storehouse_id=b.id')
+           ->join('warehouse b','a.storehouse_id=b.id','left')
+           ->join('unit c','a.unit_code=c.unit_code','left')
            ->where(['inventory_id'=>$id])
            ->find();
        //var_dump($data);die();
@@ -99,12 +109,6 @@ class Inventory extends Base
            return $this->alert('添加失败','/admin/inventory/inventory_list',5);
        }
    }
-
-
-
-
-
-
 
 
 

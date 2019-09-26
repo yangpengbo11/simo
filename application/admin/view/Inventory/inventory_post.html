@@ -17,6 +17,7 @@
     <link rel="stylesheet" type="text/css" href="__LIB__/Hui-iconfont/1.0.8/iconfont.css" />
     <link rel="stylesheet" type="text/css" href="__STATIC__/h-ui.admin/skin/default/skin.css" id="skin" />
     <link rel="stylesheet" type="text/css" href="__STATIC__/h-ui.admin/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="__LIB__/zTree/v3/css/zTreeStyle/zTreeStyle.css" />
     <!--[if IE 6]>
     <script type="text/javascript" src="__LIB__/DD_belatedPNG_0.0.8a-min.js" ></script>
     <script>DD_belatedPNG.fix('*');</script>
@@ -34,12 +35,12 @@
     存货档案管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
     <i class="Hui-iconfont">&#xe68f;</i></a>
 </nav>
-<div class="page-container">
+<div class="page-container" style="width: 70%;margin: auto">
 
     <form class="form form-horizontal" id="form-article-add" name="form1" action="/admin/inventory/inventory_post" method="post" onsubmit="return checkForm()">
-        <div class="row cl">
+        <div class="row cl" >
             <input type="hidden" name="inventory_id" value="{$data==''?'':$data['inventory_id']}">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>存货编号：</label>
+            <label class="form-label col-xs-4 col-sm-2">存货编号：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="{$data==''?'':$data['inventory_code']}" placeholder="" id="inventory_code" name="inventory_code">
             </div>
@@ -59,7 +60,8 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">存货分类编码：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{$data==''?'':$data['inventory_class_code']}" placeholder="" id="inventory_class_code" name="inventory_class_code">
+                <input type="text" class="input-text" style="width: 95%;" value="{$data==''?'':$data['inventory_class_code']}" placeholder="" id="inventory_class_code" name="inventory_class_code">
+                <a id="tk"><i class="Hui-iconfont">&#xe681;</i></a>
             </div>
         </div>
         <div class="row cl">
@@ -73,21 +75,9 @@
             <label class="form-label col-xs-4 col-sm-2">库房：</label>
             <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
 				<select name="storehouse_id" class="select">
+                    <option value="">请选择</option>
                     {foreach $warehouse as $w}
                        <option value="{$w['id']}" {$data==''?'':$data['storehouse_id']==$w['id']?'selected':''}>{$w['name']}</option>
-                    {/foreach}
-
-				</select>
-				</span>
-            </div>
-        </div>
-
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>计量单位：</label>
-            <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select name="unit_code" class="select">
-                    {foreach $unit as $u}
-                       <option value="{$u['unit_code']}" {$data==''?'':$data['unit_code']==$u['unit_code']?'selected':''}>{$u['unit_name']}</option>
                     {/foreach}
 
 				</select>
@@ -101,17 +91,22 @@
                 <input type="text" class="input-text" value="{$data==''?'':$data['define6']}" placeholder="" id="define6" name="define6">
             </div>
         </div>
+
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">是否总装件：</label>
-            <div class="radio-box">
-                <input type="radio" value="1" id="radio1" name="is_assemble" {$data==''?'':$data['is_assemble']==1?'checked':''}>
-                <label for="radio-1">是</label>
-            </div>
-            <div class="radio-box">
-                <input type="radio" value="0" id="radio2" name="is_assemble" {$data==''?'checked':$data['is_assemble']==0?'checked':''}>
-                <label for="radio-2">否</label>
+            <label class="form-label col-xs-4 col-sm-2">计量单位：</label>
+            <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select name="unit_code" class="select">
+                    {foreach $unit as $u}
+                       <option value="{$u['unit_code']}" {$data==''?'':$data['unit_code']==$u['unit_code']?'selected':''}>{$u['unit_name']}</option>
+                    {/foreach}
+
+				</select>
+				</span>
             </div>
         </div>
+
+
+
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">是否标准件：</label>
             <div class="radio-box">
@@ -135,6 +130,12 @@
                 <input type="text" class="input-text" value="{$data==''?'':$data['remarks']}" placeholder="" id="remarks" name="remarks">
             </div>
         </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">加工图号：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="machnumber" name="machnumber">
+            </div>
+        </div>
 
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
@@ -145,7 +146,9 @@
     </form>
 
 </div>
-
+<div id="tree" style="width: 30%;float: left;min-height:400px;overflow-y:auto;max-height:500px;position: absolute;top:100px;left: 500px;display: none;background-color: #a6e1ec;">
+    <ul id="bcTree" class="ztree" style=""></ul>
+</div>
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="__LIB__/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="__LIB__/layer/2.4/layer.js"></script>
@@ -157,26 +160,22 @@
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript" src="__LIB__/zTree/v3/js/jquery.ztree.core-3.5.js" ></script>
+<script type="text/javascript" src="__LIB__/zTree/v3/js/jquery.ztree.excheck-3.5.js" ></script>
 <script type="text/javascript">
-
     function checkForm() {
         var log = true;
         var number = document.form1.inventory_code;
-        var number1 = document.form1.dwg_code;
+
         var number2 = document.form1.inventory_name;
         var number3 = document.form1.inventory_class_code;
         var number4 = document.form1.specification_type;
-
         if(number.value=='') {
             number.style.borderColor = '#c00';
             number.placeholder = '存货编号必填';
             log = false;
         }
-        if(number1.value==''){
-            number1.style.borderColor = '#c00';
-            number1.placeholder = '图号必填';
-            log = false;
-        }
+
         if(number2.value==''){
             number2.style.borderColor = '#c00';
             number2.placeholder = '存货名称必填';
@@ -192,9 +191,70 @@
             number4.placeholder = '规格型号必填';
             log = false;
         }
-
         return log;
     }
+    var zTreeObj;
+    var setting = {
+        view : {
+            showIcon : false,//是否显示图标
+            dblClickExpand : false,//是否双击展开/收起
+            selectedMulti : false,//是否允许同时选中多个节点
+            expandSpeed : 'fast',//展开速度fast、slow
+            showTitle : false, //是否显示节点的title提示信息
+            showLine: true,//是否显示节点间的连线
+            nameIsHTML : true //设置 name 属性是否支持 HTML 脚本
+        },
+        data : {
+            keep : {
+                parent : true
+            },
+            simpleData : {
+                enable : true,
+                idKey : "id",
+                pIdKey : "pId"
+            }
+        },
+
+        callback : {
+            /* 鼠标单击事件，判断是否是导航栏，然后跳转到展示页面 */
+            onClick : function(event, treeId, treeNode, clickFlag) {
+                var nodes = zTreeObj.getSelectedNodes();
+
+                //这里的逻辑是为修改和查看所预备的hidden
+                $("#checkNodeId").val(nodes[0].id);
+                $("#checkNodePid").val(nodes[0].pId);
+
+                //默认进入查看页面
+                //category_edit(0);
+                //alert(nodes[0].id+"    "+nodes[0].pId);
+                var name=nodes[0].name;
+                var inventory_class_code =name.substring(1,name.indexOf(")"));
+                $("#inventory_class_code").val(inventory_class_code);
+                //alert(inventory_class_code);
+                $("#tree").css("display","none");
+            }
+        }
+
+    };
+
+    $("#tk").click(function(){
+         $("#tree").css("display","block");
+        jQuery.ajax({
+            url : "/admin/inventory_class/getjson",
+            data : {},
+            type : "POST",
+            dataType : "json",
+            cache : false,
+            success : function(data) {
+                //alert(data);
+                data = eval(data);//ztree只认js对象，而不是字符串，所以eval转换下
+                zTreeObj = $.fn.zTree.init($("#bcTree"), setting, data);
+                $.fn.zTree.init($("#bcTree"), setting, data);
+                var treeObj = $.fn.zTree.getZTreeObj("tree");
+            }
+
+        });
+    });
 
 </script>
 <!--/请在上方写此页面业务相关的脚本-->
