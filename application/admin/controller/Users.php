@@ -19,7 +19,9 @@ class Users extends Base
      */
     public function account_list(){
 
-        $data = db('account')->order('id','asc')->select();
+        $data = db('account')->alias('a')
+            ->join('tf_department b',' a.dep_id = b.id')
+            ->field('a.*,b.dep_name')->select();
         $this->assign('data',$data);
         return $this->fetch('account_list');
     }
@@ -28,6 +30,9 @@ class Users extends Base
      * 增加人员信息
      */
     public function account_add(){
+
+        $dep = db('department')->select();
+        $this->assign('dep',$dep);
         $this->assign('data','');
         return $this->fetch('account_post');
     }
@@ -36,7 +41,11 @@ class Users extends Base
      */
     public function account_edit(){
         $id = input('id');
-        $data = db('account')->where(['id'=>$id])->find();
+        $data = db('account') ->alias('a')
+            ->join('tf_department b',' a.dep_id = b.id')
+            ->field('a.*,b.dep_name')->where(['a.id'=>$id])->find();
+        $dep = db('department')->select();
+        $this->assign('dep',$dep);
         $this->assign('data',$data);
         return $this->fetch('account_post');
     }
@@ -76,7 +85,9 @@ class Users extends Base
         if(!empty($_POST['id'])){//修改
             $arr = array(
                 'Job_number'=>$_POST['Job_number'],
-                'job_name'=>$_POST['job_name']
+                'job_name'=>$_POST['job_name'],
+                'dep_id' =>$_POST['dep_id'],
+                'sex' => $_POST['sex']
             );
             $res = db('account')->where('id',$_POST['id'])->update($arr);
             //print_r(db('account')->getLastSql());die;
@@ -92,6 +103,8 @@ class Users extends Base
             $arr = array(
                 'Job_number'=>$_POST['Job_number'],
                 'job_name'=>$_POST['job_name'],
+                'dep_id' =>$_POST['dep_id'],
+                'sex' => $_POST['sex'],
                 'create_time'=>date('Y-m-d H:i:s',time())
             );
             $res = db('account')->insert($arr);
