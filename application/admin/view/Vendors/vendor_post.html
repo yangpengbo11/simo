@@ -40,7 +40,7 @@
 <div class="page-container">
 	<form action="/admin/Vendors/vendor_post" method="post" class="form form-horizontal" id="form-article-add">
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>供货商编号：</label>
+			<label class="form-label col-xs-4 col-sm-2">供货商编号：</label>
 			<div class="formControls col-xs-4 col-sm-5">
 				<span class="select-box">
 					<input type="hidden" id="vendor_id" name="vendor_id" value="{$data==''?'':$data['vendor_id']}">
@@ -49,7 +49,7 @@
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>公司名称：</label>
+			<label class="form-label col-xs-4 col-sm-2">公司名称：</label>
 			<div class="formControls col-xs-4 col--5">
 				<span class="select-box">
 				<input type="text" id="vendor_name" name="vendor_name" class="input-text cl" value="{$data==''?'':$data['vendor_name']}" placeholder="输入公司名称" >
@@ -57,9 +57,33 @@
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>公司地址：</label>
+			<label class="form-label col-xs-4 col-sm-2">公司地址：</label>
 			<div class="formControls col-xs-4 col-sm-5">
-				<input type="text" class="input-text"  value="{$data==''?'':$data['company_addr']}" placeholder="" id="company_addr" name="company_addr">
+				<input type="text" class="input-text cl"  value="{$data==''?'':$data['company_addr']}" placeholder="输入公司地址" id="company_addr" name="company_addr">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">联系电话：</label>
+			<div class="formControls col-xs-4 col--5">
+				<span class="select-box">
+				<input type="text" id="tel" name="tel" class="input-text cl" value="{$data==''?'':$data['tel']}" placeholder="输入联系电话" >
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">联系人：</label>
+			<div class="formControls col-xs-4 col--5">
+				<span class="select-box">
+				<input type="text" id="contacts" name="contacts" class="input-text cl" value="{$data==''?'':$data['contacts']}" placeholder="输入联系人" >
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">业务员：</label>
+			<div class="formControls col-xs-4 col--5">
+				<span class="select-box">
+				<input type="text" id="salesman" name="salesman" class="input-text cl" value="{$data==''?'':$data['salesman']}" placeholder="输入业务员" >
+				</span>
 			</div>
 		</div>
 		<div class="row cl">

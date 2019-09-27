@@ -48,6 +48,9 @@
                     <th>供应商编号</th>
 					<th>公司名称</th>
 					<th>公司地址</th>
+					<th>联系电话</th>
+					<th>联系人</th>
+					<th>业务员</th>
                     <th>创建时间</th>
 					<th width="100">操作</th>
 				</tr>
@@ -60,6 +63,9 @@
                     <td class="text-content">{$vo['vendor_code']}</td>
 					<td class="text-content">{$vo['vendor_name']}</td>
 					<td class="text-content">{$vo['company_addr']}</td>
+					<td class="text-content">{$vo['tel']}</td>
+					<td class="text-content">{$vo['contacts']}</td>
+					<td class="text-content">{$vo['salesman']}</td>
                     <td class="text-content">{$vo['create_time']}</td>
 					<td class="f-14"><a title="编辑" href="{:url('admin/Vendors/vendor_edit',['id'=>$vo['vendor_id']])}" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
 						<a title="删除" href="javascript:;"  class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>

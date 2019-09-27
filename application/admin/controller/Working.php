@@ -57,7 +57,7 @@ class Working extends Base
      public function distribute_list(){
          $list = db('process_flow')
              ->alias('a')
-             ->join('tf_inventory_class b','b.inventory_class_id = a.inventory_class_id')
+             ->join('tf_inventory_class b','b.inventory_class_code = a.inventory_class_id')
              ->join('tf_process c','c.id = a.process_id')
              ->field('a.*,b.inventory_class_name,c.process_name')
              ->select();
