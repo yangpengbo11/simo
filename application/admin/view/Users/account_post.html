@@ -1,5 +1,4 @@
-<!--_meta 作为公共模版分离出去-->
-<!DOCTYPE HTML>
+
 <html>
 <head>
 <meta charset="utf-8">
@@ -50,6 +49,26 @@
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>人员姓名：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" {if condition="$data!=''"} value="{$data['job_name']}" {/if} placeholder="" id="job_name" name="job_name">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>人员所属部门：</label>
+			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select name="dep_id" class="select">
+                     <option value="0" {$data==''?'':$data['dep_id']==0?'selected':''}>其他部门</option>
+                    {foreach $dep as $u}
+                       <option value="{$u['id']}" {$data==''?'':$data['dep_id']==$u['id']?'selected':''} >{$u['dep_name']}</option>
+                    {/foreach}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>性别：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box">
+					<input type="radio" name="sex" value="1" {$data==''?'checked':$data['sex']==1?'checked':''}/>男 &numsp;&numsp;&numsp;&numsp;<input type="radio" name="sex" value="2"{$data==''?'':$data['sex']==2?'checked':''}/>女
+				</span>
 			</div>
 		</div>
 		<div class="row cl">
