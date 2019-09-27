@@ -20,7 +20,7 @@ class Users extends Base
     public function account_list(){
 
         $data = db('account')->alias('a')
-            ->join('tf_department b',' a.dep_id = b.id')
+            ->join('tf_department b',' a.dep_id = b.id','left')
             ->field('a.*,b.dep_name')->select();
         $this->assign('data',$data);
         return $this->fetch('account_list');
