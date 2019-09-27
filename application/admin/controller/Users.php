@@ -140,15 +140,20 @@ class Users extends Base
             $res = db('process_matching')
                 ->alias('a')
                 ->join('tf_process b','a.process_id = b.id')
-                //->join('tf_inventory_class c','a.inventory_class_id = c.inventory_class_id')
+                //->join('tf_inventory_class c','a.inventory_class_id = c.inventory_class_code')
                 ->field('a.inventory_class_id,a.process_id,b.process_name')
                 ->where('a.login_id',$v['login_id'])
                 ->find();
+            $roles =  db('user_roles')
+                ->alias('a')
+                ->join('tf_roles b','a.role_id=b.id')
+                ->where('login_id',$v['login_id'])->find();
+            $list[$k]['role_name'] =  $roles['role_name'];
             if(!empty($res)){
                 if(empty($res['inventory_class_id'])){
                     $res['inventory_class_name'] = '';
                 }else{
-                   $a = db('inventory_class')->where('inventory_class_id',$res['inventory_class_id'])->find();
+                   $a = db('inventory_class')->where('inventory_class_code',$res['inventory_class_id'])->find();
                     $res['inventory_class_name'] =$a['inventory_class_name'];
                 }
                 $list[$k]['inventory_class_id'] =  $res['inventory_class_id'];
