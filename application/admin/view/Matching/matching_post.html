@@ -56,6 +56,7 @@
                     <tr class="text-c">
                         <th >部件名称</th>
                         <th>规格型号</th>
+                        <th>加工号</th>
                         <th>到达的工序</th>
                     </tr>
                     </thead>
@@ -120,11 +121,10 @@
                         var m= '';
                         for (var i=0;i<data.length;i++) {
                             if(data[i].process_name=='入配套区'){
-                                m += '<tr class="text-c"><td  style="color: green">'+data[i].inventory_class_name+'('+data[i].specification_type+')</td><td  style="color: green">'+data[i].base_code+'</td><td  style="color: green">'+data[i].process_name+'</td></tr>';
+                                m += '<tr class="text-c"><td  style="color: green">'+data[i].inventory_class_name+'('+data[i].specification_type+')</td><td  style="color: green">'+data[i].base_code+'</td><td style="color: green">'+data[i].machnumber+'</td><td  style="color: green">'+data[i].process_name+'</td></tr>';
                             }else{
-                                m += '<tr class="text-c"><td style="color: red">'+data[i].inventory_class_name+'('+data[i].specification_type+')</td><td style="color: red">'+data[i].base_code+'</td><td style="color: red">'+data[i].process_name+'</td></tr>';
+                                m += '<tr class="text-c"><td style="color: red">'+data[i].inventory_class_name+'('+data[i].specification_type+')</td><td style="color: red">'+data[i].base_code+'</td><td style="color: red">'+data[i].machnumber+'</td><td style="color: red">'+data[i].process_name+'</td></tr>';
                             }
-
                         }
                         $('#text').html(m);
                     }

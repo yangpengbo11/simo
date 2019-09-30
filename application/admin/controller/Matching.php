@@ -217,6 +217,20 @@ class Matching extends Base
         return  $data;
     }
 
+    /**
+     *配套列表
+     * */
+    public function matching_list(){
+        $list = db('qrcode_record')
+            ->alias('a')
+            ->field('*')
+            ->join('tf_process b', 'a.process_flow_id = b.id')
+            ->where('process_name','入配套区')
+            ->select();
+        $this->assign('list',$list);
+        return $this->fetch('matching_list');
+    }
+
     //预锁定
     public function preLocking(){
         //型号，时间，工序
