@@ -63,6 +63,7 @@ class Erweima
         $lists['qrcode_content']=$data;
         $lists['types']=$type;
         $lists['links']=$filename;
+        $lists['create_time']=date('Y-m-d H:i:s');
         $lists['access_id']=$access_id;
         $res = db('qrcode_record')->insert($lists);
         //生成二维码图片
