@@ -39,9 +39,15 @@
     <form class="form form-horizontal" id="form-article-add" action="" method="post">
         <div class="row cl">
             <input type="hidden" name="inventory_id" value="{$data['inventory_id']}">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>存货编号：</label>
+            <label class="form-label col-xs-4 col-sm-2">存货编号：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="{$data['inventory_code']}" placeholder="" id="inventory_code" name="inventory_code">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">存货分类编号：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="{$data['inventory_class_code']}" placeholder="" id="inventory_class_code" name="inventory_class_code">
             </div>
         </div>
         <div class="row cl">
@@ -166,7 +172,7 @@
         </table>
     </div>
     {/if}
-    <div class="cl pd-5 bg-1 bk-gray mt-20">
+    <!--<div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
 		<a class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加加工图号</a>
 		</span>
@@ -187,7 +193,7 @@
                 </div>
             </div>
         </form>
-    </div>
+    </div>-->
 </div>
 
 <!--_footer 作为公共模版分离出去-->

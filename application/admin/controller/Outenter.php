@@ -110,7 +110,7 @@ class Outenter extends Base
                     $ress=db('process_flow')
                         ->alias('a')
                         ->join('process b','a.process_id=b.id')
-                        ->where(['inventory_class_id'=>$inventory_class_id['inventory_class_id']])
+                        ->where(['inventory_class_id'=>$inventory_class_id['inventory_class_code']])
                         ->select();
                     foreach ($ress as $v){
                         //$qrcode=array(['qrcode_content'=>$erweima['qrcode_content'],'process_name'=>$v['process_name'],'operation_states'=>0,'create_time'=>date('Y-m-d H:i:s'),'states'=>1]);

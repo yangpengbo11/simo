@@ -12,6 +12,7 @@ class Inventory extends Base
            ->alias('a')
            ->join('warehouse b','a.storehouse_id=b.id','left')
            ->join('unit c','a.unit_code=c.unit_code','left')
+           ->order('inventory_id','desc')
            ->select();
       $this->assign('data',$data);
       return $this->fetch();
@@ -110,8 +111,9 @@ class Inventory extends Base
        }
    }
 
+   public function inventory_mpnumberedit(){
 
-
+   }
 
 
 }

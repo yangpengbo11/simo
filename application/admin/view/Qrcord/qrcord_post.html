@@ -37,7 +37,6 @@
 <div class="page-container">
     <form class="form form-horizontal" id="form-article-add" action="/admin/qrcord/qrcord_add" method="post" name="form1" onsubmit="return checkForm()" novalidate="novalidate">
         <div class="row cl">
-
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>电机名称：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="inventory_class_name" name="inventory_class_name">
@@ -80,11 +79,11 @@
             number.placeholder = '电机名称必填';
             log = false;
         }
-        if(number1.value==''){
+        /*if(number1.value==''){
             number1.style.borderColor = '#c00';
             number1.placeholder = '电机型号必填';
             log = false;
-        }
+        }*/
         return log;
     }
 
