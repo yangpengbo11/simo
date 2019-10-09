@@ -10,6 +10,9 @@
 <link rel="Bookmark" href="/favicon.ico" >
 <link rel="Shortcut Icon" href="/favicon.ico" />
 <!--[if lt IE 9]>
+    <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/jquery.validate.js"></script>
+    <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/validate-methods.js"></script>
+    <script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript" src="__LIB__/html5shiv.js"></script>
 <script type="text/javascript" src="__LIB__/respond.min.js"></script>
 
@@ -42,8 +45,10 @@
                 <input type="hidden" name="id" {if condition="$data!=''"} value="{$data['login_id']}" {/if}>
                 <label class="form-label col-xs-4 col-sm-4"><span class="c-red">*</span>员工工号：</label>
                 <div class="formControls col-xs-8 col-sm-8">
-                    <input type="text" class="input-text" {if condition="$data!=''"} value="{$data['Job_number']}" {/if} placeholder="" id="Job_number" name="Job_number">
+                    <input type="text" class="input-text" style="width: 90%;"  {if condition="$data!=''"} value="{$data['Job_number']}" {/if} placeholder="" id="Job_number" name="Job_number">
+                    <a id="tk" onclick="selectRole()"><i class="Hui-iconfont">&#xe681;</i></a>
                 </div>
+
             </div>
             <div class="row cl">
                 <label class="form-label col-xs-4 col-sm-4"><span class="c-red">*</span>账号所属部门：</label>
@@ -118,7 +123,29 @@
 		</div>
 	</form>
 </div>
-
+<div  class="page-container" id="popSearchRoleTest" style="display:none;">
+    <div class="row cl">
+        <div cclass="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>员工名称：</label>
+            <div class="formControls col-xs-6 col-sm-6">
+                <input type="text" class="input-text" oninput="initSearchList(this.value)"  placeholder="" id="job_name" name="job_name">
+            </div>
+        </div>
+    </div>
+    <div class="mt-20" >
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead id="texts">
+                <tr class="text-c">
+                    <th width="25">选择</th>
+                    <th>员工工号</th>
+                    <th>员工姓名</th>
+                    <th>所属部门</th>
+                    <th>员工性别</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="__LIB__/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="__LIB__/layer/2.4/layer.js"></script>
@@ -127,10 +154,46 @@
 
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="__LIB__/My97DatePicker/4.8/WdatePicker.js"></script>
-<script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/jquery.validate.js"></script>
-<script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/validate-methods.js"></script>
-<script type="text/javascript" src="__LIB__/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript" src="__LIB__/webuploader/0.1.5/webuploader.min.js"></script>
+<script type="text/javascript" src="__LIB__/ueditor/1.4.3/ueditor.config.js"></script>
+<script type="text/javascript" src="__LIB__/ueditor/1.4.3/ueditor.all.min.js"> </script>
+<script type="text/javascript" src="__LIB__/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
 <script type="text/javascript">
+    //选择角色弹层
+    function selectRole(){
+        layer.open({
+            //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+            type:1,
+            title:"查找人员",
+            area: ['50%','50%'],
+            content:$("#popSearchRoleTest").html()
+        });
+    }
+
+
+    $("#job_name").bind('input porpertychange',function(){
+    })
+    //监听input框，实时渲染
+    // $('#job_name').on('input', function() {
+    //     alert(1);
+    //     initSearchList($('#job_name').val());
+    // });
+    function initSearchList(event){
+        //alert(event);
+        if(event !='') {
+            $.post("/admin/users/vague/vague/"+event, function (data) {
+                var m ='<tbody>';
+                for(var i=0;i<data.length;i++){
+                    m += '<tr class="text-c"><td><input type="radio" name="Job_number" value="'+data[i].Job_number+'"></td><td>'+data[i].Job_number+'</td><td>'+data[i].job_name+'</td><td>'+data[i].dep_name+'</td><td>'+data[i].sex+'</td></tr>';
+                   }
+                m+='</tbody>';
+                console.log(m);
+                $('#texts').append(m);
+            });
+        }else{
+            $('#texts').hide();
+        }
+    }
     function checkForm() {
         var log = true;
         var number = document.form1.Job_number;

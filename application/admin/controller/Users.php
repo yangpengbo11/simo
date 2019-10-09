@@ -531,4 +531,23 @@ class Users extends Base
             }
         }
     }
+
+    /**
+     * 搜索显示数据
+     * @return
+     */
+    public function vague(){
+        $vague = input('vague');
+        $list = $this->getVague('account','job_name',$vague);
+        foreach ($list as $k=>$v){
+           $dep = db('department')->where('id',$v['dep_id'])->find();
+           $list[$k]['dep_name'] = $dep['dep_name'];
+           if($v['sex']==1){
+               $list[$k]['sex'] = '男';
+           }else{
+               $list[$k]['sex'] = '女';
+           }
+        }
+        return json($list);
+    }
 }
