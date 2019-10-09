@@ -27,6 +27,8 @@ class Login extends Controller
         $as = $users->where($where)->find();
         if(!empty($as)&&$as['states']===1){
             session('users',$as);
+            $session_id = session_id();
+            $users->where('login_id',$as['login_id'])->update(array('session_id'=>$session_id));
             $res = $this->alert('登陆成功！','/admin/index/index',6,5);
             return $res;
         }else{

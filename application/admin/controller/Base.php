@@ -11,7 +11,12 @@ class Base extends Controller
         if(!session('users')){
             $this->error('请先登录！',url('/admin/Login/login'));
         }
-
+        $session_id = session_id();
+        $user = session('users');
+        $userinfo = db('user_login')->where('login_id',$user['login_id'])->find();
+        if($userinfo['session_id']!=$session_id){
+            $this->error('此账号在其他地方已登录！',url('/admin/Login/login'));
+        }
     }
 
     //无限极递归
