@@ -7,6 +7,16 @@ class Users extends Base
     private $dep_id;
     public function _initialize()
     {
+        if(!session('users')){
+            $this->error('请先登录！',url('/admin/Login/login'));
+        }
+        $session_id = session_id();
+        $user = session('users');
+        $userinfo = db('user_login')->where('login_id',$user['login_id'])->find();
+        if($userinfo['session_id']!=$session_id){
+            echo "<script>alert('此账号已在其他地方登录！');</script>";
+            exit('<script language="javascript">top.location.href="/admin/Login/login"</script>');
+        }
         //初始化获取角色ID
         $user = session('users');
         $roles = db('user_roles')->where('login_id',$user['login_id'])->find();

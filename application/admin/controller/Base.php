@@ -9,13 +9,14 @@ class Base extends Controller
     public function _initialize()
     {
         if(!session('users')){
-            $this->error('请先登录！',url('/admin/Login/login'));
-        }
+        $this->error('请先登录！',url('/admin/Login/login'));
+    }
         $session_id = session_id();
         $user = session('users');
         $userinfo = db('user_login')->where('login_id',$user['login_id'])->find();
         if($userinfo['session_id']!=$session_id){
-            $this->error('此账号在其他地方已登录！',url('/admin/Login/login'));
+            echo "<script>alert('此账号已在其他地方登录！');</script>";
+           exit('<script language="javascript">top.location.href="/admin/Login/login"</script>');
         }
     }
 
